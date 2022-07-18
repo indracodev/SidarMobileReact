@@ -1,4 +1,4 @@
-# Sidar Mobile React
+# Sidar Mobile React - beta
 
 **Requirement**
 - react native 0.69.1

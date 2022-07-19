@@ -6,6 +6,17 @@ class Home extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.unsubsribe = this.props.navigation.addListener('focus', () => {
+      console.log('hello world');
+      //ambild data di server bisa dilakukan disini
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   render() {
     return (
       <View>

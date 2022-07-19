@@ -49,14 +49,15 @@ const SignIn = () => {
       <TouchableOpacity
         style={{
           marginTop: 40,
-          backgroundColor: '#03a9f4',
+          backgroundColor: '#f98441',
           paddingVertical: 15,
           marginHorizontal: 20,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: 9,
           elevation: 2,
-        }}>
+        }}
+        onPress={() => navigation.navigate('Home')}>
         <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'bold'}}>
           Sign In
         </Text>

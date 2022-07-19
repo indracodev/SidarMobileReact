@@ -1,8 +1,48 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-class Home extends Component {
+var product = [
+  {brand: 'ucafe', rasa: 'mocachinno'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+  {brand: 'rasa sayang', rasa: 'kopi'},
+];
+
+var cobavar = 'suryo';
+
+class LaporanDar extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -21,8 +61,15 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#f98441', flex: 1}}>
-        <View style={{flex: 1, margin: 20}}>
+      <View style={{backgroundColor: '#e8e8e8', flex: 1}}>
+        {/* <View style={{flex: 1}}> */}
+        <View
+          style={{
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            backgroundColor: '#f98441',
+            padding: 20,
+          }}>
           <Text
             style={{
               color: '#ffffff',
@@ -32,9 +79,31 @@ class Home extends Component {
             }}>
             INDRACO - SIDAR
           </Text>
-          <Text style={{color: '#ffffff', fontSize: 12}}>Welcome To Home</Text>
+          <Text style={{color: '#ffffff', fontSize: 12}}>
+            Welcome To Laporan DAR {cobavar}
+          </Text>
         </View>
+        {/* </View> */}
 
+        {/* <Text>Pergi Ke Detail</Text> */}
+        <FlatList
+          style={{marginTop: 10}}
+          data={product}
+          renderItem={({item, index}) => (
+            //styling view
+            <View
+              style={{
+                backgroundColor: '#212121',
+                marginTop: 10,
+                marginHorizontal: 20,
+                padding: 20,
+                borderRadius: 6,
+              }}>
+              <Text style={{color: '#FFFFFF'}}>{item.brand}</Text>
+            </View>
+          )}
+        />
+        {/* 
         <TouchableOpacity
           onPress={() =>
             this.props.navigation.navigate('Detail', {
@@ -48,7 +117,7 @@ class Home extends Component {
             })
           }>
           <Text>Pergi Ke Detail</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View
           style={{
@@ -100,4 +169,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default LaporanDar;

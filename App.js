@@ -3,14 +3,16 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
-
+import SplashScreen from './src/screens/SplashScreen';
 import LoginLanding from './src/screens/LoginLanding';
 import SignIn from './src/screens/SignIn';
 import Register from './src/screens/Register';
 import LupaPassword from './src/screens/LupaPassword';
 import Home from './src/screens/Home';
+import Dar from './src/screens/Dar';
+import LaporanDar from './src/screens/LaporanDar';
 import Detail from './src/screens/Detail';
-import SplashScreen from './src/screens/SplashScreen';
+
 function App() {
   return (
     <NavigationContainer>
@@ -24,6 +26,8 @@ function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="LupaPassword" component={LupaPassword} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Dar" component={Dar} />
+        <Stack.Screen name="LaporanDar" component={LaporanDar} />
         <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
       </Stack.Navigator>

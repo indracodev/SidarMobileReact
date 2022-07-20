@@ -6,6 +6,7 @@ import {
   FlatList,
   TextInput,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignInHeader from '../components/SignInHeader';
@@ -70,7 +71,7 @@ class Dar extends Component {
 
         {/* <TextArea placeholder="Description" /> */}
 
-        <View style={{flexDirection: 'column'}}>
+        <ScrollView style={{flexDirection: 'column'}}>
           <TextInput
             style={styles.textArea}
             underlineColorAndroid="transparent"
@@ -97,7 +98,7 @@ class Dar extends Component {
             numberOfLines={10}
             multiline={true}
           />
-        </View>
+        </ScrollView>
 
         {/* <View style={styles.textAreaContainer}>
           <TextInput

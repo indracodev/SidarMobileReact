@@ -1,7 +1,15 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, FlatList, TextInput} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignInHeader from '../components/SignInHeader';
+import TextArea from '../components/TextArea';
 class Dar extends Component {
   constructor(props) {
     super(props);
@@ -60,21 +68,73 @@ class Dar extends Component {
             }}></Text>
         </View>
 
-        <TextInput
+        {/* <TextArea placeholder="Description" /> */}
+
+        <View style={{flexDirection: 'column'}}>
+          <TextInput
+            style={styles.textArea}
+            underlineColorAndroid="transparent"
+            placeholder="Aktifitas Harian"
+            placeholderTextColor="grey"
+            numberOfLines={10}
+            multiline={true}
+          />
+
+          <TextInput
+            style={styles.textArea}
+            underlineColorAndroid="transparent"
+            placeholder="Result"
+            placeholderTextColor="grey"
+            numberOfLines={10}
+            multiline={true}
+          />
+
+          <TextInput
+            style={styles.textArea}
+            underlineColorAndroid="transparent"
+            placeholder="Plan"
+            placeholderTextColor="grey"
+            numberOfLines={10}
+            multiline={true}
+          />
+        </View>
+
+        {/* <View style={styles.textAreaContainer}>
+          <TextInput
+            style={styles.textArea}
+            underlineColorAndroid="transparent"
+            placeholder="Result"
+            placeholderTextColor="grey"
+            numberOfLines={10}
+            multiline={true}
+          />
+        </View> */}
+
+        {/* <View style={styles.textAreaContainer}>
+          <TextInput
+            style={styles.textArea}
+            underlineColorAndroid="transparent"
+            placeholder="Plan"
+            placeholderTextColor="grey"
+            numberOfLines={10}
+            multiline={true}
+          />
+        </View> */}
+
+        {/* <TextInput
+          multiline={true}
+          numberOfLines={10}
           keyboardType="email-address"
-          onChangeText={text => setEmail(text)}
+          // onChangeText={text => setEmail(text)}
           style={{
-            marginHorizontal: 20,
-            backgroundColor: '#FFFFFF',
-            marginTop: 10,
-            borderRadius: 9,
-            elevation: 2,
-            paddingLeft: 10,
+            height: 200,
+            textAlignVertical: 'top',
+            backgroundColor: '#c5c5c5c5',
           }}
           placeholder="Aktivitas Harian"
-        />
+        /> */}
 
-        <TextInput
+        {/* <TextInput
           keyboardType="email-address"
           onChangeText={text => setEmail(text)}
           style={{
@@ -86,9 +146,9 @@ class Dar extends Component {
             paddingLeft: 10,
           }}
           placeholder="Result"
-        />
+        /> */}
 
-        <TextInput
+        {/* <TextInput
           keyboardType="email-address"
           onChangeText={text => setEmail(text)}
           style={{
@@ -100,59 +160,8 @@ class Dar extends Component {
             paddingLeft: 10,
           }}
           placeholder="Plan"
-        />
+        /> */}
 
-        <FlatList
-          style={{marginTop: 10}}
-          renderItem={({item, index}) => (
-            //styling view
-            <TouchableOpacity
-              style={{
-                // backgroundColor: '#60a5f0',
-                backgroundColor: item.backColor,
-                marginTop: 10,
-                marginHorizontal: 10,
-                padding: 20,
-                borderTopRightRadius: 20,
-                borderBottomLeftRadius: 20,
-                borderTopLeftRadius: 5,
-                borderBottomRightRadius: 5,
-              }}>
-              {/* <View style={{flex: 1}}></View> */}
-              <Text
-                style={{
-                  backgroundColor: 'rgba(0,0,0,0.3)',
-                  borderRadius: 50,
-                  paddingHorizontal: 5,
-                  width: 160,
-                  paddingVertical: 5,
-                  marginBottom: 20,
-                  fontWeight: 'bold',
-                  fontSize: 10,
-                  color: '#ffffff',
-                }}>
-                asd
-              </Text>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <Text
-                    style={{
-                      // marginLeft: 5,
-                      fontWeight: 'bold',
-                      fontSize: 22,
-                      color: '#ffffff',
-                    }}>
-                    zxczxczxczxc
-                  </Text>
-                  <Text style={{color: '#aad5fc'}}>{item.rasa}</Text>
-                </View>
-                <View>
-                  <Icon name="laptop" size={50} color="rgba(255,255,255,0.5)" />
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
         <TouchableOpacity
           style={{
             marginBottom: 40,
@@ -164,7 +173,7 @@ class Dar extends Component {
             borderRadius: 9,
             elevation: 2,
           }}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => this.props.navigation.navigate('LaporanDar')}>
           <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'bold'}}>
             Simpan
           </Text>
@@ -219,5 +228,21 @@ class Dar extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  textAreaContainer: {
+    borderColor: '#c5c5c5',
+    backgroundColor: '#000000',
+    borderWidth: 1,
+    padding: 5,
+  },
+  textArea: {
+    height: 150,
+    justifyContent: 'flex-start',
+    color: '#000000',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 export default Dar;

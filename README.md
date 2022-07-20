@@ -1,4 +1,4 @@
-# Sidar Mobile React - project/chart
+# Sidar Mobile React - project/axios
 
 **Requirement**
 - react native 0.69.1

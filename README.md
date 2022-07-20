@@ -1,4 +1,4 @@
-# Sidar Mobile React - beta
+# Sidar Mobile React - project/chart
 
 **Requirement**
 - react native 0.69.1

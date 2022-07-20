@@ -315,9 +315,9 @@ class Home extends Component {
               height={220}
               yAxisLabel={''}
               chartConfig={{
-                backgroundColor: '#303030',
-                backgroundGradientFrom: '#303030',
-                backgroundGradientTo: '#303030',
+                backgroundColor: '#c5c5c5',
+                backgroundGradientFrom: '#c5c5c5',
+                backgroundGradientTo: '#c5c5c5',
                 decimalPlaces: 0, // optional, defaults to 2dp
                 color: (opacity = 1) => `white`,
                 labelColor: (opacity = 1) => `white`,

@@ -1,48 +1,8 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
+import {Text, View, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-var product = [
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'Ucafe', rasa: 'mocachinno'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'Rasa Sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-];
-
-var cobavar = 'suryo';
-
-class LaporanDar extends Component {
+import SignInHeader from '../components/SignInHeader';
+class Dar extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -79,16 +39,71 @@ class LaporanDar extends Component {
             }}>
             INDRACO - SIDAR
           </Text>
-          <Text style={{color: '#ffffff', fontSize: 12}}>
-            Welcome To Laporan DAR {cobavar}
-          </Text>
+          <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text>
         </View>
         {/* </View> */}
 
-        {/* <Text>Pergi Ke Detail</Text> */}
+        <View style={{marginTop: 40, marginBottom: 10}}>
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: 'bold',
+              color: '#373248',
+              textAlign: 'center',
+            }}>
+            Laporan Aktivitas Harian
+          </Text>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+            }}></Text>
+        </View>
+
+        <TextInput
+          keyboardType="email-address"
+          onChangeText={text => setEmail(text)}
+          style={{
+            marginHorizontal: 20,
+            backgroundColor: '#FFFFFF',
+            marginTop: 10,
+            borderRadius: 9,
+            elevation: 2,
+            paddingLeft: 10,
+          }}
+          placeholder="Aktivitas Harian"
+        />
+
+        <TextInput
+          keyboardType="email-address"
+          onChangeText={text => setEmail(text)}
+          style={{
+            marginHorizontal: 20,
+            backgroundColor: '#FFFFFF',
+            marginTop: 10,
+            borderRadius: 9,
+            elevation: 2,
+            paddingLeft: 10,
+          }}
+          placeholder="Result"
+        />
+
+        <TextInput
+          keyboardType="email-address"
+          onChangeText={text => setEmail(text)}
+          style={{
+            marginHorizontal: 20,
+            backgroundColor: '#FFFFFF',
+            marginTop: 10,
+            borderRadius: 9,
+            elevation: 2,
+            paddingLeft: 10,
+          }}
+          placeholder="Plan"
+        />
+
         <FlatList
           style={{marginTop: 10}}
-          data={product}
           renderItem={({item, index}) => (
             //styling view
             <TouchableOpacity
@@ -116,7 +131,7 @@ class LaporanDar extends Component {
                   fontSize: 10,
                   color: '#ffffff',
                 }}>
-                {item.category}
+                asd
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
@@ -127,7 +142,7 @@ class LaporanDar extends Component {
                       fontSize: 22,
                       color: '#ffffff',
                     }}>
-                    {item.brand}
+                    zxczxczxczxc
                   </Text>
                   <Text style={{color: '#aad5fc'}}>{item.rasa}</Text>
                 </View>
@@ -138,21 +153,22 @@ class LaporanDar extends Component {
             </TouchableOpacity>
           )}
         />
-        {/* 
         <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate('Detail', {
-              // membuat data untuk di kirim ke page detail
-              namaUser: 'Indraco',
-              product: [
-                {brand: 'ucafe', rasa: 'mocachinno'},
-                {brand: 'rasa sayang', rasa: 'kopi'},
-              ],
-              ucafe: {},
-            })
-          }>
-          <Text>Pergi Ke Detail</Text>
-        </TouchableOpacity> */}
+          style={{
+            marginBottom: 40,
+            backgroundColor: '#f98441',
+            paddingVertical: 15,
+            marginHorizontal: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 9,
+            elevation: 2,
+          }}
+          onPress={() => navigation.navigate('Home')}>
+          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'bold'}}>
+            Simpan
+          </Text>
+        </TouchableOpacity>
 
         <View
           style={{
@@ -204,4 +220,4 @@ class LaporanDar extends Component {
   }
 }
 
-export default LaporanDar;
+export default Dar;

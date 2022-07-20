@@ -7,8 +7,8 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, backgroundColor: '#f7f6fd'}}>
-      <SignInHeader title="Login" description="Login ke aplikasi Sidar" />
+    <View style={{flex: 1, backgroundColor: '#573100'}}>
+      <SignInHeader title="SIDAR" description="Login ke aplikasi Sidar" />
 
       <TextInput
         value={email}
@@ -120,9 +120,10 @@ const SignIn = () => {
       <TouchableOpacity
         style={{marginTop: 20, marginRight: 20}}
         onPress={() => navigation.navigate('Register')}>
-        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+        <Text
+          style={{color: '#c4c4c4', textAlign: 'center', fontWeight: 'bold'}}>
           Bukan Member?{' '}
-          <Text style={{color: '#03a9f4'}}>Registrasi Disini</Text>
+          <Text style={{color: '#c4c4c4'}}>Registrasi Disini</Text>
         </Text>
       </TouchableOpacity>
     </View>

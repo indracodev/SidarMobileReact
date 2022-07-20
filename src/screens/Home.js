@@ -26,7 +26,7 @@ class Home extends Component {
           <Text
             style={{
               color: '#ffffff',
-              fontsize: 25,
+              fontSize: 25,
               fontWeight: 'bold',
               marginTop: 10,
             }}>

@@ -16,11 +16,56 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import axios from 'axios';
+const baseUrl = 'http://apilumen.psikologiuwp.com';
+
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
+  componentDidMount() {
+    this.unsubsribe = this.props.navigation.addListener('focus', () => {
+      console.log('hello world');
+      let username = 'suryo';
+      let password = '123456';
+      //ambild data di server bisa dilakukan disini
+      axios({
+        method: 'get',
+        url: `${baseUrl}/api/userlogin/?username=${username}&pwd=${password}`,
+      })
+        .then(response => {
+          console.log(response.data.data);
+          console.log(response.data.data[0]);
+          console.log(response.data.message);
+          if (response.data.message == 'success') {
+            console.log(response.data.data[0].username);
+            // localStorage.username = username;
+            // localStorage.id = res.data.id;
+            // localStorage.no_pendaftaran = res.data.no_pendaftaran;
+
+            // this.$router.push({
+            //   name: 'dashboard',
+            // });
+          }
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubsribe();
+  }
+
+  // axios({
+  //   method: 'get',
+  //   url: `${baseUrl}/api/users/1`,
+  // }).then(response => {
+  //   console.log(response.data);
+  // });
 
   //   componentDidMount() {
   //     this.unsubsribe = this.props.navigation.addListener('focus', () => {

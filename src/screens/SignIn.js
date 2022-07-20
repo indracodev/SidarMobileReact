@@ -2,10 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import SignInHeader from '../components/SignInHeader';
 import {useNavigation} from '@react-navigation/native';
+
+const baseUrl = 'https://reqres.in';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+
   return (
     <View style={{flex: 1, backgroundColor: '#573100'}}>
       <SignInHeader title="SIDAR" description="Login ke aplikasi Sidar" />
@@ -66,56 +69,12 @@ const SignIn = () => {
         Atau login dengan
       </Text> */}
 
-      <View style={{flexDirection: 'row', marginHorizontal: 20, marginTop: 40}}>
-        {/* <TouchableOpacity
-          style={{
-            backgroundColor: '#FFFFFF',
-            flex: 1,
-            paddingVertical: 10,
-            borderRadius: 9,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: 10,
-            elevation: 2,
-          }}>
-          <Image
-            source={require('../images/google.png')}
-            style={{width: 35, height: 35}}
-          />
-        </TouchableOpacity> */}
-        {/* <TouchableOpacity
-          style={{
-            backgroundColor: '#FFFFFF',
-            flex: 1,
-            paddingVertical: 10,
-            borderRadius: 9,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: 10,
-            elevation: 2,
-          }}>
-          <Image
-            source={require('../images/facebook.png')}
-            style={{width: 35, height: 35}}
-          />
-        </TouchableOpacity> */}
-        {/* <TouchableOpacity
-          style={{
-            backgroundColor: '#FFFFFF',
-            flex: 1,
-            paddingVertical: 10,
-            borderRadius: 9,
-            justifyContent: 'center',
-            alignItems: 'center',
-            elevation: 2,
-            // marginRight: 10,
-          }}>
-          <Image
-            source={require('../images/apple.png')}
-            style={{width: 25, height: 35}}
-          />
-        </TouchableOpacity> */}
-      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginHorizontal: 20,
+          marginTop: 40,
+        }}></View>
 
       <TouchableOpacity
         style={{marginTop: 20, marginRight: 20}}

@@ -11,7 +11,7 @@ class SplashScreen extends Component {
     // console.log('component did mount gaes');
     setTimeout(() => {
       //   this.props.navigation.navigate('Home');
-      this.props.navigation.dispatch(StackActions.replace('SignIn'));
+      this.props.navigation.dispatch(StackActions.replace('Login'));
     }, 2500);
   };
 

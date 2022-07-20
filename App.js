@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import SplashScreen from './src/screens/SplashScreen';
 import LoginLanding from './src/screens/LoginLanding';
+import Login from './src/screens/Login';
 import SignIn from './src/screens/SignIn';
 import Register from './src/screens/Register';
 import LupaPassword from './src/screens/LupaPassword';
@@ -22,6 +23,7 @@ function App() {
       >
         {/* membuat routing*/}
         <Stack.Screen name="LoginLanding" component={LoginLanding} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="LupaPassword" component={LupaPassword} />

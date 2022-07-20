@@ -44,6 +44,7 @@ class Login extends Component {
       })
         .then(response => {
           console.log(response.data.data);
+          console.log(count.response.data.data[0]);
           console.log(response.data.data[0]);
           console.log(response.data.message);
           if (response.data.message == 'success') {
@@ -93,10 +94,13 @@ class Login extends Component {
           // this.$router.push({
           //   name: 'dashboard',
           // });
+        } else {
+          alert('periksa kembali username dan password anda');
         }
       })
       .catch(function (err) {
         console.log(err);
+        alert('periksa kembali username dan password anda');
       });
   };
 

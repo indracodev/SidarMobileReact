@@ -11,7 +11,7 @@ class SplashScreen extends Component {
     // console.log('component did mount gaes');
     setTimeout(() => {
       //   this.props.navigation.navigate('Home');
-      this.props.navigation.dispatch(StackActions.replace('Login'));
+      this.props.navigation.dispatch(StackActions.replace('SignIn'));
     }, 2500);
   };
 
@@ -22,7 +22,7 @@ class SplashScreen extends Component {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#f98441',
+          backgroundColor: '#373737',
         }}>
         <Image
           style={{width: 237, height: 65, borderRadius: 25}}

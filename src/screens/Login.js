@@ -26,8 +26,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'test',
-      password: '123',
+      username: 'suryo',
+      password: '123456',
     };
   }
 
@@ -49,13 +49,6 @@ class Login extends Component {
           console.log(response.data.message);
           if (response.data.message == 'success') {
             console.log(response.data.data[0].username);
-            // localStorage.username = username;
-            // localStorage.id = res.data.id;
-            // localStorage.no_pendaftaran = res.data.no_pendaftaran;
-
-            // this.$router.push({
-            //   name: 'dashboard',
-            // });
           }
         })
         .catch(function (err) {

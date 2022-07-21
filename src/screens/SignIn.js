@@ -10,7 +10,7 @@ const SignIn = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={{flex: 1, backgroundColor: '#573100'}}>
+    <View style={{flex: 1, backgroundColor: '#2b2b2b'}}>
       <SignInHeader title="SIDAR" description="Login ke aplikasi Sidar" />
 
       <TextInput
@@ -44,7 +44,7 @@ const SignIn = () => {
       <TouchableOpacity
         style={{marginTop: 20, marginRight: 20}}
         onPress={() => navigation.navigate('LupaPassword')}>
-        <Text style={{textAlign: 'right', fontWeight: 'bold'}}>
+        <Text style={{textAlign: 'right', fontWeight: 'bold', color: 'white'}}>
           Lupa Password?
         </Text>
       </TouchableOpacity>

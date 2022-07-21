@@ -30,7 +30,7 @@ class Dar extends Component {
 
   render() {
     return (
-      <View style={{backColor: '#e8e8e8', flex: 1}}>
+      <View style={{backgroundColor: '#373737', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
         <View
           style={{
@@ -52,12 +52,12 @@ class Dar extends Component {
         </View>
         {/* </View> */}
 
-        <View style={{marginTop: 40, marginBottom: 10}}>
+        <View style={{marginTop: 10, marginBottom: 5}}>
           <Text
             style={{
-              fontSize: 28,
+              fontSize: 22,
               fontWeight: 'bold',
-              color: '#373248',
+              color: '#ffffff',
               textAlign: 'center',
             }}>
             Laporan Aktivitas Harian
@@ -71,33 +71,59 @@ class Dar extends Component {
 
         {/* <TextArea placeholder="Description" /> */}
 
-        <ScrollView style={{flexDirection: 'column'}}>
-          <TextInput
-            style={styles.textArea}
-            underlineColorAndroid="transparent"
-            placeholder="Aktifitas Harian"
-            placeholderTextColor="grey"
-            numberOfLines={10}
-            multiline={true}
-          />
+        <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+          <View
+            style={{
+              backgroundColor: '#2b2b2b',
+              padding: 25,
+              marginLeft: 5,
+              marginRight: 5,
+              marginBottom: 20,
+            }}>
+            <TextInput
+              style={styles.textArea}
+              underlineColorAndroid="transparent"
+              placeholder="Aktifitas Harian"
+              placeholderTextColor="white"
+              numberOfLines={10}
+              multiline={true}
+            />
+          </View>
 
-          <TextInput
-            style={styles.textArea}
-            underlineColorAndroid="transparent"
-            placeholder="Result"
-            placeholderTextColor="grey"
-            numberOfLines={10}
-            multiline={true}
-          />
-
-          <TextInput
-            style={styles.textArea}
-            underlineColorAndroid="transparent"
-            placeholder="Plan"
-            placeholderTextColor="grey"
-            numberOfLines={10}
-            multiline={true}
-          />
+          <View
+            style={{
+              backgroundColor: '#2b2b2b',
+              padding: 25,
+              marginLeft: 5,
+              marginRight: 5,
+              marginBottom: 20,
+            }}>
+            <TextInput
+              style={styles.textArea}
+              underlineColorAndroid="transparent"
+              placeholder="Result"
+              placeholderTextColor="white"
+              numberOfLines={10}
+              multiline={true}
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: '#2b2b2b',
+              padding: 25,
+              marginLeft: 5,
+              marginRight: 5,
+              marginBottom: 20,
+            }}>
+            <TextInput
+              style={styles.textArea}
+              underlineColorAndroid="transparent"
+              placeholder="Plan"
+              placeholderTextColor="white"
+              numberOfLines={10}
+              multiline={true}
+            />
+          </View>
         </ScrollView>
 
         {/* <View style={styles.textAreaContainer}>
@@ -175,14 +201,14 @@ class Dar extends Component {
             elevation: 2,
           }}
           onPress={() => this.props.navigation.navigate('LaporanDar')}>
-          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'bold'}}>
+          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
             Simpan
           </Text>
         </TouchableOpacity>
 
         <View
           style={{
-            backgroundColor: '#ffffff',
+            backgroundColor: '#2b2b2b',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -241,7 +267,7 @@ const styles = StyleSheet.create({
     height: 150,
     justifyContent: 'flex-start',
     color: '#000000',
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
   },
 });

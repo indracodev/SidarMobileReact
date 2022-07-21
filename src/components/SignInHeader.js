@@ -13,6 +13,7 @@ const SignInHeader = props => {
 
       <Text
         style={{
+          marginTop: 40,
           fontSize: 28,
           fontWeight: 'bold',
           color: '#f98441',

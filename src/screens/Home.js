@@ -80,7 +80,7 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={{backColor: '#e8e8e8', flex: 1}}>
+      <View style={{backgroundColor: '#373737', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
         <View
           style={{
@@ -100,9 +100,58 @@ class Home extends Component {
           </Text>
           <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text>
         </View>
-        {/* </View> */}
 
-        {/* <TextArea placeholder="Description" /> */}
+        <View
+          style={{
+            marginTop: 5,
+            padding: 10,
+            backgroundColor: '#2b2b2b',
+            display: 'flex',
+            flexDirection: 'row',
+            paddingVertical: 10,
+            borderTopRightRadius: 12,
+            borderTopLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            borderBottomLeftRadius: 12,
+          }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'green',
+              width: '50%',
+              borderRadius: 5,
+              padding: 1,
+            }}
+            onPress={() => this.props.navigation.navigate('Maps')}>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              Masuk
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'red',
+              width: '50%',
+              borderRadius: 5,
+              padding: 1,
+            }}
+            onPress={() => this.props.navigation.navigate('Maps')}>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              Keluar
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         <ScrollView>
           <View style={{marginTop: 10, marginBottom: 5}}>
@@ -168,7 +217,7 @@ class Home extends Component {
                   borderRadius: 16,
                 },
               }}
-              backgroundColor="#c5c5c5"
+              backgroundColor="#2b2b2b"
               accessor="population"
               paddingLeft="15"
               absolute
@@ -213,12 +262,12 @@ class Home extends Component {
               height={220}
               yAxisLabel={''}
               chartConfig={{
-                backgroundColor: '#c5c5c5',
-                backgroundGradientFrom: '#c5c5c5',
-                backgroundGradientTo: '#c5c5c5',
+                backgroundColor: '#2b2b2b',
+                backgroundGradientFrom: '#2b2b2b',
+                backgroundGradientTo: '#2b2b2b',
                 decimalPlaces: 0, // optional, defaults to 2dp
-                color: (opacity = 1) => `black`,
-                labelColor: (opacity = 1) => `black`,
+                color: (opacity = 1) => `white`,
+                labelColor: (opacity = 1) => `white`,
                 barPercentage: 1,
                 style: {
                   borderRadius: 16,
@@ -360,9 +409,9 @@ class Home extends Component {
               height={220}
               yAxisLabel={''}
               chartConfig={{
-                backgroundColor: '#c5c5c5',
-                backgroundGradientFrom: '#c5c5c5',
-                backgroundGradientTo: '#c5c5c5',
+                backgroundColor: '#2b2b2b',
+                backgroundGradientFrom: '#2b2b2b',
+                backgroundGradientTo: '#2b2b2b',
                 decimalPlaces: 0, // optional, defaults to 2dp
                 color: (opacity = 1) => `white`,
                 labelColor: (opacity = 1) => `white`,
@@ -398,7 +447,7 @@ class Home extends Component {
 
         <View
           style={{
-            backgroundColor: '#ffffff',
+            backgroundColor: '#2b2b2b',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,

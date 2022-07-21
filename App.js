@@ -6,6 +6,7 @@ const Stack = createNativeStackNavigator();
 import SplashScreen from './src/screens/SplashScreen';
 import LoginLanding from './src/screens/LoginLanding';
 import Login from './src/screens/Login';
+import Maps from './src/screens/Maps';
 import SignIn from './src/screens/SignIn';
 import Register from './src/screens/Register';
 import LupaPassword from './src/screens/LupaPassword';
@@ -28,6 +29,7 @@ function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="LupaPassword" component={LupaPassword} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Dar" component={Dar} />
         <Stack.Screen name="LaporanDar" component={LaporanDar} />
         <Stack.Screen name="Detail" component={Detail} />

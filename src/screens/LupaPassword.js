@@ -10,7 +10,7 @@ const LupaPassword = () => {
 
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, backgroundColor: '#f7f6fd'}}>
+    <View style={{flex: 1, backgroundColor: '#2b2b2b'}}>
       <SignInHeader
         title="Lupa Password"
         description={
@@ -36,7 +36,7 @@ const LupaPassword = () => {
       <TouchableOpacity
         style={{
           marginTop: 40,
-          backgroundColor: '#03a9f4',
+          backgroundColor: '#f98441',
           paddingVertical: 15,
           marginHorizontal: 20,
           justifyContent: 'center',
@@ -52,8 +52,9 @@ const LupaPassword = () => {
       <TouchableOpacity
         style={{marginTop: 20, marginRight: 20}}
         onPress={() => navigation.navigate('SignIn')}>
-        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-          Sudah Member? <Text style={{color: '#03a9f4'}}>Login Disini</Text>
+        <Text
+          style={{textAlign: 'center', fontWeight: 'bold', color: '#ffffff'}}>
+          Sudah Member ? <Text style={{color: '#ffffff'}}>Login Disini</Text>
         </Text>
       </TouchableOpacity>
     </View>

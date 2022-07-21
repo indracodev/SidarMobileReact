@@ -3,41 +3,41 @@ import {Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 var product = [
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'Ucafe', rasa: 'mocachinno'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'Rasa Sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
-  {backColor: '#3b3b3b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'Ucafe', rasa: 'mocachinno'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'Rasa Sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
+  {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
 ];
 
 var cobavar = 'suryo';
@@ -61,7 +61,7 @@ class LaporanDar extends Component {
 
   render() {
     return (
-      <View style={{backColor: '#e8e8e8', flex: 1}}>
+      <View style={{backgroundColor: '#373737', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
         <View
           style={{
@@ -156,7 +156,7 @@ class LaporanDar extends Component {
 
         <View
           style={{
-            backgroundColor: '#ffffff',
+            backgroundColor: '#2b2b2b',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,

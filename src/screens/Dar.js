@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   textArea: {
     height: 150,
     justifyContent: 'flex-start',
-    color: '#000000',
+    color: '#ffffff',
     fontSize: 15,
     fontWeight: 'bold',
   },

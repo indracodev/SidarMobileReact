@@ -17,38 +17,41 @@ import {
   StackedBarChart,
 } from 'react-native-chart-kit';
 import axios from 'axios';
-const baseUrl = 'http://apilumen.psikologiuwp.com';
+const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      statusdarthisday: [0, 0, 0, 0, 1],
+      d: 1,
+      labelku: 'ayam',
+    };
   }
 
   componentDidMount() {
     this.unsubsribe = this.props.navigation.addListener('focus', () => {
       console.log('hello world');
-      let username = 'suryo';
-      let password = '123456';
+      let iduser = 770;
       //ambild data di server bisa dilakukan disini
       axios({
         method: 'get',
-        url: `${baseUrl}/api/userlogin/?username=${username}&pwd=${password}`,
+        url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
+        headers: {
+          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          'X-Token':
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTg4MDYzMDYsImV4cCI6MTY1ODg5MjcwNn0.SWl1DY3iKWNdPn5172GhNHLZmInxwJj42sk_JgW2s8o',
+        },
       })
         .then(response => {
-          console.log(response.data.data);
-          console.log(response.data.data[0]);
+          console.log(response.data.data.sidar_masterkaryawan);
           console.log(response.data.message);
-          if (response.data.message == 'success') {
-            console.log(response.data.data[0].username);
-            // localStorage.username = username;
-            // localStorage.id = res.data.id;
-            // localStorage.no_pendaftaran = res.data.no_pendaftaran;
-
-            // this.$router.push({
-            //   name: 'dashboard',
-            // });
-          }
+          console.log('check');
+          this.setState({
+            statusdarthisday:
+              response.data.data.sidar_masterkaryawan[0].statusdarthisday,
+          });
+          console.log(this.state.statusdarthisday[4]);
         })
         .catch(function (err) {
           console.log(err);
@@ -173,36 +176,36 @@ class Home extends Component {
             <PieChart
               data={[
                 {
-                  name: 'Ontime',
-                  population: 28,
+                  name: this.state.labelku,
+                  population: this.state.statusdarthisday[0],
                   color: 'green',
                   legendFontColor: 'white',
                   legendFontSize: 11,
                 },
                 {
                   name: 'Late',
-                  population: 1,
+                  population: this.state.statusdarthisday[1],
                   color: 'yellow',
                   legendFontColor: 'white',
                   legendFontSize: 11,
                 },
                 {
                   name: 'Over',
-                  population: 0,
+                  population: this.state.statusdarthisday[2],
                   color: 'red',
                   legendFontColor: 'white',
                   legendFontSize: 11,
                 },
                 {
                   name: 'No Data',
-                  population: 1,
+                  population: this.state.statusdarthisday[4],
                   color: 'black',
                   legendFontColor: 'white',
                   legendFontSize: 11,
                 },
                 {
                   name: 'Absence',
-                  population: 0,
+                  population: this.state.statusdarthisday[3],
                   color: 'blue',
                   legendFontColor: 'white',
                   legendFontSize: 11,
@@ -236,7 +239,7 @@ class Home extends Component {
                 textAlign: 'left',
                 padding: 5,
               }}>
-              Laporan Aktivitas Harian
+              Laporan Aktivitas Harian {this.state.labelku}
             </Text>
           </View>
           <View

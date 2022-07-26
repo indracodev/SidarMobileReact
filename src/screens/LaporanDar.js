@@ -72,7 +72,7 @@ class LaporanDar extends Component {
         headers: {
           'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
           'X-Token':
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTg0NTcxMTMsImV4cCI6MTY1ODU0MzUxM30.4EY-P_2X9NHe7ZvCWc6pttCYRsegVDHivkHKXK9Kyhs',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTg4MDYzMDYsImV4cCI6MTY1ODg5MjcwNn0.SWl1DY3iKWNdPn5172GhNHLZmInxwJj42sk_JgW2s8o',
         },
       })
         .then(response => {
@@ -145,82 +145,6 @@ class LaporanDar extends Component {
               }}>
               {/* <View style={{flex: 1}}></View> */}
 
-              {item.status == 'ontime' ? (
-                <Text
-                  style={{
-                    backgroundColor: 'green',
-                    borderRadius: 50,
-                    paddingHorizontal: 5,
-                    width: 160,
-                    paddingVertical: 5,
-                    marginBottom: 20,
-                    fontWeight: 'bold',
-                    fontSize: 10,
-                    color: '#ffffff',
-                  }}>
-                  {item.id} / Suryo Atmojo
-                </Text>
-              ) : item.status == 'late' ? (
-                <Text
-                  style={{
-                    backgroundColor: 'yellow',
-                    borderRadius: 50,
-                    paddingHorizontal: 5,
-                    width: 160,
-                    paddingVertical: 5,
-                    marginBottom: 20,
-                    fontWeight: 'bold',
-                    fontSize: 10,
-                    color: '#ffffff',
-                  }}>
-                  {item.id} / Suryo Atmojo
-                </Text>
-              ) : item.status == 'over' ? (
-                <Text
-                  style={{
-                    backgroundColor: 'red',
-                    borderRadius: 50,
-                    paddingHorizontal: 5,
-                    width: 160,
-                    paddingVertical: 5,
-                    marginBottom: 20,
-                    fontWeight: 'bold',
-                    fontSize: 10,
-                    color: '#ffffff',
-                  }}>
-                  {item.id} / Suryo Atmojo
-                </Text>
-              ) : item.status == 'absence' ? (
-                <Text
-                  style={{
-                    backgroundColor: 'blue',
-                    borderRadius: 50,
-                    paddingHorizontal: 5,
-                    width: 160,
-                    paddingVertical: 5,
-                    marginBottom: 20,
-                    fontWeight: 'bold',
-                    fontSize: 10,
-                    color: '#ffffff',
-                  }}>
-                  {item.id} / Suryo Atmojo
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    backgroundColor: 'black',
-                    borderRadius: 50,
-                    paddingHorizontal: 5,
-                    width: 160,
-                    paddingVertical: 5,
-                    marginBottom: 20,
-                    fontWeight: 'bold',
-                    fontSize: 10,
-                    color: '#ffffff',
-                  }}>
-                  {item.id} / Suryo Atmojo
-                </Text>
-              )}
               <Text
                 style={{
                   backgroundColor: this.state.color,
@@ -233,7 +157,7 @@ class LaporanDar extends Component {
                   fontSize: 10,
                   color: '#ffffff',
                 }}>
-                {item.id} / Suryo Atmojo
+                {item.namakaryawan}
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
@@ -246,7 +170,22 @@ class LaporanDar extends Component {
                     }}>
                     {item.tanggal} / {item.jam}
                   </Text>
-                  <Text style={{color: '#aad5fc'}}>{item.status}</Text>
+                  <Text style={{color: '#aad5fc'}}>STATUS</Text>
+                  <Text
+                    style={{
+                      backgroundColor: item.colorstatus,
+                      borderRadius: 50,
+                      paddingHorizontal: 5,
+                      width: 75,
+                      paddingVertical: 5,
+                      marginTop: 5,
+                      marginBottom: 5,
+                      fontWeight: 'bold',
+                      fontSize: 10,
+                      color: 'grey',
+                    }}>
+                    {item.status}
+                  </Text>
                 </View>
                 <View>
                   <Icon name="check" size={50} color="rgba(255,255,255,0.5)" />

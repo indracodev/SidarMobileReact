@@ -32,8 +32,8 @@ import {
   StackedBarChart,
 } from 'react-native-chart-kit';
 import axios from 'axios';
-// const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
-const baseUrl = 'http://localhost/sidar-new';
+const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+// const baseUrl = 'http://localhost/sidar-new';
 
 class Home extends Component {
   constructor(props) {
@@ -85,7 +85,7 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubsribe();
+    // this.unsubsribe();
   }
 
   // axios({

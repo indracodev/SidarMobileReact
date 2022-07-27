@@ -29,8 +29,8 @@ import SignInHeader from '../components/SignInHeader';
 import TextArea from '../components/TextArea';
 import axios from 'axios';
 
-// const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
-const baseUrl = 'http://localhost/sidar-new';
+const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+// const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {
     super(props);
@@ -73,15 +73,15 @@ class Dar extends Component {
       token: this.props.route.params.token,
     });
 
-    console.log(this.state.token);
-    let iduser = 770;
+    // console.log(this.state.token);
+    // let iduser = 770;
     //ambild data di server bisa dilakukan disini
 
     // });
   }
 
   componentWillUnmount() {
-    this.unsubsribe();
+    // this.unsubsribe();
   }
 
   submitData = () => {

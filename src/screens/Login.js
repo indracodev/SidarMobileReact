@@ -27,8 +27,8 @@ import {StackActions} from '@react-navigation/native';
 import SignInHeader from '../components/SignInHeader';
 import axios from 'axios';
 
-// const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
-const baseUrl = 'http://localhost/sidar-new';
+const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+// const baseUrl = 'http://localhost/sidar-new';
 
 class Login extends Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class Login extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubsribe();
+    // this.unsubsribe();
   }
 
   submitData = () => {

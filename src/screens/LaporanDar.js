@@ -19,8 +19,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import axios from 'axios';
 
-// const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
-const baseUrl = 'http://localhost/sidar-new';
+const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+// const baseUrl = 'http://localhost/sidar-new';
 
 var product = [
   {backColor: '#2b2b2b', category: 'Kopi', brand: 'Ucafe', rasa: 'mocachinno'},
@@ -77,10 +77,6 @@ class LaporanDar extends Component {
     console.log('token');
 
     this.unsubsribe = this.props.navigation.addListener('focus', () => {
-      // console.log(this.state.username);
-      // console.log(this.state.password);
-      // let username = 'suryo';
-      // let password = '123456';
       console.log('ini did mount laporan dar');
 
       //ambild data di server bisa dilakukan disini
@@ -94,18 +90,7 @@ class LaporanDar extends Component {
         },
       })
         .then(response => {
-          console.log('api get');
-          // console.log(response.status);
-          // console.log(response.data.data.sidar_dar);
           this.setState({dar: response.data.data.sidar_dar});
-          // console.log('ini isi divisi');
-          // console.log(this.state.dar);
-
-          // console.log(response.data.data[0]);
-          // console.log(response.data.message);
-          if (response.data.message == 'success') {
-            console.log(response.data.data[0].username);
-          }
         })
         .catch(function (err) {
           console.log(err);
@@ -114,7 +99,7 @@ class LaporanDar extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubsribe();
+    // this.unsubsribe();
   }
 
   render() {
@@ -238,7 +223,12 @@ class LaporanDar extends Component {
           }}>
           <TouchableOpacity
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('LaporanDar')}>
+            onPress={() =>
+              this.props.navigation.navigate('LaporanDar', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
             <Icon name="chart-bar" size={20} color="#f98441" />
             <Text
               style={{
@@ -262,7 +252,12 @@ class LaporanDar extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('Dar')}>
+            onPress={() =>
+              this.props.navigation.navigate('Dar', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
             <Icon name="book" size={20} color="#f98441" />
             <Text
               style={{

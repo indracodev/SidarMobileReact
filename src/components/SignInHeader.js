@@ -15,7 +15,7 @@ const SignInHeader = props => {
         style={{
           marginTop: 40,
           fontSize: 28,
-          fontWeight: 'bold',
+          // fontWeight: 'light',
           color: '#f98441',
           textAlign: 'center',
         }}>
@@ -25,7 +25,7 @@ const SignInHeader = props => {
         style={{
           color: '#f98441',
           textAlign: 'center',
-          fontSize: 16,
+          fontSize: 12,
         }}>
         {props.description}
       </Text>

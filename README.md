@@ -27,6 +27,7 @@
 - project/maps
 - project/pagelogin
 - project/reactnavigation
+- project/sidebar
 
 **notes**
 - author : Suryo Atmojo <suryoatm@gmail.com>

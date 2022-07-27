@@ -1,10 +1,26 @@
+/**
+ * For the brave souls who get this far: You are the chosen ones,
+ * the valiant knights of programming who toil away, without rest,
+ * fixing our most awful code. To you, true saviors, kings of men,
+ * I say this: never gonna give you up, never gonna let you down,
+ * never gonna run around and desert you. Never gonna make you cry,
+ * never gonna say goodbye. Never gonna tell a lie and hurt you.
+ */
+
+/**
+ * author : Suryo Atmojo <suryoatm@gmail.com>
+ * project : INDRACO-SIDAR
+ * Start-date : 23-07-2022
+ */
+
 import React, {Component} from 'react';
 import {Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import axios from 'axios';
 
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+// const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://localhost/sidar-new';
 
 var product = [
   {backColor: '#2b2b2b', category: 'Kopi', brand: 'Ucafe', rasa: 'mocachinno'},
@@ -58,6 +74,8 @@ class LaporanDar extends Component {
   }
 
   componentDidMount() {
+    console.log('token');
+
     this.unsubsribe = this.props.navigation.addListener('focus', () => {
       // console.log(this.state.username);
       // console.log(this.state.password);
@@ -72,16 +90,16 @@ class LaporanDar extends Component {
         headers: {
           'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
           'X-Token':
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTg4MDYzMDYsImV4cCI6MTY1ODg5MjcwNn0.SWl1DY3iKWNdPn5172GhNHLZmInxwJj42sk_JgW2s8o',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiNCJ9LCJpYXQiOjE2NTg4OTMxMTYsImV4cCI6MTY1ODk3OTUxNn0.EZ37dkHamVdmQEotM3v_gAQDsra1jTsDlHqXbssojoY',
         },
       })
         .then(response => {
           console.log('api get');
-          console.log(response.status);
-          console.log(response.data.data.sidar_dar);
+          // console.log(response.status);
+          // console.log(response.data.data.sidar_dar);
           this.setState({dar: response.data.data.sidar_dar});
-          console.log('ini isi divisi');
-          console.log(this.state.dar);
+          // console.log('ini isi divisi');
+          // console.log(this.state.dar);
 
           // console.log(response.data.data[0]);
           // console.log(response.data.message);

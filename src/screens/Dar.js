@@ -1,3 +1,18 @@
+/**
+ * For the brave souls who get this far: You are the chosen ones,
+ * the valiant knights of programming who toil away, without rest,
+ * fixing our most awful code. To you, true saviors, kings of men,
+ * I say this: never gonna give you up, never gonna let you down,
+ * never gonna run around and desert you. Never gonna make you cry,
+ * never gonna say goodbye. Never gonna tell a lie and hurt you.
+ */
+
+/**
+ * author : Suryo Atmojo <suryoatm@gmail.com>
+ * project : INDRACO-SIDAR
+ * Start-date : 23-07-2022
+ */
+
 import React, {Component} from 'react';
 import {
   Text,
@@ -8,25 +23,136 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import {StackActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignInHeader from '../components/SignInHeader';
 import TextArea from '../components/TextArea';
+import axios from 'axios';
+
+// const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      id: '',
+      id_user: '770',
+      namakaryawan: '',
+      nodar: '',
+      ke: '',
+      namacc1: '',
+      namacc2: '',
+      namacc3: '',
+      namacc4: '',
+      namacc5: '',
+      ke2: '',
+      ke3: '',
+      ke4: '',
+      ke5: '',
+      sudahbaca: '',
+      tanggaldar: '2022-07-27',
+      tanggal: '2022-07-27',
+      jam: '11:51',
+      status: '',
+      colorstatus: '',
+      activity: 'tanggal 27 ini dari mobile',
+      result: 'tanggal 27 ini dari mobile',
+      plan: 'tanggal 27 ini dari mobile',
+      tag: '',
+      file: '',
+    };
   }
 
-  //   componentDidMount() {
-  //     this.unsubsribe = this.props.navigation.addListener('focus', () => {
-  //       console.log('hello world');
-  //       //ambild data di server bisa dilakukan disini
-  //     });
-  //   }
+  componentDidMount() {
+    // this.unsubsribe = this.props.navigation.addListener('focus', () => {
+    console.log('hello world');
+    console.log(this.props.route.params.token);
+    console.log(this.props.route.params.data);
+    this.setState({
+      datalogin: this.props.route.params.data,
+      token: this.props.route.params.token,
+    });
 
-  //   componentWillUnmount() {
-  //     this.unsubscribe();
-  //   }
+    console.log(this.state.token);
+    let iduser = 770;
+    //ambild data di server bisa dilakukan disini
+
+    // });
+  }
+
+  componentWillUnmount() {
+    this.unsubsribe();
+  }
+
+  submitData = () => {
+    console.log('tombol simpan mengirimkan data');
+    console.log('token');
+    console.log(this.props.route.params.token);
+
+    // let username = this.state.username;
+    // let password = this.state.password;
+    // bodyFormData.append('username', 'suryoatm');
+    // bodyFormData.append('password', '085649224822');
+
+    var bodyFormData = new FormData();
+    bodyFormData.append('id', this.state.id);
+    bodyFormData.append('id_user', this.state.id_user);
+    bodyFormData.append('namakaryawan', this.state.namakaryawan);
+    bodyFormData.append('nodar', this.state.nodar);
+    bodyFormData.append('ke', this.state.ke);
+    bodyFormData.append('namacc1', this.state.namacc1);
+    bodyFormData.append('namacc2', this.state.namacc2);
+    bodyFormData.append('namacc3', this.state.namacc3);
+    bodyFormData.append('namacc4', this.state.namacc4);
+    bodyFormData.append('namacc5', this.state.namacc5);
+    bodyFormData.append('ke2', this.state.ke2);
+    bodyFormData.append('ke3', this.state.ke3);
+    bodyFormData.append('ke4', this.state.ke4);
+    bodyFormData.append('ke5', this.state.ke5);
+    bodyFormData.append('sudahbaca', this.state.sudahbaca);
+    bodyFormData.append('tanggaldar', this.state.tanggaldar);
+    bodyFormData.append('tanggal', this.state.tanggal);
+    bodyFormData.append('jam', this.state.jam);
+    bodyFormData.append('status', this.state.status);
+    bodyFormData.append('colorstatus', this.state.colorstatus);
+    bodyFormData.append('activity', this.state.activity);
+    bodyFormData.append('result', this.state.result);
+    bodyFormData.append('plan', this.state.plan);
+    bodyFormData.append('tag', this.state.tag);
+    bodyFormData.append('file', this.state.file);
+    axios({
+      method: 'post',
+      url: `${baseUrl}/api/sidar_dar/add`,
+      data: bodyFormData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+        'X-Token':
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiNzU5In0sImlhdCI6MTY1ODg5ODM1OCwiZXhwIjoxNjU4OTg0NzU4fQ.gu1i6VQEq4EGwPPCRj_pIAidM2Ok7CoY6F69phGbWBU',
+      },
+    })
+      .then(response => {
+        // console.log(response.data.status);
+        // console.log(response.data.data.username);
+        // console.log(response.data.token);
+        // console.log(this.state.username);
+        // console.log(this.state.password);
+        if (response.data.status == true) {
+          this.props.navigation.dispatch(
+            StackActions.replace('LaporanDar', {
+              // data: response.data.data,
+              // token: response.data.token,
+            }),
+          );
+        } else {
+          alert('periksa kembali inputan  anda');
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        alert('periksa kembali inputan anda');
+      });
+  };
 
   render() {
     return (
@@ -87,6 +213,7 @@ class Dar extends Component {
               placeholderTextColor="white"
               numberOfLines={10}
               multiline={true}
+              onChangeText={text => this.setState({activity: text})}
             />
           </View>
 
@@ -105,6 +232,7 @@ class Dar extends Component {
               placeholderTextColor="white"
               numberOfLines={10}
               multiline={true}
+              onChangeText={text => this.setState({result: text})}
             />
           </View>
           <View
@@ -122,6 +250,7 @@ class Dar extends Component {
               placeholderTextColor="white"
               numberOfLines={10}
               multiline={true}
+              onChangeText={text => this.setState({plan: text})}
             />
           </View>
         </ScrollView>
@@ -200,7 +329,7 @@ class Dar extends Component {
             borderRadius: 9,
             elevation: 2,
           }}
-          onPress={() => this.props.navigation.navigate('LaporanDar')}>
+          onPress={this.submitData}>
           <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
             Simpan
           </Text>

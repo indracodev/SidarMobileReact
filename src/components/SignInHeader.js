@@ -6,8 +6,12 @@ const SignInHeader = props => {
     <View style={{marginTop: 40, marginBottom: 10}}>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <Image
-          style={{width: 237, height: 65, borderRadius: 25}}
-          source={require('../images/indraco.png')}
+          style={{
+            width: 300,
+            height: 52,
+            // resizeMode: 'cover',
+          }}
+          source={require('../images/logo-light.png')}
         />
       </View>
 

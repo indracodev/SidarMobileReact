@@ -85,15 +85,14 @@ class LaporanDar extends Component {
 
     this.unsubsribe = this.props.navigation.addListener('focus', () => {
       console.log('ini did mount laporan dar');
-
+      console.log(this.props.route.params.token);
       //ambild data di server bisa dilakukan disini
       axios({
         method: 'get',
         url: `${baseUrl}/api/sidar_dar/all`,
         headers: {
           'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-          'X-Token':
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiNCJ9LCJpYXQiOjE2NTg4OTMxMTYsImV4cCI6MTY1ODk3OTUxNn0.EZ37dkHamVdmQEotM3v_gAQDsra1jTsDlHqXbssojoY',
+          'X-Token': this.props.route.params.token,
         },
       })
         .then(response => {

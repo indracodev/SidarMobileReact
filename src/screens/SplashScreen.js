@@ -41,8 +41,13 @@ class SplashScreen extends Component {
           backgroundColor: '#373737',
         }}>
         <Image
-          style={{width: 237, height: 65, borderRadius: 25}}
-          source={require('../images/indraco.png')}
+          style={{
+            width: 300,
+            height: 52,
+            // borderRadius: 25,
+            // resizeMode: 'contain',
+          }}
+          source={require('../images/logo-light.png')}
         />
         {/* <Text style={{fontSize: 68, color: '#ffffff', fontWeight: 'bold'}}>
           SIDAR

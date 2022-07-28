@@ -1,4 +1,4 @@
-# Sidar Mobile React - project/maps
+# Sidar Mobile React - project/filepicker
 
 **Requirement**
 - backend <https://github.com/indracodev/sidar-new>
@@ -28,6 +28,7 @@
 - project/pagelogin
 - project/reactnavigation
 - project/sidebar
+- project/filepicker
 
 **notes**
 - author : Suryo Atmojo <suryoatm@gmail.com>

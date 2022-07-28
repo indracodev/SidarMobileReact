@@ -13,7 +13,12 @@ import LupaPassword from './src/screens/LupaPassword';
 import Home from './src/screens/Home';
 import Dar from './src/screens/Dar';
 import LaporanDar from './src/screens/LaporanDar';
+import DetailLaporanDar from './src/screens/DetailLaporanDar';
 import Detail from './src/screens/Detail';
+
+import Tentang from './src/screens/Tentang';
+import Bantuan from './src/screens/Bantuan';
+import KritikSaran from './src/screens/KritikSaran';
 
 function App() {
   return (
@@ -32,8 +37,12 @@ function App() {
         <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Dar" component={Dar} />
         <Stack.Screen name="LaporanDar" component={LaporanDar} />
+        <Stack.Screen name="DetailLaporanDar" component={DetailLaporanDar} />
         <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="Tentang" component={Tentang} />
+        <Stack.Screen name="Bantuan" component={Bantuan} />
+        <Stack.Screen name="KritikSaran" component={KritikSaran} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -230,7 +230,8 @@ class Home extends Component {
                   borderRadius: 5,
                   padding: 1,
                 }}
-                onPress={() => this.props.navigation.navigate('Maps')}>
+                // onPress={() => this.props.navigation.navigate('Maps')}>
+                onPress={() => this.props.navigation.navigate('AbsenceMasuk')}>
                 <Text
                   style={{
                     color: '#FFFFFF',
@@ -250,7 +251,7 @@ class Home extends Component {
                   padding: 1,
                 }}
                 // onPress={() => this.props.navigation.navigate('Maps')}>
-                onPress={this.toggleOpen}>
+                onPress={() => this.props.navigation.navigate('AbsenceKeluar')}>
                 <Text
                   style={{
                     color: '#FFFFFF',
@@ -338,7 +339,7 @@ class Home extends Component {
                 />
               </View>
               <View style={{marginTop: 10, marginBottom: 5}}>
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 18,
                     fontWeight: 'bold',
@@ -346,14 +347,14 @@ class Home extends Component {
                     textAlign: 'left',
                     padding: 5,
                   }}>
-                  Laporan Aktivitas Harian {this.state.labelku}
-                </Text>
+                  Laporan Aktivitas Harian 
+                </Text> */}
               </View>
               <View
                 style={{
                   alignItems: 'center',
                 }}>
-                <BarChart
+                {/* <BarChart
                   data={{
                     labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'],
                     datasets: [
@@ -387,10 +388,10 @@ class Home extends Component {
                     marginVertical: 8,
                     borderRadius: 16,
                   }}
-                />
+                /> */}
               </View>
               <View style={{marginTop: 10, marginBottom: 5}}>
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 18,
                     fontWeight: 'bold',
@@ -399,13 +400,13 @@ class Home extends Component {
                     padding: 5,
                   }}>
                   Performa Bulanan
-                </Text>
+                </Text> */}
               </View>
               <View
                 style={{
                   alignItems: 'center',
                 }}>
-                <LineChart
+                {/* <LineChart
                   data={{
                     labels: [
                       'Jan',
@@ -534,7 +535,7 @@ class Home extends Component {
                     marginVertical: 8,
                     borderRadius: 16,
                   }}
-                />
+                /> */}
               </View>
             </ScrollView>
 

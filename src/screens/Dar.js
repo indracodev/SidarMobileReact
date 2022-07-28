@@ -162,9 +162,19 @@ class Dar extends Component {
           style={{
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
-            backgroundColor: '#f98441',
+            backgroundColor: '#393939',
             padding: 20,
           }}>
+          <TouchableOpacity onPress={this.toggleOpen}>
+            <Icon name="cog" size={30} color="#ffffff" />
+            {/* <Text
+                    style={{
+                      color: '#000000',
+                      fontsize: 9,
+                    }}>
+                    gear
+                  </Text> */}
+          </TouchableOpacity>
           <Text
             style={{
               color: '#ffffff',
@@ -174,17 +184,27 @@ class Dar extends Component {
             }}>
             INDRACO - SIDAR
           </Text>
-          <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text>
+          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
         </View>
         {/* </View> */}
 
-        <View style={{marginTop: 10, marginBottom: 5}}>
+        <View
+          style={{
+            marginTop: 10,
+            marginBottom: 5,
+            backgroundColor: '#2b2b2b',
+            borderTopRightRadius: 12,
+            borderTopLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            borderBottomLeftRadius: 12,
+          }}>
           <Text
             style={{
               fontSize: 22,
               fontWeight: 'bold',
               color: '#ffffff',
               textAlign: 'center',
+              marginTop: 10,
             }}>
             Laporan Aktivitas Harian
           </Text>
@@ -321,7 +341,7 @@ class Dar extends Component {
         <TouchableOpacity
           style={{
             marginBottom: 40,
-            backgroundColor: '#f98441',
+            backgroundColor: '#272727',
             paddingVertical: 15,
             marginHorizontal: 20,
             justifyContent: 'center',
@@ -346,10 +366,10 @@ class Dar extends Component {
           <TouchableOpacity
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
             onPress={() => this.props.navigation.navigate('LaporanDar')}>
-            <Icon name="chart-bar" size={20} color="#f98441" />
+            <Icon name="chart-bar" size={20} color="#ffffff" />
             <Text
               style={{
-                color: '#f98441',
+                color: '#ffffff',
                 fontsize: 9,
               }}>
               Laporan
@@ -358,10 +378,10 @@ class Dar extends Component {
           <TouchableOpacity
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
             onPress={() => this.props.navigation.navigate('Home')}>
-            <Icon name="home" size={25} color="#f98441" />
+            <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{
-                color: '#f98441',
+                color: '#ffffff',
                 fontsize: 9,
               }}>
               Home
@@ -370,10 +390,10 @@ class Dar extends Component {
           <TouchableOpacity
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
             onPress={() => this.props.navigation.navigate('Dar')}>
-            <Icon name="book" size={20} color="#f98441" />
+            <Icon name="book" size={20} color="#ffffff" />
             <Text
               style={{
-                color: '#f98441',
+                color: '#ffffff',
                 fontsize: 9,
               }}>
               DAR

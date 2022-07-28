@@ -14,7 +14,14 @@
  */
 
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import axios from 'axios';
@@ -110,9 +117,19 @@ class LaporanDar extends Component {
           style={{
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
-            backgroundColor: '#f98441',
+            backgroundColor: '#393939',
             padding: 20,
           }}>
+          <TouchableOpacity onPress={this.toggleOpen}>
+            <Icon name="cog" size={30} color="#ffffff" />
+            {/* <Text
+                    style={{
+                      color: '#000000',
+                      fontsize: 9,
+                    }}>
+                    gear
+                  </Text> */}
+          </TouchableOpacity>
           <Text
             style={{
               color: '#ffffff',
@@ -122,9 +139,7 @@ class LaporanDar extends Component {
             }}>
             INDRACO - SIDAR
           </Text>
-          <Text style={{color: '#ffffff', fontSize: 12}}>
-            Welcome To Laporan DAR {cobavar}
-          </Text>
+          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
         </View>
         {/* </View> */}
 
@@ -145,21 +160,15 @@ class LaporanDar extends Component {
                 borderBottomLeftRadius: 20,
                 borderTopLeftRadius: 5,
                 borderBottomRightRadius: 5,
-              }}>
+              }}
+              onPress={() =>
+                this.props.navigation.navigate('DetailLaporanDar', {
+                  data: item,
+                })
+              }>
               {/* <View style={{flex: 1}}></View> */}
 
-              <Text
-                style={{
-                  backgroundColor: this.state.color,
-                  borderRadius: 50,
-                  paddingHorizontal: 5,
-                  width: 160,
-                  paddingVertical: 5,
-                  marginBottom: 20,
-                  fontWeight: 'bold',
-                  fontSize: 10,
-                  color: '#ffffff',
-                }}>
+              <Text style={[styles.textstatus, {color: 'white'}]}>
                 {item.namakaryawan}
               </Text>
               <View style={{flexDirection: 'row'}}>
@@ -173,25 +182,32 @@ class LaporanDar extends Component {
                     }}>
                     {item.tanggal} / {item.jam}
                   </Text>
-                  <Text style={{color: '#aad5fc'}}>STATUS</Text>
-                  <Text
-                    style={{
-                      backgroundColor: item.colorstatus,
-                      borderRadius: 50,
-                      paddingHorizontal: 5,
-                      width: 75,
-                      paddingVertical: 5,
-                      marginTop: 5,
-                      marginBottom: 5,
-                      fontWeight: 'bold',
-                      fontSize: 10,
-                      color: 'grey',
-                    }}>
-                    {item.status}
-                  </Text>
                 </View>
                 <View>
-                  <Icon name="check" size={50} color="rgba(255,255,255,0.5)" />
+                  {/* <Icon name="check" size={50} color="rgba(255,255,255,0.5)" /> */}
+                  {item.status == '' ? (
+                    <Text
+                      style={[
+                        styles.textstatus,
+                        {
+                          backgroundColor: item.colorstatus,
+                          color: 'white',
+                        },
+                      ]}>
+                      No Data
+                    </Text>
+                  ) : (
+                    <Text
+                      style={[
+                        styles.textstatus,
+                        {
+                          backgroundColor: item.colorstatus,
+                          color: 'white',
+                        },
+                      ]}>
+                      {item.status}
+                    </Text>
+                  )}
                 </View>
               </View>
             </TouchableOpacity>
@@ -229,10 +245,10 @@ class LaporanDar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="chart-bar" size={20} color="#f98441" />
+            <Icon name="chart-bar" size={20} color="#ffffff" />
             <Text
               style={{
-                color: '#f98441',
+                color: '#ffffff',
                 fontsize: 9,
               }}>
               Laporan
@@ -241,10 +257,10 @@ class LaporanDar extends Component {
           <TouchableOpacity
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
             onPress={() => this.props.navigation.navigate('Home')}>
-            <Icon name="home" size={25} color="#f98441" />
+            <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{
-                color: '#f98441',
+                color: '#ffffff',
                 fontsize: 9,
               }}>
               Home
@@ -258,10 +274,10 @@ class LaporanDar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="book" size={20} color="#f98441" />
+            <Icon name="book" size={20} color="#ffffff" />
             <Text
               style={{
-                color: '#f98441',
+                color: '#ffffff',
                 fontsize: 9,
               }}>
               DAR
@@ -272,5 +288,43 @@ class LaporanDar extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  viewheader: {
+    marginTop: 10,
+    marginBottom: 5,
+    backgroundColor: '#2b2b2b',
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 12,
+  },
+  viewbody: {
+    backgroundColor: '#2b2b2b',
+    padding: 25,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 20,
+  },
+  textmin: {
+    color: '#ffffff',
+    fontSize: 15,
+  },
+  textbody: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  textstatus: {
+    borderRadius: 50,
+    paddingHorizontal: 5,
+    width: 75,
+    paddingVertical: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 10,
+  },
+});
 
 export default LaporanDar;

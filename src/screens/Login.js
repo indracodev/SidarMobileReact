@@ -187,7 +187,7 @@ class Login extends Component {
         <TouchableOpacity
           style={{
             marginTop: 40,
-            backgroundColor: '#f98441',
+            backgroundColor: '#ffffff',
             paddingVertical: 15,
             marginHorizontal: 20,
             justifyContent: 'center',
@@ -197,7 +197,7 @@ class Login extends Component {
           }}
           // onPress={() => this.props.navigation.navigate('Home')}>
           onPress={this.submitData}>
-          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'bold'}}>
+          <Text style={{color: '#393939', fontSize: 18, fontWeight: 'bold'}}>
             Sign In
           </Text>
         </TouchableOpacity>

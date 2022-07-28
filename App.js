@@ -11,6 +11,9 @@ import SignIn from './src/screens/SignIn';
 import Register from './src/screens/Register';
 import LupaPassword from './src/screens/LupaPassword';
 import Home from './src/screens/Home';
+import AbsenceKeluar from './src/screens/AbsenceKeluar';
+import AbsenceMasuk from './src/screens/AbsenceMasuk';
+
 import Dar from './src/screens/Dar';
 import LaporanDar from './src/screens/LaporanDar';
 import DetailLaporanDar from './src/screens/DetailLaporanDar';
@@ -34,6 +37,9 @@ function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="LupaPassword" component={LupaPassword} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="AbsenceMasuk" component={AbsenceMasuk} />
+        <Stack.Screen name="AbsenceKeluar" component={AbsenceKeluar} />
+
         <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Dar" component={Dar} />
         <Stack.Screen name="LaporanDar" component={LaporanDar} />

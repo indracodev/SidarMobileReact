@@ -52,10 +52,10 @@ class Login extends Component {
         url: `${baseUrl}/api/userlogin/?username=${username}&pwd=${password}`,
       })
         .then(response => {
-          console.log(response.data.data);
-          console.log(count.response.data.data[0]);
-          console.log(response.data.data[0]);
-          console.log(response.data.message);
+          // console.log(response.data.data);
+          // console.log(count.response.data.data[0]);
+          // console.log(response.data.data[0]);
+          // console.log(response.data.message);
           if (response.data.message == 'success') {
             console.log(response.data.data[0].username);
           }

@@ -47,6 +47,7 @@ import axios from 'axios';
 import DocumentPicker from 'react-native-document-picker';
 import * as ImagePicker from 'react-native-image-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import Geolocation from '@react-native-community/geolocation';
 // import * as ImagePicker from 'react-native-image-picker';
 const options = {
   title: 'Select Avatar',
@@ -75,6 +76,9 @@ class AbsenceMasuk extends Component {
       filePath: '',
       fileData: '',
       fileUri: '',
+      currentLongitude: '',
+      currentLatitude: '',
+      locationStatus: 'PRESS REFRESH GPS TO GET COORDINATE',
     };
   }
 
@@ -115,29 +119,15 @@ class AbsenceMasuk extends Component {
         }
       },
     );
-
-    // console.log(test);
-
-    // You can also use as a promise without 'callback':
-    // const result = await launchImageLibrary({
-    //         skipBackup: true,
-    //         path: 'images',
-    //       });
   };
 
   lCamera = () => {
-    // const test = launchCamera({
-    //   skipBackup: true,
-    //   path: 'images',
-    // });
-
     let options = {
       storageOptions: {
         skipBackup: true,
         path: 'images',
       },
     };
-    // alert('haaiiii');
     launchCamera(options, response => {
       console.log('Response = ', response);
 
@@ -228,7 +218,37 @@ class AbsenceMasuk extends Component {
     }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const requestLocationPermission = async () => {
+      if (Platform.OS === 'ios') {
+        this.getOneTimeLocation();
+        this.subscribeLocationLocation();
+      } else {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+              title: 'Location Access Required',
+              message: 'This App needs to Access your location',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            //To Check, If Permission is granted
+            this.getOneTimeLocation();
+            this.subscribeLocationLocation();
+          } else {
+            this.setState({locationStatus: 'Permission Denied'});
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+    };
+    requestLocationPermission();
+    return () => {
+      Geolocation.clearWatch(watchID);
+    };
+  }
 
   componentWillUnmount() {}
 
@@ -286,6 +306,70 @@ class AbsenceMasuk extends Component {
     }
   };
 
+  getOneTimeLocation = () => {
+    // alert('masuk');
+    this.setState({locationStatus: 'PLEASE WAIT...REFRESH LOCATION'});
+    console.log('test');
+    console.log(this.state.locationStatus);
+
+    Geolocation.getCurrentPosition(
+      //Will give you the current location
+      position => {
+        this.setState({locationStatus: 'YOU ARE HERE'});
+
+        //getting the Longitude from the location json
+        const currentLongitude = position.coords.longitude;
+
+        //getting the Latitude from the location json
+        const currentLatitude = position.coords.latitude;
+
+        //Setting Longitude state
+        this.setState({currentLongitude: currentLongitude});
+
+        //Setting Longitude state
+        this.setState({currentLatitude: currentLatitude});
+      },
+      error => {
+        this.setState({locationStatus: error.message});
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 30000,
+        maximumAge: 1000,
+      },
+    );
+  };
+
+  subscribeLocationLocation = () => {
+    Geolocation.watchPosition(
+      position => {
+        //Will give you the location on location change
+
+        this.setState({locationStatus: 'You are Here'});
+        console.log(position);
+
+        //getting the Longitude from the location json
+        const currentLongitude = JSON.stringify(position.coords.longitude);
+
+        //getting the Latitude from the location json
+        const currentLatitude = JSON.stringify(position.coords.latitude);
+
+        //Setting Longitude state
+        this.setState({currentLongitude: currentLongitude});
+
+        //Setting Longitude state
+        this.setState({currentLatitude: currentLatitude});
+      },
+      error => {
+        this.setState({locationStatus: error.message});
+      },
+      {
+        enableHighAccuracy: false,
+        maximumAge: 1000,
+      },
+    );
+  };
+
   submitData = () => {
     console.log('tombol simpan mengirimkan data');
     console.log('token');
@@ -298,13 +382,23 @@ class AbsenceMasuk extends Component {
     // bodyFormData.append('password', '085649224822');
 
     var bodyFormData = new FormData();
-    bodyFormData.append('deskripsi', 'yoggi');
+    bodyFormData.append('iduser', 770);
+    bodyFormData.append('status_absen', 'absen masuk');
+    bodyFormData.append('latitude', this.state.currentLatitude);
+
+    bodyFormData.append('longitude', this.state.currentLongitude);
+    bodyFormData.append('note', 'absen on mobile');
     bodyFormData.append('file', {
       // name: 'file',
       name: this.state.name,
       type: 'image/jpeg',
       uri: this.state.uri,
     });
+
+    console.log('longitude');
+    console.log(this.state.currentLongitude);
+    console.log('latitude');
+    console.log(this.state.currentLatitude);
     // bodyFormData.append('file', this.state.fileData);
     console.log('name');
     console.log(this.state.name);
@@ -317,21 +411,17 @@ class AbsenceMasuk extends Component {
 
     axios({
       method: 'post',
-      url: `${baseUrl}/api/sidar_kritik/add`,
+      url: `${baseUrl}/api/sidar_absenluarkota/add`,
+      // url: `${baseUrl}/api/sidar_absenluarkota/add`,
       data: bodyFormData,
       headers: {
         'Content-Type': 'multipart/form-data',
         'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
         'X-Token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTkwNjQwNjEsImV4cCI6MTY1OTE1MDQ2MX0.350MvthNRDpcGZnYoayZoORSS7G0pityYCw-nes7xKQ',
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTkzMTc4MTMsImV4cCI6MTY1OTQwNDIxM30.QY6tio_sbGDNRQN4aeQp1J1CyTQIdL6Aa25uLqKQq4s',
       },
     })
       .then(response => {
-        // console.log(response.data.status);
-        // console.log(response.data.data.username);
-        // console.log(response.data.token);
-        // console.log(this.state.username);
-        // console.log(this.state.password);
         if (response.data.status == true) {
           alert('berhasil');
         } else {
@@ -402,7 +492,7 @@ class AbsenceMasuk extends Component {
               textAlign: 'center',
               marginTop: 10,
             }}>
-            Laporan Aktivitas Harian
+            ABSEN MASUK
           </Text>
           <Text
             style={{
@@ -418,13 +508,13 @@ class AbsenceMasuk extends Component {
             <View style={styles.body}>
               <Text
                 style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
-                Pick Images from Camera & Gallery
+                PICK IMAGES FROM CAMERA
               </Text>
               <View style={[styles.ImageSections, {alignItems: 'center'}]}>
-                <View>
+                {/* <View>
                   {this.renderFileData()}
                   <Text style={{textAlign: 'center'}}>Base 64 String</Text>
-                </View>
+                </View> */}
                 <View>
                   {this.renderFileUri()}
                   <Text style={{textAlign: 'center'}}>File Uri</Text>
@@ -432,11 +522,11 @@ class AbsenceMasuk extends Component {
               </View>
 
               <View style={styles.btnParentSection}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={this.chooseImage}
                   style={styles.btnSection}>
                   <Text style={styles.btnText}>Choose File</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
                   onPress={this.lCamera}
@@ -444,13 +534,38 @@ class AbsenceMasuk extends Component {
                   <Text style={styles.btnText}>Directly Launch Camera</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={this.launchImageLibrary}
                   style={styles.btnSection}>
                   <Text style={styles.btnText}>
                     Directly Launch Image Library
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+              </View>
+
+              <View style={styles.btnParentSection}>
+                <Text style={{fontSize: 20, color: 'red'}}>
+                  ===={this.state.locationStatus}====
+                </Text>
+
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 16,
+                    fontSize: 25,
+                  }}>
+                  LONGITUDE : {this.state.currentLongitude}
+                </Text>
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 16,
+                    fontSize: 25,
+                  }}>
+                  LATITUDE : {this.state.currentLatitude}
+                </Text>
               </View>
             </View>
           </SafeAreaView>
@@ -462,59 +577,35 @@ class AbsenceMasuk extends Component {
             }}
             style={{width: 100, height: 100}}
           /> */}
-            <Text>ABSENCE MASUK</Text>
+            {/* <Text>ABSENCE MASUK</Text> */}
             {/* <Text style={styles.boldText}>{locationStatus}</Text> */}
-
-            <SafeAreaView style={{flex: 1, flexDirection: 'column'}}>
-              <Text style={styles.titleText}>
-                Example of File Picker in React Native
-              </Text>
-              <View style={styles.container}>
-                {/*To show single file attribute*/}
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  style={styles.buttonStyle}
-                  onPress={this.selectOneFile}>
-                  {/*Single file selection button*/}
-                  <Text style={{marginRight: 10, fontSize: 19}}>
-                    Click here to pick one file
-                  </Text>
-                  <Image
-                    source={{
-                      uri: 'https://img.icons8.com/offices/40/000000/attach.png',
-                    }}
-                    style={styles.imageIconStyle}
-                  />
-                </TouchableOpacity>
-                {/*Showing the data of selected Single file*/}
-
-                <View
-                  style={{
-                    backgroundColor: 'grey',
-                    height: 2,
-                    margin: 10,
-                  }}
-                />
-                {/*To multiple single file attribute*/}
-              </View>
-            </SafeAreaView>
           </View>
         </ScrollView>
+        <TouchableOpacity
+          style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+          onPress={this.getOneTimeLocation}>
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}>
+            REFRESH GPS
+          </Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
-          style={{
-            marginBottom: 40,
-            backgroundColor: '#272727',
-            paddingVertical: 15,
-            marginHorizontal: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 9,
-            elevation: 2,
-          }}
+          style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
           onPress={this.submitData}>
-          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
-            Simpan
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}>
+            SIMPAN
           </Text>
         </TouchableOpacity>
 
@@ -613,6 +704,16 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 14,
     fontWeight: 'bold',
+  },
+
+  btnAbsence: {
+    marginBottom: 20,
+    paddingVertical: 10,
+    marginHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 9,
+    elevation: 2,
   },
 });
 

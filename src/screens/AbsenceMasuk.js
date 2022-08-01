@@ -79,6 +79,7 @@ class AbsenceMasuk extends Component {
       currentLongitude: '',
       currentLatitude: '',
       locationStatus: 'PRESS REFRESH GPS TO GET COORDINATE',
+      status_simpan: true,
     };
   }
 
@@ -371,6 +372,7 @@ class AbsenceMasuk extends Component {
   };
 
   submitData = () => {
+    this.setState({status_simpan: false});
     console.log('tombol simpan mengirimkan data');
     console.log('token');
     console.log(this.state.fileData);
@@ -424,13 +426,16 @@ class AbsenceMasuk extends Component {
       .then(response => {
         if (response.data.status == true) {
           alert('berhasil');
+          this.setState({status_simpan: true});
         } else {
           alert('periksa kembali inputan  anda');
+          this.setState({status_simpan: true});
         }
       })
       .catch(function (err) {
         console.log(err);
         alert('periksa kembali inputan anda');
+        this.setState({status_simpan: true});
       });
   };
 
@@ -512,6 +517,10 @@ class AbsenceMasuk extends Component {
               </Text>
               {/* <Image source={{uri: this.state.fileUri}} style={styles.images} /> */}
               {/* <Image source={require('../images/loading.gif')} /> */}
+              {/* <Image
+                source={require('../images/loading-slow-net.gif')}
+                style={{width: 41, height: 50}}
+              /> */}
               <View style={[styles.ImageSections, {alignItems: 'center'}]}>
                 {/* <View>
                   {this.renderFileData()}
@@ -595,19 +604,28 @@ class AbsenceMasuk extends Component {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
-          onPress={this.submitData}>
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 18,
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}>
-            SIMPAN
-          </Text>
-        </TouchableOpacity>
+        {this.state.status_simpan == true ? (
+          <TouchableOpacity
+            style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+            onPress={this.submitData}>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              SIMPAN
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image
+              source={require('../images/loading-slow-net.gif')}
+              style={{width: 41, height: 50}}
+            />
+          </View>
+        )}
 
         <View
           style={{

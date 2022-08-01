@@ -510,6 +510,8 @@ class AbsenceMasuk extends Component {
                 style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
                 PICK IMAGES FROM CAMERA
               </Text>
+              {/* <Image source={{uri: this.state.fileUri}} style={styles.images} /> */}
+              {/* <Image source={require('../images/loading.gif')} /> */}
               <View style={[styles.ImageSections, {alignItems: 'center'}]}>
                 {/* <View>
                   {this.renderFileData()}
@@ -520,7 +522,6 @@ class AbsenceMasuk extends Component {
                   <Text style={{textAlign: 'center'}}>File Uri</Text>
                 </View>
               </View>
-
               <View style={styles.btnParentSection}>
                 {/* <TouchableOpacity
                   onPress={this.chooseImage}
@@ -542,7 +543,6 @@ class AbsenceMasuk extends Component {
                   </Text>
                 </TouchableOpacity> */}
               </View>
-
               <View style={styles.btnParentSection}>
                 <Text style={{fontSize: 20, color: 'red'}}>
                   ===={this.state.locationStatus}====

@@ -1,4 +1,4 @@
-# Sidar Mobile React - project/filepicker
+# Sidar Mobile React - project/gif
 
 **Requirement**
 - backend <https://github.com/indracodev/sidar-new>

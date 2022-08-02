@@ -190,13 +190,23 @@ class LaporanDar extends Component {
             }}>
             INDRACO - SIDAR
           </Text>
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 12,
+            }}>
+            Hi, {this.state.datalogin.username}
+            {/* - {this.state.iduser} */}
+            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
+            {/* token, {this.state.token} */}
+          </Text>
           {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
         </View>
         {/* </View> */}
 
         {/* <Text>Pergi Ke Detail</Text> */}
         <FlatList
-          style={{marginTop: 10}}
+          style={{marginTop: 0}}
           data={this.state.dar}
           renderItem={({item, index}) => (
             //styling view

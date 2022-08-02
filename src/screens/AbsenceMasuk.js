@@ -48,6 +48,7 @@ import DocumentPicker from 'react-native-document-picker';
 import * as ImagePicker from 'react-native-image-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Geolocation from '@react-native-community/geolocation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import * as ImagePicker from 'react-native-image-picker';
 const options = {
   title: 'Select Avatar',
@@ -80,6 +81,9 @@ class AbsenceMasuk extends Component {
       currentLatitude: '',
       locationStatus: 'PRESS REFRESH GPS TO GET COORDINATE',
       status_simpan: true,
+      token: '',
+      datalogin: [],
+      iduser: '',
     };
   }
 
@@ -220,6 +224,67 @@ class AbsenceMasuk extends Component {
   }
 
   componentDidMount() {
+    AsyncStorage.getItem('@storage_Key').then(value => {
+      console.log('coba get value token');
+      console.log(value);
+      this.setState({token: value});
+      tokens = value;
+
+      axios({
+        method: 'get',
+        url: `${baseUrl}/api/user/profile`,
+        headers: {
+          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          // 'X-Token':
+          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+          'X-Token': value,
+        },
+      })
+        .then(responseprofile => {
+          console.log('ini profile user');
+          console.log(responseprofile.data);
+          console.log('ini axios di dlam sync');
+          console.log(responseprofile.data.data.user.id_karyawan);
+          console.log(this.state.token);
+
+          this.setState({
+            datalogin: responseprofile.data.data.user,
+            iduser: responseprofile.data.data.user.id_karyawan,
+          });
+          let iduser = responseprofile.data.data.user.id_karyawan;
+          //ambild data di server bisa dilakukan disini
+          axios({
+            method: 'get',
+            url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
+            headers: {
+              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+              'X-Token': value,
+            },
+          })
+            .then(response => {
+              console.log(
+                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
+              );
+
+              console.log(response.data.data.sidar_masterkaryawan);
+              console.log(response.data.message);
+
+              console.log('check');
+              this.setState({
+                statusdarthisday:
+                  response.data.data.sidar_masterkaryawan[0].statusdarthisday,
+              });
+              console.log(this.state.statusdarthisday[4]);
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+
     const requestLocationPermission = async () => {
       if (Platform.OS === 'ios') {
         this.getOneTimeLocation();
@@ -376,15 +441,9 @@ class AbsenceMasuk extends Component {
     console.log('tombol simpan mengirimkan data');
     console.log('token');
     console.log(this.state.fileData);
-    // console.log(this.props.route.params.token);
-
-    // let username = this.state.username;
-    // let password = this.state.password;
-    // bodyFormData.append('username', 'suryoatm');
-    // bodyFormData.append('password', '085649224822');
 
     var bodyFormData = new FormData();
-    bodyFormData.append('iduser', 770);
+    bodyFormData.append('iduser', this.state.iduser);
     bodyFormData.append('status_absen', 'absen masuk');
     bodyFormData.append('latitude', this.state.currentLatitude);
 
@@ -401,7 +460,6 @@ class AbsenceMasuk extends Component {
     console.log(this.state.currentLongitude);
     console.log('latitude');
     console.log(this.state.currentLatitude);
-    // bodyFormData.append('file', this.state.fileData);
     console.log('name');
     console.log(this.state.name);
     console.log('type');
@@ -419,11 +477,14 @@ class AbsenceMasuk extends Component {
       headers: {
         'Content-Type': 'multipart/form-data',
         'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-        'X-Token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTkzMTc4MTMsImV4cCI6MTY1OTQwNDIxM30.QY6tio_sbGDNRQN4aeQp1J1CyTQIdL6Aa25uLqKQq4s',
+        'X-Token': this.state.token,
       },
     })
       .then(response => {
+        console.log('proses simpan');
+        console.log('isi token');
+        console.log(this.state.login);
+
         if (response.data.status == true) {
           alert('berhasil');
           this.setState({status_simpan: true});
@@ -506,6 +567,28 @@ class AbsenceMasuk extends Component {
             }}></Text>
         </View>
 
+        <View
+          style={{
+            marginTop: 5,
+            padding: 10,
+            backgroundColor: '#2b2b2b',
+            paddingVertical: 10,
+            borderTopRightRadius: 12,
+            borderTopLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            borderBottomLeftRadius: 12,
+          }}>
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 12,
+            }}>
+            Hi, {this.state.datalogin.username} - {this.state.iduser}
+            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
+            {'\n'}token, {this.state.token}
+          </Text>
+        </View>
+
         {/* <TextArea placeholder="Description" /> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
@@ -562,7 +645,7 @@ class AbsenceMasuk extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 16,
-                    fontSize: 25,
+                    fontSize: 20,
                   }}>
                   LONGITUDE : {this.state.currentLongitude}
                 </Text>
@@ -571,7 +654,7 @@ class AbsenceMasuk extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 16,
-                    fontSize: 25,
+                    fontSize: 20,
                   }}>
                   LATITUDE : {this.state.currentLatitude}
                 </Text>
@@ -698,8 +781,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,

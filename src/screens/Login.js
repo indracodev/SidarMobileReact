@@ -108,8 +108,8 @@ class Login extends Component {
     bodyFormData.append('username', this.state.username);
     bodyFormData.append('password', this.state.password);
 
-    bodyFormData.append('username', 'suryoatmojo');
-    bodyFormData.append('password', '123456789');
+    // bodyFormData.append('username', 'suryoatmojo');
+    // bodyFormData.append('password', '123456789');
 
     let res = await axios.post(`${baseUrl}/api/user/login`, bodyFormData, {
       headers: {

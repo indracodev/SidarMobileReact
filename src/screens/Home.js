@@ -108,7 +108,7 @@ class Home extends Component {
     // this.unsubsribe = this.props.navigation.addListener('focus', () => {
     console.log('hello world');
     console.log('ini isi token dari params');
-    console.log(this.props.route.params.token);
+    // console.log(this.props.route.params.token);
     var tokens = '';
     AsyncStorage.getItem('@storage_Key').then(value => {
       console.log('coba get value token');
@@ -242,7 +242,8 @@ class Home extends Component {
                 Hi, {this.state.datalogin.username}
                 {'\n'}Anda terakhir login pada,{' '}
                 {this.state.datalogin.last_login}
-                {'\n'}token, {this.state.token}
+                {'\n'}
+                {/* token, {this.state.token} */}
               </Text>
             </View>
 

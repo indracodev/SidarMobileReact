@@ -23,10 +23,13 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import {StackActions} from '@react-navigation/native';
+import {
+  StackActions,
+  createNavigationContainerRef,
+} from '@react-navigation/native';
 import SignInHeader from '../components/SignInHeader';
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
 // const baseUrl = 'http://localhost/sidar-new';
 
@@ -36,6 +39,7 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      token: '',
     };
   }
 
@@ -70,7 +74,26 @@ class Login extends Component {
     // this.unsubsribe();
   }
 
-  submitData = () => {
+  loginCheck() {
+    this.submitData();
+    this.redirectPage();
+  }
+
+  redirectPage = () => {
+    console.log('redirect page');
+
+    // const afterDeleteNavigateAction = StackActions.replace('Home', {});
+    // this.props.navigation.dispatch(
+    //   StackActions.replace('Home', {
+    //     data: response.data.data,
+    //     token: response.data.token,
+    //   }),
+    // );
+  };
+
+  submitData = async () => {
+    console.log('async storage run value!!');
+
     console.log('tombollogin mengirimkan data');
     console.log(this.state.username);
     console.log(this.state.password);
@@ -84,37 +107,117 @@ class Login extends Component {
     var bodyFormData = new FormData();
     bodyFormData.append('username', this.state.username);
     bodyFormData.append('password', this.state.password);
-    axios({
-      method: 'post',
-      url: `${baseUrl}/api/user/login`,
-      data: bodyFormData,
+
+    bodyFormData.append('username', 'suryoatmojo');
+    bodyFormData.append('password', '123456789');
+
+    let res = await axios.post(`${baseUrl}/api/user/login`, bodyFormData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'X-API-KEY': '0ED40DE05125623C8753B6D3196C18DE',
       },
-    })
-      .then(response => {
-        console.log(response.data.status);
-        console.log(response.data.data.username);
-        console.log(response.data.token);
-        console.log(this.state.username);
-        console.log(this.state.password);
-        if (response.data.status == true) {
-          console.log(response.data.data.username);
-          this.props.navigation.dispatch(
-            StackActions.replace('Home', {
-              data: response.data.data,
-              token: response.data.token,
-            }),
-          );
-        } else {
-          alert('periksa kembali username dan password anda');
+    });
+    console.log(res.data.token);
+
+    if (res.data.status == true) {
+      // console.log(response.data.data.username);
+      console.log('response status true');
+
+      try {
+        AsyncStorage.removeItem('@storage_Key');
+      } catch (e) {
+        // remove error
+      }
+
+      try {
+        AsyncStorage.setItem('@storage_Key', res.data.token);
+        // AsyncStorage.setItem('datalog', res.data.data);
+        try {
+          this.props.navigation.navigate('Home', {
+            data: res.data.data,
+            token: res.data.token,
+          });
+        } catch (error) {
+          console.error(error);
         }
-      })
-      .catch(function (err) {
-        console.log(err);
-        alert('periksa kembali username dan password anda');
-      });
+      } catch (e) {
+        // saving error
+      }
+      // get Data from Storage
+      try {
+        const data = await AsyncStorage.getItem('@storage_Key');
+        if (data !== null) {
+          console.log(data);
+          return data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      // navigation.navigate('Home');
+      // this.redirectPage();
+      // <LocationItem navigation={this.props.navigation.navigate('Home')} />;
+    } else {
+      alert('periksa kembali username dan password anda');
+    }
+
+    // var bodyFormData = new FormData();
+    // bodyFormData.append('username', this.state.username);
+    // bodyFormData.append('password', this.state.password);
+    // const res = await axios({
+    //   method: 'post',
+    //   url: `${baseUrl}/api/user/login`,
+    //   data: bodyFormData,
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     'X-API-KEY': '0ED40DE05125623C8753B6D3196C18DE',
+    //   },
+    // })
+    //   .then(response => {
+    //     console.log(response.data.status);
+    //     console.log(response.data.data.username);
+    //     console.log(response.data.token);
+    //     console.log('typenya adalah  :');
+    //     console.log(typeof response.data.token);
+    //     console.log(this.state.username);
+    //     console.log(this.state.password);
+
+    //     if (response.data.status == true) {
+    //       // console.log(response.data.data.username);
+    //       console.log('response status true');
+
+    //       // this.props.navigation.dispatch(
+    //       //   StackActions.replace('Home', {
+    //       //     data: response.data.data,
+    //       //     token: response.data.token,
+    //       //   }),
+    //       // );
+    //     } else {
+    //       alert('periksa kembali username dan password anda');
+    //     }
+    //   })
+    //   .catch(function (err) {
+    //     console.log(err);
+    //     alert('periksa kembali username dan password anda');
+    //   });
+
+    // return AsyncStorage.setItem('access_token', res.data.token);
+
+    // try {
+    //   AsyncStorage.setItem('@storage_Key', res.data.token);
+    // } catch (e) {
+    //   // saving error
+    // }
+    // // get Data from Storage
+    // try {
+    //   const data = await AsyncStorage.getItem('@storage_Key');
+    //   if (data !== null) {
+    //     console.log(data);
+    //     return data;
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     // //alert('hiiiii');
     // axios({
@@ -196,6 +299,10 @@ class Login extends Component {
             elevation: 2,
           }}
           // onPress={() => this.props.navigation.navigate('Home')}>
+          // onPress={() => {
+          //   this.submitData();
+          //   this.redirectPage();
+          // }}>
           onPress={this.submitData}>
           <Text style={{color: '#393939', fontSize: 18, fontWeight: 'bold'}}>
             Sign In

@@ -34,6 +34,7 @@ import {
 import axios from 'axios';
 import MenuDrawer from 'react-native-side-drawer';
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const baseUrl = 'http://localhost/sidar-new';
 
@@ -106,38 +107,72 @@ class Home extends Component {
   componentDidMount() {
     // this.unsubsribe = this.props.navigation.addListener('focus', () => {
     console.log('hello world');
+    console.log('ini isi token dari params');
     console.log(this.props.route.params.token);
-    // console.log(this.props.route.params.data);
-    this.setState({
-      datalogin: this.props.route.params.data,
-      token: this.props.route.params.token,
-    });
+    var tokens = '';
+    AsyncStorage.getItem('@storage_Key').then(value => {
+      console.log('coba get value token');
+      console.log(value);
+      this.setState({token: value});
+      tokens = value;
 
-    console.log(this.state.token);
-    let iduser = 770;
-    //ambild data di server bisa dilakukan disini
-    axios({
-      method: 'get',
-      url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
-      headers: {
-        'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-        'X-Token': this.props.route.params.token,
-      },
-    })
-      .then(response => {
-        console.log(response.data.data.sidar_masterkaryawan);
-        console.log(response.data.message);
-        console.log('check');
-        this.setState({
-          statusdarthisday:
-            response.data.data.sidar_masterkaryawan[0].statusdarthisday,
-        });
-        console.log(this.state.statusdarthisday[4]);
+      console.log(
+        '================================== axios di dalam sync=====================================================================',
+      );
+
+      axios({
+        method: 'get',
+        url: `${baseUrl}/api/user/profile`,
+        headers: {
+          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          // 'X-Token':
+          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+          'X-Token': value,
+        },
       })
-      .catch(function (err) {
-        console.log(err);
-      });
-    // });
+        .then(responseprofile => {
+          console.log('ini profile user');
+          console.log(responseprofile.data);
+          console.log('ini axios di dlam sync');
+          console.log(responseprofile.data.data.user.id_karyawan);
+          console.log(this.state.token);
+
+          this.setState({
+            datalogin: responseprofile.data.data.user,
+          });
+          let iduser = responseprofile.data.data.user.id_karyawan;
+          //ambild data di server bisa dilakukan disini
+          axios({
+            method: 'get',
+            url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
+            headers: {
+              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+              'X-Token': value,
+            },
+          })
+            .then(response => {
+              console.log(
+                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
+              );
+
+              console.log(response.data.data.sidar_masterkaryawan);
+              console.log(response.data.message);
+
+              console.log('check');
+              this.setState({
+                statusdarthisday:
+                  response.data.data.sidar_masterkaryawan[0].statusdarthisday,
+              });
+              console.log(this.state.statusdarthisday[4]);
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
   }
 
   componentWillUnmount() {
@@ -207,6 +242,7 @@ class Home extends Component {
                 Hi, {this.state.datalogin.username}
                 {'\n'}Anda terakhir login pada,{' '}
                 {this.state.datalogin.last_login}
+                {'\n'}token, {this.state.token}
               </Text>
             </View>
 

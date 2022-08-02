@@ -28,6 +28,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignInHeader from '../components/SignInHeader';
 import TextArea from '../components/TextArea';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
 // const baseUrl = 'http://localhost/sidar-new';
@@ -35,8 +36,12 @@ class Dar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: '',
+      datalogin: [],
+      iduser: '',
+
       id: '',
-      id_user: '770',
+      // id_user: '',
       namakaryawan: '',
       nodar: '',
       ke: '',
@@ -65,13 +70,63 @@ class Dar extends Component {
 
   componentDidMount() {
     // this.unsubsribe = this.props.navigation.addListener('focus', () => {
-    console.log('hello world');
-    console.log(this.props.route.params.token);
-    console.log(this.props.route.params.data);
-    this.setState({
-      datalogin: this.props.route.params.data,
-      token: this.props.route.params.token,
+
+    AsyncStorage.getItem('@storage_Key').then(value => {
+      console.log('coba get value token');
+      console.log(value);
+      this.setState({token: value});
+      tokens = value;
+
+      axios({
+        method: 'get',
+        url: `${baseUrl}/api/user/profile`,
+        headers: {
+          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          // 'X-Token':
+          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+          'X-Token': value,
+        },
+      })
+        .then(responseprofile => {
+          console.log('ini profile user');
+          console.log(responseprofile.data);
+          console.log('ini axios di dlam sync');
+          console.log(responseprofile.data.data.user.id_karyawan);
+          console.log(this.state.token);
+
+          this.setState({
+            datalogin: responseprofile.data.data.user,
+            iduser: responseprofile.data.data.user.id_karyawan,
+          });
+          let iduser = responseprofile.data.data.user.id_karyawan;
+          //ambild data di server bisa dilakukan disini
+          axios({
+            method: 'get',
+            url: `${baseUrl}/api/sidar_dar/all`,
+            headers: {
+              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+              'X-Token': this.state.token,
+            },
+          })
+            .then(response => {
+              this.setState({dar: response.data.data.sidar_dar});
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     });
+
+    // console.log('hello world');
+    // console.log(this.props.route.params.token);
+    // console.log(this.props.route.params.data);
+    // this.setState({
+    //   datalogin: this.props.route.params.data,
+    //   token: this.props.route.params.token,
+    // });
 
     // console.log(this.state.token);
     // let iduser = 770;
@@ -87,7 +142,7 @@ class Dar extends Component {
   submitData = () => {
     console.log('tombol simpan mengirimkan data');
     console.log('token');
-    console.log(this.props.route.params.token);
+    // console.log(this.props.route.params.token);
 
     // let username = this.state.username;
     // let password = this.state.password;
@@ -96,7 +151,8 @@ class Dar extends Component {
 
     var bodyFormData = new FormData();
     bodyFormData.append('id', this.state.id);
-    bodyFormData.append('id_user', this.state.id_user);
+    // bodyFormData.append('id_user', this.state.id_user);
+    bodyFormData.append('id_user', this.state.iduser);
     bodyFormData.append('namakaryawan', this.state.namakaryawan);
     bodyFormData.append('nodar', this.state.nodar);
     bodyFormData.append('ke', this.state.ke);
@@ -127,8 +183,7 @@ class Dar extends Component {
       headers: {
         'Content-Type': 'multipart/form-data',
         'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-        'X-Token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiNzU5In0sImlhdCI6MTY1ODg5ODM1OCwiZXhwIjoxNjU4OTg0NzU4fQ.gu1i6VQEq4EGwPPCRj_pIAidM2Ok7CoY6F69phGbWBU',
+        'X-Token': this.state.token,
       },
     })
       .then(response => {
@@ -187,6 +242,30 @@ class Dar extends Component {
           {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
         </View>
         {/* </View> */}
+
+        <View
+          style={{
+            marginTop: 5,
+            padding: 10,
+            backgroundColor: '#2b2b2b',
+            paddingVertical: 10,
+            borderTopRightRadius: 12,
+            borderTopLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            borderBottomLeftRadius: 12,
+          }}>
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 12,
+            }}>
+            Hi, {this.state.datalogin.username}
+            {/* - {this.state.iduser} */}
+            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
+            {'\n'}
+            {/* token, {this.state.token} */}
+          </Text>
+        </View>
 
         <View
           style={{

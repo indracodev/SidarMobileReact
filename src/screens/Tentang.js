@@ -28,16 +28,70 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignInHeader from '../components/SignInHeader';
 import TextArea from '../components/TextArea';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      token: '',
+      datalogin: [],
+      iduser: '',
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    AsyncStorage.getItem('@storage_Key').then(value => {
+      console.log('coba get value token');
+      console.log(value);
+      this.setState({token: value});
+      tokens = value;
+
+      axios({
+        method: 'get',
+        url: `${baseUrl}/api/user/profile`,
+        headers: {
+          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          // 'X-Token':
+          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+          'X-Token': value,
+        },
+      })
+        .then(responseprofile => {
+          console.log('ini profile user');
+          console.log(responseprofile.data);
+          console.log('ini axios di dlam sync');
+          console.log(responseprofile.data.data.user.id_karyawan);
+          console.log(this.state.token);
+
+          this.setState({
+            datalogin: responseprofile.data.data.user,
+            iduser: responseprofile.data.data.user.id_karyawan,
+          });
+          let iduser = responseprofile.data.data.user.id_karyawan;
+          //ambild data di server bisa dilakukan disini
+          axios({
+            method: 'get',
+            url: `${baseUrl}/api/sidar_dar/all`,
+            headers: {
+              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+              'X-Token': this.state.token,
+            },
+          })
+            .then(response => {
+              this.setState({dar: response.data.data.sidar_dar});
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+  }
 
   componentWillUnmount() {}
 
@@ -69,7 +123,7 @@ class Dar extends Component {
               fontWeight: 'bold',
               marginTop: 10,
             }}>
-            INDRACO - SIDAR
+            SIDAR
           </Text>
           {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
         </View>
@@ -113,34 +167,25 @@ class Dar extends Component {
               marginRight: 5,
               marginBottom: 20,
             }}>
-            <TextInput
-              style={styles.textArea}
-              underlineColorAndroid="transparent"
-              placeholder="Aktifitas Harian"
-              placeholderTextColor="white"
-              numberOfLines={10}
-              multiline={true}
-              onChangeText={text => this.setState({activity: text})}
-            />
+            <Text
+              style={{
+                color: '#ffffff',
+              }}>
+              Hi, {this.state.datalogin.username}
+              {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
+              {'\n'}
+              {'\n'}
+              {'\n'}Selamat datang pada aplikasi SIDAR (System Information Daily
+              Activity Report)
+              {'\n'}
+              {'\n'}
+              Versi 0.183.0
+              {'\n'}
+              {'\n'}
+              Copyright @ 2022 Indraco . All Rights Reserved
+            </Text>
           </View>
         </ScrollView>
-
-        <TouchableOpacity
-          style={{
-            marginBottom: 40,
-            backgroundColor: '#272727',
-            paddingVertical: 15,
-            marginHorizontal: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 9,
-            elevation: 2,
-          }}
-          onPress={this.submitData}>
-          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
-            Simpan
-          </Text>
-        </TouchableOpacity>
 
         <View
           style={{

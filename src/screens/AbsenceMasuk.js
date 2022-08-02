@@ -29,6 +29,7 @@ import {
   Button,
   StatusBar,
   Dimensions,
+  LogBox,
 } from 'react-native';
 
 import {
@@ -224,6 +225,10 @@ class AbsenceMasuk extends Component {
   }
 
   componentDidMount() {
+    console.disableYellowBox = true;
+    console.disableYellowBox = ['Warning: Each', 'Warning: Failed'];
+    LogBox.ignoreLogs(['Require cycle:']);
+    LogBox.ignoreAllLogs();
     AsyncStorage.getItem('@storage_Key').then(value => {
       console.log('coba get value token');
       console.log(value);

@@ -25,6 +25,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
 // const baseUrl = 'http://localhost/sidar-new';
@@ -77,31 +78,82 @@ class LaporanDar extends Component {
     this.state = {
       dar: [],
       color: '',
+      token: '',
+      datalogin: [],
+      iduser: '',
     };
   }
 
   componentDidMount() {
     console.log('token');
 
-    this.unsubsribe = this.props.navigation.addListener('focus', () => {
-      console.log('ini did mount laporan dar');
-      console.log(this.props.route.params.token);
-      //ambild data di server bisa dilakukan disini
+    AsyncStorage.getItem('@storage_Key').then(value => {
+      console.log('coba get value token');
+      console.log(value);
+      this.setState({token: value});
+      tokens = value;
+
       axios({
         method: 'get',
-        url: `${baseUrl}/api/sidar_dar/all`,
+        url: `${baseUrl}/api/user/profile`,
         headers: {
           'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-          'X-Token': this.props.route.params.token,
+          // 'X-Token':
+          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+          'X-Token': value,
         },
       })
-        .then(response => {
-          this.setState({dar: response.data.data.sidar_dar});
+        .then(responseprofile => {
+          console.log('ini profile user');
+          console.log(responseprofile.data);
+          console.log('ini axios di dlam sync');
+          console.log(responseprofile.data.data.user.id_karyawan);
+          console.log(this.state.token);
+
+          this.setState({
+            datalogin: responseprofile.data.data.user,
+            iduser: responseprofile.data.data.user.id_karyawan,
+          });
+          let iduser = responseprofile.data.data.user.id_karyawan;
+          //ambild data di server bisa dilakukan disini
+          axios({
+            method: 'get',
+            url: `${baseUrl}/api/sidar_dar/all`,
+            headers: {
+              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+              'X-Token': this.state.token,
+            },
+          })
+            .then(response => {
+              this.setState({dar: response.data.data.sidar_dar});
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
         })
         .catch(function (err) {
           console.log(err);
         });
     });
+
+    // this.unsubsribe = this.props.navigation.addListener('focus', () => {
+    //   console.log('ini did mount laporan dar');
+    //   console.log(this.props.route.params.token);
+    //   axios({
+    //     method: 'get',
+    //     url: `${baseUrl}/api/sidar_dar/all`,
+    //     headers: {
+    //       'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+    //       'X-Token': this.props.route.params.token,
+    //     },
+    //   })
+    //     .then(response => {
+    //       this.setState({dar: response.data.data.sidar_dar});
+    //     })
+    //     .catch(function (err) {
+    //       console.log(err);
+    //     });
+    // });
   }
 
   componentWillUnmount() {

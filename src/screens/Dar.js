@@ -29,8 +29,10 @@ import SignInHeader from '../components/SignInHeader';
 import TextArea from '../components/TextArea';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SelectDropdown from 'react-native-select-dropdown';
 
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {
@@ -55,7 +57,7 @@ class Dar extends Component {
       ke4: '',
       ke5: '',
       sudahbaca: '',
-      tanggaldar: '2022-07-27',
+      tanggaldar: '',
       tanggal: '2022-07-27',
       jam: '11:51',
       status: '',
@@ -65,6 +67,7 @@ class Dar extends Component {
       plan: 'tanggal 27 ini dari mobile',
       tag: '',
       file: '',
+      periodetanggaldar: [],
     };
   }
 
@@ -90,11 +93,19 @@ class Dar extends Component {
         .then(responseprofile => {
           console.log('ini profile user');
           console.log(responseprofile.data);
+          console.log(responseprofile.data.tglhariini);
+          console.log(responseprofile.data.statusdar);
+          console.log(responseprofile.data.periodetanggaldar);
           console.log('ini axios di dlam sync');
           console.log(responseprofile.data.data.user.id_karyawan);
           console.log(this.state.token);
 
+          if (responseprofile.data.periodetanggaldar.length === 0) {
+            this.setState({tanggaldar: responseprofile.data.tglhariini});
+          }
           this.setState({
+            status: responseprofile.data.statusdar,
+            periodetanggaldar: responseprofile.data.periodetanggaldar,
             datalogin: responseprofile.data.data.user,
             iduser: responseprofile.data.data.user.id_karyawan,
           });
@@ -267,36 +278,159 @@ class Dar extends Component {
           </Text>
         </View>
 
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: 5,
-            backgroundColor: '#2b2b2b',
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
-          }}>
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              color: '#ffffff',
-              textAlign: 'center',
-              marginTop: 10,
-            }}>
-            Laporan Aktivitas Harian
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 16,
-            }}></Text>
-        </View>
-
         {/* <TextArea placeholder="Description" /> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+          {this.state.periodetanggaldar.length === 0 ? (
+            <View
+              style={{
+                marginTop: 5,
+                padding: 10,
+                backgroundColor: '#2b2b2b',
+                paddingVertical: 10,
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+                borderBottomRightRadius: 12,
+                borderBottomLeftRadius: 12,
+              }}>
+              <Text style={{color: 'white'}}>
+                Form ini akan mengirim dar pada tanggal :{' '}
+                {this.state.tanggaldar}
+                {' (Y-M-D)'}
+              </Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 12,
+                  marginTop: 10,
+                }}>
+                STATUS DAR :{' '}
+                <Text
+                  style={{
+                    color: 'green',
+                  }}>
+                  {' '}
+                  {this.state.status.toUpperCase()}
+                </Text>
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                marginTop: 5,
+                padding: 10,
+                backgroundColor: '#2b2b2b',
+                paddingVertical: 10,
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+                borderBottomRightRadius: 12,
+                borderBottomLeftRadius: 12,
+              }}>
+              <Text
+                style={{
+                  color: 'red',
+                  fontSize: 12,
+                }}>
+                WARNING
+              </Text>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                  marginBottom: 5,
+                }}>
+                Anda Belum Mengisi DAR pada{' '}
+                <Text style={{color: 'red'}}>
+                  {this.state.periodetanggaldar.length}{' '}
+                </Text>
+                Periode Sebelumnya.
+                {'\n'}Pilih tanggal DAR dibawah ini :
+              </Text>
+
+              <SelectDropdown
+                // defaultButtonText={'Pilih Tanggal DAR'}
+                defaultValueByIndex={0}
+                data={this.state.periodetanggaldar}
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem, index);
+                  this.setState({tanggaldar: selectedItem});
+                  console.log(this.state.tanggaldar);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item;
+                }}
+                buttonStyle={{
+                  width: '100%',
+                  height: 50,
+                  backgroundColor: 'red',
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: '#444',
+                }}
+                buttonTextStyle={{
+                  fontSize: 12,
+                  textAlign: 'left',
+                  color: 'white',
+                }}
+                dropdownStyle={{backgroundColor: '#EFEFEF'}}
+                rowStyle={{
+                  backgroundColor: '#EFEFEF',
+                  fontSize: 12,
+                  borderBottomColor: '#C5C5C5',
+                }}
+                rowTextStyle={{fontSize: 12, color: '#444', textAlign: 'left'}}
+              />
+
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 12,
+                  marginTop: 10,
+                }}>
+                STATUS DAR :{' '}
+                <Text
+                  style={{
+                    color: 'red',
+                  }}>
+                  {' '}
+                  {this.state.status.toUpperCase()}
+                </Text>
+              </Text>
+            </View>
+          )}
+          <View
+            style={{
+              marginTop: 10,
+              marginBottom: 5,
+              backgroundColor: '#2b2b2b',
+              borderTopRightRadius: 12,
+              borderTopLeftRadius: 12,
+              borderBottomRightRadius: 12,
+              borderBottomLeftRadius: 12,
+            }}>
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: 'bold',
+                color: '#ffffff',
+                textAlign: 'center',
+                marginTop: 10,
+              }}>
+              Laporan Aktivitas Harian
+            </Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 16,
+              }}></Text>
+          </View>
           <View
             style={{
               backgroundColor: '#2b2b2b',
@@ -352,6 +486,23 @@ class Dar extends Component {
               onChangeText={text => this.setState({plan: text})}
             />
           </View>
+
+          <TouchableOpacity
+            style={{
+              marginBottom: 40,
+              backgroundColor: '#00c0ef',
+              paddingVertical: 15,
+              marginHorizontal: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 9,
+              elevation: 2,
+            }}
+            onPress={this.submitData}>
+            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
+              SIMPAN
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
 
         {/* <View style={styles.textAreaContainer}>
@@ -416,23 +567,6 @@ class Dar extends Component {
           }}
           placeholder="Plan"
         /> */}
-
-        <TouchableOpacity
-          style={{
-            marginBottom: 40,
-            backgroundColor: '#272727',
-            paddingVertical: 15,
-            marginHorizontal: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 9,
-            elevation: 2,
-          }}
-          onPress={this.submitData}>
-          <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
-            Simpan
-          </Text>
-        </TouchableOpacity>
 
         <View
           style={{

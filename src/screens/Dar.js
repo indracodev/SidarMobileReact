@@ -32,7 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SelectDropdown from 'react-native-select-dropdown';
 
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
-
+// const dateDropdownRef = useRef();
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {
@@ -58,7 +58,7 @@ class Dar extends Component {
       ke5: '',
       sudahbaca: '',
       tanggaldar: '',
-      tanggal: '2022-07-27',
+      tanggal: '',
       jam: '11:51',
       status: '',
       colorstatus: '',
@@ -108,6 +108,8 @@ class Dar extends Component {
             periodetanggaldar: responseprofile.data.periodetanggaldar,
             datalogin: responseprofile.data.data.user,
             iduser: responseprofile.data.data.user.id_karyawan,
+            tanggal: responseprofile.data.tglhariini,
+            tanggaldar: responseprofile.data.periodetanggaldar[0],
           });
           let iduser = responseprofile.data.data.user.id_karyawan;
           //ambild data di server bisa dilakukan disini
@@ -343,8 +345,8 @@ class Dar extends Component {
                 <Text style={{color: 'red'}}>
                   {this.state.periodetanggaldar.length}{' '}
                 </Text>
-                Periode Sebelumnya.
-                {'\n'}Pilih tanggal DAR dibawah ini :
+                Periode di bawah ini :
+                {/* {'\n'}anda belum mengisi DAR pada tanggal DAR dibawah ini : */}
               </Text>
 
               <SelectDropdown
@@ -353,10 +355,21 @@ class Dar extends Component {
                 data={this.state.periodetanggaldar}
                 onSelect={(selectedItem, index) => {
                   console.log(selectedItem, index);
-                  this.setState({tanggaldar: selectedItem});
-                  console.log(this.state.tanggaldar);
+                  if (index > 0) {
+                    alert('pilih tanggal yang terkecil dahulu');
+                    this.setState({
+                      tanggaldar: this.state.periodetanggaldar[0],
+                    });
+                    console.log(this.state.tanggaldar);
+                  } else {
+                    this.setState({tanggaldar: selectedItem});
+                    console.log(this.state.tanggaldar);
+                  }
+                  // this.setState({tanggaldar: selectedItem});
+                  // console.log(this.state.tanggaldar);
                 }}
                 buttonTextAfterSelection={(selectedItem, index) => {
+                  // this.defaultValueByIndex = 0;
                   // text represented after item is selected
                   // if data array is an array of objects then return selectedItem.property to render after item is selected
                   return selectedItem;
@@ -394,6 +407,9 @@ class Dar extends Component {
                   fontSize: 12,
                   marginTop: 10,
                 }}>
+                TANGGAL DAR YANG HARUS DI INPUT TERLEBIH DAHULU {' : '}{' '}
+                {this.state.tanggaldar} {'\n'}TANGGAL PENGISIAN DAR {' : '}{' '}
+                {this.state.tanggal} {'\n'}
                 STATUS DAR :{' '}
                 <Text
                   style={{

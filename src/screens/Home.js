@@ -44,7 +44,7 @@ class Home extends Component {
     this.state = {
       statusdarthisday: [0, 0, 0, 0, 1],
       d: 1,
-      labelku: 'ayam',
+      labelku: 'ontime',
       datalogin: [],
       token: '',
     };

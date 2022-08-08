@@ -118,7 +118,8 @@ class LaporanDar extends Component {
           //ambild data di server bisa dilakukan disini
           axios({
             method: 'get',
-            url: `${baseUrl}/api/sidar_dar/all`,
+            // url: `${baseUrl}/api/sidar_dar/all`,
+            url: `${baseUrl}/api/sidar_dar/detail?option=2&iduser=770`,
             headers: {
               'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
               'X-Token': this.state.token,
@@ -238,10 +239,10 @@ class LaporanDar extends Component {
                     style={{
                       // marginLeft: 5,
                       fontWeight: 'bold',
-                      fontSize: 20,
+                      fontSize: 16,
                       color: '#ffffff',
                     }}>
-                    {item.tanggal} / {item.jam}
+                    {item.tanggaldar} / {item.jam}
                   </Text>
                 </View>
                 <View>

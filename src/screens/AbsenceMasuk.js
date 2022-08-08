@@ -588,9 +588,10 @@ class AbsenceMasuk extends Component {
               color: '#FFFFFF',
               fontSize: 12,
             }}>
-            Hi, {this.state.datalogin.username} - {this.state.iduser}
+            Hi, {this.state.datalogin.username}
+            {/* {this.state.iduser} */}
             {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-            {'\n'}token, {this.state.token}
+            {/* {'\n'}token, {this.state.token} */}
           </Text>
         </View>
 

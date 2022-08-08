@@ -67,6 +67,17 @@ class Dar extends Component {
 
   componentWillUnmount() {}
 
+  logout = async () => {
+    console.log('logout');
+    try {
+      AsyncStorage.removeItem('@storage_Key');
+      try {
+        this.props.navigation.navigate('Login');
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (e) {}
+  };
   render() {
     return (
       <View style={{backgroundColor: '#373737', flex: 1}}>
@@ -179,20 +190,57 @@ class Dar extends Component {
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
           }}>
+          {/* Cuti */}
           <TouchableOpacity
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('LaporanDar')}>
-            <Icon name="chart-bar" size={20} color="#ffffff" />
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Cuti', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="ban" size={20} color="#ffffff" />
             <Text
               style={{
                 color: '#ffffff',
                 fontsize: 9,
               }}>
-              Laporan
+              Cuti
             </Text>
           </TouchableOpacity>
+          {/* DAR */}
           <TouchableOpacity
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Dar', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="book" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              DAR
+            </Text>
+          </TouchableOpacity>
+          {/* Home */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             onPress={() => this.props.navigation.navigate('Home')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
@@ -203,16 +251,43 @@ class Dar extends Component {
               Home
             </Text>
           </TouchableOpacity>
+          {/* Laporan */}
           <TouchableOpacity
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('Dar')}>
-            <Icon name="book" size={20} color="#ffffff" />
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('LaporanDar', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="chart-bar" size={20} color="#ffffff" />
             <Text
               style={{
                 color: '#ffffff',
                 fontsize: 9,
               }}>
-              DAR
+              Laporan
+            </Text>
+          </TouchableOpacity>
+          {/* Logout */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={this.logout}>
+            <Icon name="sign-out-alt" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Logout
             </Text>
           </TouchableOpacity>
         </View>

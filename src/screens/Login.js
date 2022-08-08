@@ -44,30 +44,45 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    this.unsubsribe = this.props.navigation.addListener('focus', () => {
-      console.log(this.state.username);
-      console.log(this.state.password);
-      let username = 'suryor';
-      let password = '123456';
+    // alert('didmount');
+    try {
+      AsyncStorage.getItem('@storage_Key').then(value => {
+        // alert('Anda Sudah Perna');
+        console.log('coba get value token did mount');
+        console.log(value);
+        this.setState({token: value});
+        tokens = value;
 
-      //ambild data di server bisa dilakukan disini
-      axios({
-        method: 'get',
-        url: `${baseUrl}/api/userlogin/?username=${username}&pwd=${password}`,
-      })
-        .then(response => {
-          // console.log(response.data.data);
-          // console.log(count.response.data.data[0]);
-          // console.log(response.data.data[0]);
-          // console.log(response.data.message);
-          if (response.data.message == 'success') {
-            console.log(response.data.data[0].username);
-          }
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-    });
+        if (tokens) {
+          this.props.navigation.navigate('Home', {
+            // data: res.data.data,
+            token: tokens,
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // this.unsubsribe = this.props.navigation.addListener('focus', () => {
+    //   console.log(this.state.username);
+    //   console.log(this.state.password);
+    //   let username = 'suryor';
+    //   let password = '123456';
+
+    //   //ambild data di server bisa dilakukan disini
+    //   axios({
+    //     method: 'get',
+    //     url: `${baseUrl}/api/userlogin/?username=${username}&pwd=${password}`,
+    //   })
+    //     .then(response => {
+    //       if (response.data.message == 'success') {
+    //         console.log(response.data.data[0].username);
+    //       }
+    //     })
+    //     .catch(function (err) {
+    //       console.log(err);
+    //     });
+    // });
   }
 
   componentWillUnmount() {
@@ -108,57 +123,74 @@ class Login extends Component {
     bodyFormData.append('username', this.state.username);
     bodyFormData.append('password', this.state.password);
 
+    try {
+      const data = await AsyncStorage.getItem('@storage_Key');
+      if (data !== null) {
+        console.log(data);
+        alert('Error : asynstore not null, please close apps and open again');
+        // try {
+        //   this.props.navigation.navigate('Home', {
+        //     data: res.data.data,
+        //     token: res.data.token,
+        //   });
+        // } catch (error) {
+        //   console.error(error);
+        // }
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
     // bodyFormData.append('username', 'suryoatmojo');
     // bodyFormData.append('password', '123456789');
 
-    let res = await axios.post(`${baseUrl}/api/user/login`, bodyFormData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'X-API-KEY': '0ED40DE05125623C8753B6D3196C18DE',
-      },
-    });
-    console.log(res.data.token);
+    try {
+      let res = await axios.post(`${baseUrl}/api/user/login`, bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-API-KEY': '0ED40DE05125623C8753B6D3196C18DE',
+        },
+      });
+      console.log('axios post');
+      console.log(res.data.token);
+      console.log(res);
+      if (res.data.status == true) {
+        // console.log(response.data.data.username);
+        console.log('response status true');
 
-    if (res.data.status == true) {
-      // console.log(response.data.data.username);
-      console.log('response status true');
-
-      try {
-        AsyncStorage.removeItem('@storage_Key');
-      } catch (e) {
-        // remove error
-      }
-
-      try {
-        AsyncStorage.setItem('@storage_Key', res.data.token);
-        // AsyncStorage.setItem('datalog', res.data.data);
         try {
-          this.props.navigation.navigate('Home', {
-            data: res.data.data,
-            token: res.data.token,
-          });
-        } catch (error) {
-          console.error(error);
+          AsyncStorage.removeItem('@storage_Key');
+        } catch (e) {
+          // remove error
         }
-      } catch (e) {
-        // saving error
-      }
-      // get Data from Storage
-      try {
-        const data = await AsyncStorage.getItem('@storage_Key');
-        if (data !== null) {
-          console.log(data);
-          return data;
-        }
-      } catch (error) {
-        console.log(error);
-      }
 
-      // navigation.navigate('Home');
-      // this.redirectPage();
-      // <LocationItem navigation={this.props.navigation.navigate('Home')} />;
-    } else {
-      alert('periksa kembali username dan password anda');
+        try {
+          AsyncStorage.setItem('@storage_Key', res.data.token);
+          // AsyncStorage.setItem('datalog', res.data.data);
+          try {
+            this.props.navigation.navigate('Home', {
+              data: res.data.data,
+              token: res.data.token,
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        } catch (e) {
+          // saving error
+        }
+        // get Data from Storage
+
+        // navigation.navigate('Home');
+        // this.redirectPage();
+        // <LocationItem navigation={this.props.navigation.navigate('Home')} />;
+      } else {
+        console.log('response status false');
+        alert('periksa kembali username dan password anda');
+      }
+    } catch (error) {
+      console.log('wasd');
+      alert('terjadi kesalahan, periksa kembali username dan password anda');
     }
 
     // var bodyFormData = new FormData();
@@ -246,6 +278,18 @@ class Login extends Component {
     //   });
   };
 
+  logout = async () => {
+    console.log('logout');
+    try {
+      AsyncStorage.removeItem('@storage_Key');
+      try {
+        this.props.navigation.navigate('Login');
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (e) {}
+  };
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#2b2b2b'}}>
@@ -262,6 +306,7 @@ class Login extends Component {
             borderRadius: 9,
             elevation: 2,
             paddingLeft: 10,
+            color: '#252525',
           }}
           placeholder="Masukkan Username Anda"
         />
@@ -274,6 +319,7 @@ class Login extends Component {
             borderRadius: 9,
             elevation: 2,
             paddingLeft: 10,
+            color: '#252525',
           }}
           placeholder="Masukkan Password Anda"
           secureTextEntry={true}

@@ -101,7 +101,12 @@ class Dar extends Component {
           console.log(this.state.token);
 
           if (responseprofile.data.periodetanggaldar.length === 0) {
+            console.log('periode tanggal dar kosong');
             this.setState({tanggaldar: responseprofile.data.tglhariini});
+          } else {
+            this.setState({
+              tanggaldar: responseprofile.data.periodetanggaldar[0],
+            });
           }
           this.setState({
             status: responseprofile.data.statusdar,
@@ -109,13 +114,16 @@ class Dar extends Component {
             datalogin: responseprofile.data.data.user,
             iduser: responseprofile.data.data.user.id_karyawan,
             tanggal: responseprofile.data.tglhariini,
-            tanggaldar: responseprofile.data.periodetanggaldar[0],
+            // tanggaldar: responseprofile.data.periodetanggaldar[0],
           });
           let iduser = responseprofile.data.data.user.id_karyawan;
+          console.log('id_user');
+          console.log(iduser);
+          console.log(this.state.tanggaldar);
           //ambild data di server bisa dilakukan disini
           axios({
             method: 'get',
-            url: `${baseUrl}/api/sidar_dar/all`,
+            url: `${baseUrl}/api/sidar_dar/detail?option=2&iduser=${iduser}`,
             headers: {
               'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
               'X-Token': this.state.token,
@@ -220,6 +228,18 @@ class Dar extends Component {
         console.log(err);
         alert('periksa kembali inputan anda');
       });
+  };
+
+  logout = async () => {
+    console.log('logout');
+    try {
+      AsyncStorage.removeItem('@storage_Key');
+      try {
+        this.props.navigation.navigate('Login');
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (e) {}
   };
 
   render() {
@@ -592,20 +612,57 @@ class Dar extends Component {
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
           }}>
+          {/* Cuti */}
           <TouchableOpacity
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('LaporanDar')}>
-            <Icon name="chart-bar" size={20} color="#ffffff" />
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Cuti', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="ban" size={20} color="#ffffff" />
             <Text
               style={{
                 color: '#ffffff',
                 fontsize: 9,
               }}>
-              Laporan
+              Cuti
             </Text>
           </TouchableOpacity>
+          {/* DAR */}
           <TouchableOpacity
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Dar', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="book" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              DAR
+            </Text>
+          </TouchableOpacity>
+          {/* Home */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             onPress={() => this.props.navigation.navigate('Home')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
@@ -616,16 +673,43 @@ class Dar extends Component {
               Home
             </Text>
           </TouchableOpacity>
+          {/* Laporan */}
           <TouchableOpacity
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('Dar')}>
-            <Icon name="book" size={20} color="#ffffff" />
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('LaporanDar', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="chart-bar" size={20} color="#ffffff" />
             <Text
               style={{
                 color: '#ffffff',
                 fontsize: 9,
               }}>
-              DAR
+              Laporan
+            </Text>
+          </TouchableOpacity>
+          {/* Logout */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={this.logout}>
+            <Icon name="sign-out-alt" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Logout
             </Text>
           </TouchableOpacity>
         </View>

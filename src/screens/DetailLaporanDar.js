@@ -126,7 +126,8 @@ class Dar extends Component {
             <Text style={styles.textmin}>
               Hi, {this.props.route.params.data.namakaryawan}
               {'\n'}Berikut data DAR anda pada tanggal,{' '}
-              {this.props.route.params.data.tanggal} , Jam{' '}
+              {this.props.route.params.data.tanggaldar} , diisi pada tanggal{' '}
+              {this.props.route.params.data.tanggal}, Jam{' '}
               {this.props.route.params.data.jam}
             </Text>
           </View>
@@ -252,7 +253,7 @@ const styles = StyleSheet.create({
   },
   textmin: {
     color: '#ffffff',
-    fontSize: 15,
+    fontSize: 12,
   },
   textbody: {
     color: '#ffffff',

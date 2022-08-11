@@ -50,6 +50,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {WebView} from 'react-native-webview';
 // import * as ImagePicker from 'react-native-image-picker';
 const options = {
   title: 'Select Avatar',
@@ -86,6 +87,14 @@ class AbsenceMasuk extends Component {
       datalogin: [],
       iduser: '',
     };
+  }
+
+  showLoader() {
+    this.setState({isVisible: true});
+  }
+
+  hideLoader() {
+    this.setState({isVisible: false});
   }
 
   chooseImage = () => {
@@ -227,6 +236,7 @@ class AbsenceMasuk extends Component {
   componentDidMount() {
     console.disableYellowBox = true;
     console.disableYellowBox = ['Warning: Each', 'Warning: Failed'];
+
     LogBox.ignoreLogs(['Require cycle:']);
     LogBox.ignoreAllLogs();
     AsyncStorage.getItem('@storage_Key').then(value => {
@@ -280,6 +290,7 @@ class AbsenceMasuk extends Component {
                   response.data.data.sidar_masterkaryawan[0].statusdarthisday,
               });
               console.log(this.state.statusdarthisday[4]);
+              this.lCamera();
             })
             .catch(function (err) {
               console.log(err);
@@ -494,15 +505,24 @@ class AbsenceMasuk extends Component {
           alert('berhasil');
           this.setState({status_simpan: true});
         } else {
-          alert('periksa kembali inputan  anda');
+          alert('periksa kembali inputan  anda test');
           this.setState({status_simpan: true});
         }
       })
-      .catch(function (err) {
-        console.log(err);
-        alert('periksa kembali inputan anda');
+      .catch(error => {
+        alert('periksa kembali inputan anda gaes');
+        console.log('Error:' + error.message);
         this.setState({status_simpan: true});
       });
+    // .catch(function (err) {
+    //   console.log(err);
+    //   alert('periksa kembali inputan anda gaes');
+    //   try {
+    //     this.setState({status_simpan: false});
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // });
   };
 
   logout = async () => {
@@ -522,95 +542,84 @@ class AbsenceMasuk extends Component {
       <View style={{backgroundColor: '#373737', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
 
-        <View
-          style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 20,
-          }}>
-          <TouchableOpacity onPress={this.toggleOpen}>
-            <Icon name="cog" size={30} color="#ffffff" />
-            {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-            }}>
-            INDRACO - SIDAR
-          </Text>
-          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-        </View>
-        {/* </View> */}
-
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: 5,
-            backgroundColor: '#2b2b2b',
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
-          }}>
-          {/* <Image
+        <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+          <SafeAreaView>
+            <View
+              style={{
+                borderBottomRightRadius: 20,
+                borderBottomLeftRadius: 20,
+                backgroundColor: '#393939',
+                padding: 10,
+              }}>
+              <TouchableOpacity onPress={this.toggleOpen}>
+                <Icon name="cog" size={30} color="#ffffff" />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: '#ffffff',
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  marginTop: 10,
+                }}>
+                INDRACO - SIDAR
+              </Text>
+            </View>
+            <View
+              style={{
+                marginTop: 5,
+                marginBottom: 5,
+                backgroundColor: '#2b2b2b',
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+                borderBottomRightRadius: 12,
+                borderBottomLeftRadius: 12,
+              }}>
+              {/* <Image
             source={uri(
               'content://com.android.providers.media.documents/document/image:307420',
             )}
           /> */}
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              color: '#ffffff',
-              textAlign: 'center',
-              marginTop: 10,
-            }}>
-            ABSEN MASUK
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 16,
-            }}></Text>
-        </View>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  color: '#ffffff',
+                  textAlign: 'center',
+                  marginTop: 10,
+                }}>
+                ABSEN MASUK
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 16,
+                }}></Text>
+            </View>
 
-        <View
-          style={{
-            marginTop: 5,
-            padding: 10,
-            backgroundColor: '#2b2b2b',
-            paddingVertical: 10,
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
-          }}>
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 12,
-            }}>
-            Hi, {this.state.datalogin.username}
-            {/* {this.state.iduser} */}
-            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-            {/* {'\n'}token, {this.state.token} */}
-          </Text>
-        </View>
+            <View
+              style={{
+                marginTop: 5,
+                padding: 10,
+                backgroundColor: '#2b2b2b',
+                paddingVertical: 10,
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+                borderBottomRightRadius: 12,
+                borderBottomLeftRadius: 12,
+              }}>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                }}>
+                Hi, {this.state.datalogin.username}
+                {/* {this.state.iduser} */}
+                {'\n'}Anda terakhir login pada,{' '}
+                {this.state.datalogin.last_login}
+                {/* {'\n'}token, {this.state.token} */}
+              </Text>
+            </View>
 
-        {/* <TextArea placeholder="Description" /> */}
-
-        <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
-          <SafeAreaView>
             <View style={styles.body}>
               <Text
                 style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
@@ -658,7 +667,7 @@ class AbsenceMasuk extends Component {
                   ===={this.state.locationStatus}====
                 </Text>
 
-                <Text
+                {/* <Text
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -666,8 +675,8 @@ class AbsenceMasuk extends Component {
                     fontSize: 20,
                   }}>
                   LONGITUDE : {this.state.currentLongitude}
-                </Text>
-                <Text
+                </Text> */}
+                {/* <Text
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -675,7 +684,7 @@ class AbsenceMasuk extends Component {
                     fontSize: 20,
                   }}>
                   LATITUDE : {this.state.currentLatitude}
-                </Text>
+                </Text> */}
               </View>
             </View>
           </SafeAreaView>
@@ -690,6 +699,29 @@ class AbsenceMasuk extends Component {
             {/* <Text>ABSENCE MASUK</Text> */}
             {/* <Text style={styles.boldText}>{locationStatus}</Text> */}
           </View>
+
+          <View style={{height: 200}}>
+            <WebView
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                marginTop: 10,
+              }}
+              source={{
+                html:
+                  '<iframe width="100%" height="100%" src="https://maps.google.com/maps?q=' +
+                  this.state.currentLatitude +
+                  ', ' +
+                  this.state.currentLongitude +
+                  '&z=17&output=embed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>',
+              }}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              onLoadStart={() => this.showLoader()}
+              onLoad={() => this.hideLoader()}
+            />
+          </View>
         </ScrollView>
         <TouchableOpacity
           style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
@@ -697,7 +729,7 @@ class AbsenceMasuk extends Component {
           <Text
             style={{
               color: '#FFFFFF',
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: 'bold',
               textAlign: 'center',
             }}>
@@ -712,7 +744,7 @@ class AbsenceMasuk extends Component {
             <Text
               style={{
                 color: '#FFFFFF',
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: 'bold',
                 textAlign: 'center',
               }}>
@@ -863,24 +895,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images: {
-    width: 100,
-    height: 100,
+    width: 115,
+    height: 115,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
   },
   btnParentSection: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
   },
   btnSection: {
     width: 225,
-    height: 50,
+    height: 20,
     backgroundColor: '#DCDCDC',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,
-    marginBottom: 10,
   },
   btnText: {
     textAlign: 'center',
@@ -890,7 +921,7 @@ const styles = StyleSheet.create({
   },
 
   btnAbsence: {
-    marginBottom: 20,
+    marginBottom: 10,
     paddingVertical: 10,
     marginHorizontal: 20,
     justifyContent: 'center',

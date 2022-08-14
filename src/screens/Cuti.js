@@ -23,11 +23,18 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const Drawer = createDrawerNavigator();
 const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
 // const baseUrl = 'http://localhost/sidar-new';
 
@@ -138,8 +145,7 @@ class Cuti extends Component {
   render() {
     return (
       <View style={{backgroundColor: '#373737', flex: 1}}>
-        {/* <View style={{flex: 1}}> */}
-        <View
+        {/* <View
           style={{
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
@@ -148,13 +154,7 @@ class Cuti extends Component {
           }}>
           <TouchableOpacity onPress={this.toggleOpen}>
             <Icon name="cog" size={30} color="#ffffff" />
-            {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
+           
           </TouchableOpacity>
           <Text
             style={{
@@ -171,12 +171,9 @@ class Cuti extends Component {
               fontSize: 12,
             }}>
             Hi, {this.state.datalogin.username}
-            {/* - {this.state.iduser} */}
             {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-            {/* token, {this.state.token} */}
           </Text>
-          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-        </View>
+        </View> */}
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <View>
             <Text

@@ -203,10 +203,8 @@ class Home extends Component {
           overlay={true}
           opacity={0.4}>
           <View style={{backgroundColor: '#373737', flex: 1}}>
-            {/* <TouchableOpacity onPress={this.toggleOpen} style={styles.body}>
-              <Text>Open</Text>
-            </TouchableOpacity> */}
-            <View
+          
+            {/* <View
               style={{
                 borderBottomRightRadius: 20,
                 borderBottomLeftRadius: 20,
@@ -215,13 +213,7 @@ class Home extends Component {
               }}>
               <TouchableOpacity onPress={this.toggleOpen}>
                 <Icon name="cog" size={30} color="#ffffff" />
-                {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
+               
               </TouchableOpacity>
               <Text
                 style={{
@@ -232,8 +224,8 @@ class Home extends Component {
                 }}>
                 INDRACO - SIDAR
               </Text>
-              {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-            </View>
+              
+            </View> */}
 
             <View
               style={{

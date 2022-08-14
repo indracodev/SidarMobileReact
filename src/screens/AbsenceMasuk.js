@@ -540,11 +540,9 @@ class AbsenceMasuk extends Component {
   render() {
     return (
       <View style={{backgroundColor: '#373737', flex: 1}}>
-        {/* <View style={{flex: 1}}> */}
-
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <SafeAreaView>
-            <View
+            {/* <View
               style={{
                 borderBottomRightRadius: 20,
                 borderBottomLeftRadius: 20,
@@ -563,7 +561,7 @@ class AbsenceMasuk extends Component {
                 }}>
                 INDRACO - SIDAR
               </Text>
-            </View>
+            </View> */}
             <View
               style={{
                 marginTop: 5,

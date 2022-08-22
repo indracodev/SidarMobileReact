@@ -29,6 +29,7 @@ import {
   Button,
   StatusBar,
   Dimensions,
+  Alert,
 } from 'react-native';
 
 import {
@@ -57,7 +58,7 @@ const options = {
     path: 'images',
   },
 };
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
 class AbsenceKeluar extends Component {
   constructor(props) {
@@ -445,6 +446,20 @@ class AbsenceKeluar extends Component {
     } catch (e) {}
   };
 
+  showConfirmDialog = () => {
+    return Alert.alert('Are your sure?', 'Logout', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          this.logout();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  };
+
   render() {
     return (
       <View style={{backgroundColor: '#373737', flex: 1}}>
@@ -628,28 +643,6 @@ class AbsenceKeluar extends Component {
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
           }}>
-          {/* Cuti */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              this.props.navigation.navigate('Cuti', {
-                data: this.state.datalogin,
-                token: this.state.token,
-              })
-            }>
-            <Icon name="ban" size={20} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Cuti
-            </Text>
-          </TouchableOpacity>
           {/* DAR */}
           <TouchableOpacity
             style={{
@@ -670,23 +663,6 @@ class AbsenceKeluar extends Component {
                 fontsize: 9,
               }}>
               DAR
-            </Text>
-          </TouchableOpacity>
-          {/* Home */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => this.props.navigation.navigate('Home')}>
-            <Icon name="home" size={25} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Home
             </Text>
           </TouchableOpacity>
           {/* Laporan */}
@@ -711,6 +687,47 @@ class AbsenceKeluar extends Component {
               Laporan
             </Text>
           </TouchableOpacity>
+          {/* Home */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => this.props.navigation.navigate('Home')}>
+            <Icon name="home" size={25} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Home
+            </Text>
+          </TouchableOpacity>
+
+          {/* Cuti */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Cuti', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="ban" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Cuti
+            </Text>
+          </TouchableOpacity>
+
           {/* Logout */}
           <TouchableOpacity
             style={{
@@ -718,7 +735,7 @@ class AbsenceKeluar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={this.logout}>
+            onPress={this.showConfirmDialog}>
             <Icon name="sign-out-alt" size={20} color="#ffffff" />
             <Text
               style={{

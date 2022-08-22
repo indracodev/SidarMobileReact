@@ -21,13 +21,15 @@ import {
   StatusBar,
   FlatList,
   StyleSheet,
+  Alert,
+  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
 
 var product = [
@@ -81,12 +83,13 @@ class LaporanDar extends Component {
       token: '',
       datalogin: [],
       iduser: '',
+      status_loading: true,
     };
   }
 
   componentDidMount() {
     console.log('token');
-
+    this.setState({status_loading: true});
     AsyncStorage.getItem('@storage_Key').then(value => {
       console.log('coba get value token');
       console.log(value);
@@ -127,13 +130,16 @@ class LaporanDar extends Component {
           })
             .then(response => {
               this.setState({dar: response.data.data.sidar_dar});
+              this.setState({status_loading: false});
             })
             .catch(function (err) {
               console.log(err);
+              this.setState({status_loading: false});
             });
         })
         .catch(function (err) {
           console.log(err);
+          this.setState({status_loading: false});
         });
     });
 
@@ -173,136 +179,143 @@ class LaporanDar extends Component {
     } catch (e) {}
   };
 
+  showConfirmDialog = () => {
+    return Alert.alert('Are your sure?', 'Logout', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          this.logout();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  };
+
   render() {
     return (
-      <View style={{backgroundColor: '#373737', flex: 1}}>
-        {/* <View style={{flex: 1}}> */}
-        <View
-          style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 20,
-          }}>
-          <TouchableOpacity onPress={this.toggleOpen}>
-            <Icon name="cog" size={30} color="#ffffff" />
-            {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
-          </TouchableOpacity>
-          <Text
+      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
+        {this.state.status_loading == true ? (
+          <View
             style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              height: 100,
             }}>
-            INDRACO - SIDAR
-          </Text>
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 12,
-            }}>
-            Hi, {this.state.datalogin.username}
-            {/* - {this.state.iduser} */}
-            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-            {/* token, {this.state.token} */}
-          </Text>
-          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-        </View>
-        {/* </View> */}
-
-        {/* <Text>Pergi Ke Detail</Text> */}
-        <FlatList
-          style={{marginTop: 0}}
-          data={this.state.dar}
-          renderItem={({item, index}) => (
-            //styling view
-            <TouchableOpacity
+            <View>
+              <Image
+                source={require('../images/loading-load.gif')}
+                style={{width: 120, height: 120}}
+              />
+            </View>
+          </View>
+        ) : (
+          <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
+            <View
               style={{
-                // backgroundColor: '#60a5f0',
-                backgroundColor: '#2b2b2b',
-                marginTop: 10,
-                marginHorizontal: 10,
-                padding: 20,
-                borderTopRightRadius: 20,
+                borderBottomRightRadius: 20,
                 borderBottomLeftRadius: 20,
-                borderTopLeftRadius: 5,
-                borderBottomRightRadius: 5,
-              }}
-              onPress={() =>
-                this.props.navigation.navigate('DetailLaporanDar', {
-                  data: item,
-                })
-              }>
-              {/* <View style={{flex: 1}}></View> */}
-
-              <Text style={[styles.textstatus, {color: 'white'}]}>
-                {item.namakaryawan}
+                backgroundColor: '#393939',
+                padding: 15,
+              }}>
+              {/* <TouchableOpacity onPress={this.toggleOpen}>
+                <Icon name="cog" size={30} color="#ffffff" />
+              </TouchableOpacity> */}
+              <Text
+                style={{
+                  color: '#ffffff',
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  marginTop: 5,
+                }}>
+                INDRACO - SIDAR
               </Text>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <Text
-                    style={{
-                      // marginLeft: 5,
-                      fontWeight: 'bold',
-                      fontSize: 16,
-                      color: '#ffffff',
-                    }}>
-                    {item.tanggaldar} / {item.jam}
-                  </Text>
-                </View>
-                <View>
-                  {/* <Icon name="check" size={50} color="rgba(255,255,255,0.5)" /> */}
-                  {item.status == '' ? (
-                    <Text
-                      style={[
-                        styles.textstatus,
-                        {
-                          backgroundColor: item.colorstatus,
-                          color: 'white',
-                        },
-                      ]}>
-                      No Data
-                    </Text>
-                  ) : (
-                    <Text
-                      style={[
-                        styles.textstatus,
-                        {
-                          backgroundColor: item.colorstatus,
-                          color: 'white',
-                        },
-                      ]}>
-                      {item.status}
-                    </Text>
-                  )}
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-        {/* 
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate('Detail', {
-              // membuat data untuk di kirim ke page detail
-              namaUser: 'Indraco',
-              product: [
-                {brand: 'ucafe', rasa: 'mocachinno'},
-                {brand: 'rasa sayang', rasa: 'kopi'},
-              ],
-              ucafe: {},
-            })
-          }>
-          <Text>Pergi Ke Detail</Text>
-        </TouchableOpacity> */}
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                }}>
+                Hi, {this.state.datalogin.username}
+                {/* - {this.state.iduser} */}
+                {'\n'}Anda terakhir login pada,{' '}
+                {this.state.datalogin.last_login}
+                {/* token, {this.state.token} */}
+              </Text>
+            </View>
 
+            <FlatList
+              style={{marginTop: 0}}
+              data={this.state.dar}
+              renderItem={({item, index}) => (
+                //styling view
+                <TouchableOpacity
+                  style={{
+                    // backgroundColor: '#60a5f0',
+                    backgroundColor: '#f9ffff',
+                    marginTop: 10,
+                    marginHorizontal: 10,
+                    padding: 20,
+                    borderTopRightRadius: 20,
+                    borderBottomLeftRadius: 20,
+                    borderTopLeftRadius: 5,
+                    borderBottomRightRadius: 5,
+                  }}
+                  onPress={() =>
+                    this.props.navigation.navigate('DetailLaporanDar', {
+                      data: item,
+                    })
+                  }>
+                  {/* <View style={{flex: 1}}></View> */}
+
+                  <Text style={[styles.textstatus, {color: '#393939'}]}>
+                    {item.namakaryawan}
+                  </Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 1}}>
+                      <Text
+                        style={{
+                          // marginLeft: 5,
+                          fontWeight: 'bold',
+                          fontSize: 16,
+                          color: '#393939',
+                        }}>
+                        {item.tanggaldar} / {item.jam}
+                      </Text>
+                    </View>
+                    <View>
+                      {/* <Icon name="check" size={50} color="rgba(255,255,255,0.5)" /> */}
+                      {item.status == '' ? (
+                        <Text
+                          style={[
+                            styles.textstatus,
+                            {
+                              backgroundColor: item.colorstatus,
+                              color: 'white',
+                            },
+                          ]}>
+                          No Data
+                        </Text>
+                      ) : (
+                        <Text
+                          style={[
+                            styles.textstatus,
+                            {
+                              backgroundColor: item.colorstatus,
+                              color: 'white',
+                            },
+                          ]}>
+                          {item.status}
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        )}
         <View
           style={{
             backgroundColor: '#2b2b2b',
@@ -311,28 +324,6 @@ class LaporanDar extends Component {
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
           }}>
-          {/* Cuti */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              this.props.navigation.navigate('Cuti', {
-                data: this.state.datalogin,
-                token: this.state.token,
-              })
-            }>
-            <Icon name="ban" size={20} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Cuti
-            </Text>
-          </TouchableOpacity>
           {/* DAR */}
           <TouchableOpacity
             style={{
@@ -353,23 +344,6 @@ class LaporanDar extends Component {
                 fontsize: 9,
               }}>
               DAR
-            </Text>
-          </TouchableOpacity>
-          {/* Home */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => this.props.navigation.navigate('Home')}>
-            <Icon name="home" size={25} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Home
             </Text>
           </TouchableOpacity>
           {/* Laporan */}
@@ -394,6 +368,47 @@ class LaporanDar extends Component {
               Laporan
             </Text>
           </TouchableOpacity>
+          {/* Home */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => this.props.navigation.navigate('Home')}>
+            <Icon name="home" size={25} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Home
+            </Text>
+          </TouchableOpacity>
+
+          {/* Cuti */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Cuti', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="ban" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Cuti
+            </Text>
+          </TouchableOpacity>
+
           {/* Logout */}
           <TouchableOpacity
             style={{
@@ -401,7 +416,7 @@ class LaporanDar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={this.logout}>
+            onPress={this.showConfirmDialog}>
             <Icon name="sign-out-alt" size={20} color="#ffffff" />
             <Text
               style={{

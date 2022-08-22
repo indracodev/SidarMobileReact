@@ -16,6 +16,7 @@ import {
   Platform,
   Button,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 //import all the components we are going to use.

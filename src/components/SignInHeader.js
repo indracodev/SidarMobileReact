@@ -20,7 +20,7 @@ const SignInHeader = props => {
           marginTop: 40,
           fontSize: 28,
           // fontWeight: 'light',
-          color: '#ffffff',
+          color: '#f98441',
           textAlign: 'center',
         }}>
         {props.title}

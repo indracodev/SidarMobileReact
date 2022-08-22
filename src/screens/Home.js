@@ -21,6 +21,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
@@ -33,7 +34,7 @@ import {
 } from 'react-native-chart-kit';
 import axios from 'axios';
 import MenuDrawer from 'react-native-side-drawer';
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://new.sidar.id';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const baseUrl = 'http://localhost/sidar-new';
@@ -191,6 +192,20 @@ class Home extends Component {
     } catch (e) {}
   };
 
+  showConfirmDialog = () => {
+    return Alert.alert('Are your sure?', 'Logout', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          this.logout();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -202,11 +217,8 @@ class Home extends Component {
           animationTime={250}
           overlay={true}
           opacity={0.4}>
-          <View style={{backgroundColor: '#373737', flex: 1}}>
-            {/* <TouchableOpacity onPress={this.toggleOpen} style={styles.body}>
-              <Text>Open</Text>
-            </TouchableOpacity> */}
-            <View
+          <View style={{backgroundColor: '#fffff', flex: 1}}>
+            {/* <View
               style={{
                 borderBottomRightRadius: 20,
                 borderBottomLeftRadius: 20,
@@ -215,13 +227,6 @@ class Home extends Component {
               }}>
               <TouchableOpacity onPress={this.toggleOpen}>
                 <Icon name="cog" size={30} color="#ffffff" />
-                {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
               </TouchableOpacity>
               <Text
                 style={{
@@ -232,14 +237,13 @@ class Home extends Component {
                 }}>
                 INDRACO - SIDAR
               </Text>
-              {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-            </View>
+            </View> */}
 
             <View
               style={{
                 marginTop: 5,
                 padding: 10,
-                backgroundColor: '#2b2b2b',
+                backgroundColor: '#f9ffff',
                 paddingVertical: 10,
                 borderTopRightRadius: 12,
                 borderTopLeftRadius: 12,
@@ -248,7 +252,7 @@ class Home extends Component {
               }}>
               <Text
                 style={{
-                  color: '#FFFFFF',
+                  color: '#393939',
                   fontSize: 12,
                 }}>
                 Hi, {this.state.datalogin.username}
@@ -263,7 +267,7 @@ class Home extends Component {
               style={{
                 marginTop: 5,
                 padding: 10,
-                backgroundColor: '#2b2b2b',
+                backgroundColor: '#f9ffff',
                 display: 'flex',
                 flexDirection: 'row',
                 paddingVertical: 10,
@@ -274,7 +278,7 @@ class Home extends Component {
               }}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: 'green',
+                  backgroundColor: '#84b291',
                   width: '50%',
                   borderRadius: 5,
                   padding: 1,
@@ -294,7 +298,7 @@ class Home extends Component {
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: 'red',
+                  backgroundColor: '#b28484',
                   width: '50%',
                   borderRadius: 5,
                   padding: 1,
@@ -596,28 +600,6 @@ class Home extends Component {
                 borderTopRightRadius: 12,
                 borderTopLeftRadius: 12,
               }}>
-              {/* Cuti */}
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() =>
-                  this.props.navigation.navigate('Cuti', {
-                    data: this.state.datalogin,
-                    token: this.state.token,
-                  })
-                }>
-                <Icon name="ban" size={20} color="#ffffff" />
-                <Text
-                  style={{
-                    color: '#ffffff',
-                    fontsize: 9,
-                  }}>
-                  Cuti
-                </Text>
-              </TouchableOpacity>
               {/* DAR */}
               <TouchableOpacity
                 style={{
@@ -638,23 +620,6 @@ class Home extends Component {
                     fontsize: 9,
                   }}>
                   DAR
-                </Text>
-              </TouchableOpacity>
-              {/* Home */}
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() => this.props.navigation.navigate('Home')}>
-                <Icon name="home" size={25} color="#ffffff" />
-                <Text
-                  style={{
-                    color: '#ffffff',
-                    fontsize: 9,
-                  }}>
-                  Home
                 </Text>
               </TouchableOpacity>
               {/* Laporan */}
@@ -679,6 +644,47 @@ class Home extends Component {
                   Laporan
                 </Text>
               </TouchableOpacity>
+              {/* Home */}
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => this.props.navigation.navigate('Home')}>
+                <Icon name="home" size={25} color="#ffffff" />
+                <Text
+                  style={{
+                    color: '#ffffff',
+                    fontsize: 9,
+                  }}>
+                  Home
+                </Text>
+              </TouchableOpacity>
+
+              {/* Cuti */}
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  this.props.navigation.navigate('Cuti', {
+                    data: this.state.datalogin,
+                    token: this.state.token,
+                  })
+                }>
+                <Icon name="ban" size={20} color="#ffffff" />
+                <Text
+                  style={{
+                    color: '#ffffff',
+                    fontsize: 9,
+                  }}>
+                  Cuti
+                </Text>
+              </TouchableOpacity>
+
               {/* Logout */}
               <TouchableOpacity
                 style={{
@@ -686,7 +692,7 @@ class Home extends Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onPress={this.logout}>
+                onPress={this.showConfirmDialog}>
                 <Icon name="sign-out-alt" size={20} color="#ffffff" />
                 <Text
                   style={{

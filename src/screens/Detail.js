@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {Text, View, TouchableOpacity, FlatList, Alert} from 'react-native';
 class Detail extends Component {
   constructor(props) {
     super(props);

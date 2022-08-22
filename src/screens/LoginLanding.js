@@ -7,6 +7,7 @@ import {
   useWindowDimensions,
   StatusBar,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import Header from '../components/Header';

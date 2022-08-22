@@ -30,7 +30,7 @@ import TextArea from '../components/TextArea';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {

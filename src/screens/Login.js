@@ -22,6 +22,8 @@ import {
   Dimensions,
   ScrollView,
   TextInput,
+  Alert,
+  Image,
 } from 'react-native';
 import {
   StackActions,
@@ -30,7 +32,7 @@ import {
 import SignInHeader from '../components/SignInHeader';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
 
 class Login extends Component {
@@ -40,6 +42,7 @@ class Login extends Component {
       username: '',
       password: '',
       token: '',
+      status_loading: false,
     };
   }
 
@@ -107,6 +110,7 @@ class Login extends Component {
   };
 
   submitData = async () => {
+    this.setState({status_loading: true});
     console.log('async storage run value!!');
 
     console.log('tombollogin mengirimkan data');
@@ -187,10 +191,13 @@ class Login extends Component {
       } else {
         console.log('response status false');
         alert('periksa kembali username dan password anda');
+        this.setState({status_loading: false});
       }
+      this.setState({status_loading: false});
     } catch (error) {
       console.log('wasd');
       alert('terjadi kesalahan, periksa kembali username dan password anda');
+      this.setState({status_loading: false});
     }
 
     // var bodyFormData = new FormData();
@@ -293,67 +300,95 @@ class Login extends Component {
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#2b2b2b'}}>
-        <SignInHeader
-          title="SIDAR"
-          description="System Information Daily Activity Report"
-        />
-        <TextInput
-          onChangeText={text => this.setState({username: text})}
-          style={{
-            marginHorizontal: 20,
-            backgroundColor: '#FFFFFF',
-            marginTop: 20,
-            borderRadius: 9,
-            elevation: 2,
-            paddingLeft: 10,
-            color: '#252525',
-          }}
-          placeholder="Masukkan Username Anda"
-        />
-        <TextInput
-          onChangeText={text => this.setState({password: text})}
-          style={{
-            marginHorizontal: 20,
-            backgroundColor: '#FFFFFF',
-            marginTop: 10,
-            borderRadius: 9,
-            elevation: 2,
-            paddingLeft: 10,
-            color: '#252525',
-          }}
-          placeholder="Masukkan Password Anda"
-          secureTextEntry={true}
-        />
-        <TouchableOpacity
-          style={{marginTop: 20, marginRight: 20}}
-          onPress={() => this.props.navigation.navigate('LupaPassword')}>
-          <Text
-            style={{color: '#FFFFFF', textAlign: 'right', fontWeight: 'bold'}}>
-            Lupa Password?
-          </Text>
-        </TouchableOpacity>
+        {this.state.status_loading == true ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              height: 100,
+              backgroundColor: '#f2ffff',
+            }}>
+            <View>
+              <Image
+                source={require('../images/loading-load.gif')}
+                style={{width: 120, height: 120}}
+              />
+            </View>
+          </View>
+        ) : (
+          <View>
+            <SignInHeader
+              title="SIDAR"
+              description="System Information Daily Activity Report"
+            />
+            <TextInput
+              onChangeText={text => this.setState({username: text})}
+              style={{
+                marginHorizontal: 20,
+                backgroundColor: '#FFFFFF',
+                marginTop: 20,
+                borderRadius: 9,
+                elevation: 2,
+                paddingLeft: 10,
+                color: '#252525',
+              }}
+              placeholder="Masukkan Username Anda"
+            />
+            <TextInput
+              onChangeText={text => this.setState({password: text})}
+              style={{
+                marginHorizontal: 20,
+                backgroundColor: '#FFFFFF',
+                marginTop: 10,
+                borderRadius: 9,
+                elevation: 2,
+                paddingLeft: 10,
+                color: '#252525',
+              }}
+              placeholder="Masukkan Password Anda"
+              secureTextEntry={true}
+            />
+            <Text style={{marginTop: 10, textAlign: 'right', marginRight: 20}}>
+              V2.0.0
+            </Text>
+            {/* <TouchableOpacity
+              style={{marginTop: 20, marginRight: 20}}
+              onPress={() => this.props.navigation.navigate('LupaPassword')}>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  textAlign: 'right',
+                  fontWeight: 'bold',
+                }}>
+                Lupa Password?
+              </Text>
+            </TouchableOpacity> */}
 
-        <TouchableOpacity
-          style={{
-            marginTop: 40,
-            backgroundColor: '#ffffff',
-            paddingVertical: 15,
-            marginHorizontal: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 9,
-            elevation: 2,
-          }}
-          // onPress={() => this.props.navigation.navigate('Home')}>
-          // onPress={() => {
-          //   this.submitData();
-          //   this.redirectPage();
-          // }}>
-          onPress={this.submitData}>
-          <Text style={{color: '#393939', fontSize: 18, fontWeight: 'bold'}}>
-            Sign In
-          </Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                marginTop: 40,
+                backgroundColor: '#797979',
+                paddingVertical: 15,
+                marginHorizontal: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 9,
+                elevation: 2,
+              }}
+              // onPress={() => this.props.navigation.navigate('Home')}>
+              // onPress={() => {
+              //   this.submitData();
+              //   this.redirectPage();
+              // }}>
+              onPress={this.submitData}>
+              <Text
+                style={{color: '#fffff9', fontSize: 18, fontWeight: 'bold'}}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }

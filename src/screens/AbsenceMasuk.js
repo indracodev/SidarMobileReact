@@ -30,6 +30,7 @@ import {
   StatusBar,
   Dimensions,
   LogBox,
+  Alert,
 } from 'react-native';
 
 import {
@@ -60,7 +61,7 @@ const options = {
     path: 'images',
   },
 };
-const baseUrl = 'http://sidar-staging.suryoatmojo.my.id';
+const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
 class AbsenceMasuk extends Component {
   constructor(props) {
@@ -86,6 +87,7 @@ class AbsenceMasuk extends Component {
       token: '',
       datalogin: [],
       iduser: '',
+      place: '',
     };
   }
 
@@ -317,6 +319,11 @@ class AbsenceMasuk extends Component {
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             //To Check, If Permission is granted
             this.getOneTimeLocation();
+
+            //masukkan kode axios disini
+            // console.log('hasil axios mapbox');
+            //end
+
             this.subscribeLocationLocation();
           } else {
             this.setState({locationStatus: 'Permission Denied'});
@@ -410,6 +417,43 @@ class AbsenceMasuk extends Component {
 
         //Setting Longitude state
         this.setState({currentLatitude: currentLatitude});
+
+        console.log('longitude');
+        console.log(currentLongitude);
+        console.log('latitude');
+        console.log(currentLatitude);
+
+        axios({
+          method: 'get',
+          // url: `${baseUrl}/api/sidar_dar/all`,
+          url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentLongitude},${currentLatitude}.json?types=poi&access_token=pk.eyJ1Ijoic2dpd2ViIiwiYSI6ImNrc3E1bDFpazA5cnIyd252amJ6dmV6YzgifQ.eGVUcbmYW0T0vZ3rfZkEFw`,
+          // url: `${baseUrl}/api/sidar_dar/detail?option=2&iduser=${iduser}`,
+          // headers: {
+          //   'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          //   'X-Token': this.state.token,
+          // },
+        })
+          .then(response => {
+            console.log(response.data);
+            console.log('space');
+            console.log('space');
+            console.log(response.data.features[0].context);
+
+            console.log('ini isinya place');
+            console.log(response.data.features[0].context[2].text);
+            var text = '';
+            var i = 0;
+            while (i < response.data.features[0].context.length) {
+              text += response.data.features[0].context[i].text + '\r\n';
+              i++;
+            }
+            console.log(text);
+            this.setState({place: text});
+          })
+          .catch(function (err) {
+            console.log(err);
+            // this.setState({status_loading: false});
+          });
       },
       error => {
         this.setState({locationStatus: error.message});
@@ -426,7 +470,7 @@ class AbsenceMasuk extends Component {
     Geolocation.watchPosition(
       position => {
         //Will give you the location on location change
-
+        console.log('refresh GPS');
         this.setState({locationStatus: 'You are Here'});
         console.log(position);
 
@@ -441,6 +485,10 @@ class AbsenceMasuk extends Component {
 
         //Setting Longitude state
         this.setState({currentLatitude: currentLatitude});
+        console.log('longitude');
+        console.log(currentLongitude);
+        console.log('latitude');
+        console.log(currentLatitude);
       },
       error => {
         this.setState({locationStatus: error.message});
@@ -537,14 +585,28 @@ class AbsenceMasuk extends Component {
     } catch (e) {}
   };
 
+  showConfirmDialog = () => {
+    return Alert.alert('Are your sure?', 'Logout', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          this.logout();
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  };
+
   render() {
     return (
-      <View style={{backgroundColor: '#373737', flex: 1}}>
+      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <SafeAreaView>
-            <View
+            {/* <View
               style={{
                 borderBottomRightRadius: 20,
                 borderBottomLeftRadius: 20,
@@ -563,8 +625,8 @@ class AbsenceMasuk extends Component {
                 }}>
                 INDRACO - SIDAR
               </Text>
-            </View>
-            <View
+            </View> */}
+            {/* <View
               style={{
                 marginTop: 5,
                 marginBottom: 5,
@@ -574,11 +636,6 @@ class AbsenceMasuk extends Component {
                 borderBottomRightRadius: 12,
                 borderBottomLeftRadius: 12,
               }}>
-              {/* <Image
-            source={uri(
-              'content://com.android.providers.media.documents/document/image:307420',
-            )}
-          /> */}
               <Text
                 style={{
                   fontSize: 22,
@@ -594,9 +651,41 @@ class AbsenceMasuk extends Component {
                   textAlign: 'center',
                   fontSize: 16,
                 }}></Text>
-            </View>
+            </View> */}
 
             <View
+              style={{
+                borderBottomRightRadius: 20,
+                borderBottomLeftRadius: 20,
+                backgroundColor: '#393939',
+                padding: 15,
+              }}>
+              {/* <TouchableOpacity onPress={this.toggleOpen}>
+                <Icon name="cog" size={30} color="#ffffff" />
+              </TouchableOpacity> */}
+              <Text
+                style={{
+                  color: '#ffffff',
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  marginTop: 5,
+                }}>
+                SIDAR - DAR
+              </Text>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                }}>
+                Hi, {this.state.datalogin.username}
+                {/* - {this.state.iduser} */}
+                {'\n'}Anda terakhir login pada,{' '}
+                {this.state.datalogin.last_login}
+                {/* token, {this.state.token} */}
+              </Text>
+            </View>
+
+            {/* <View
               style={{
                 marginTop: 5,
                 padding: 10,
@@ -613,16 +702,19 @@ class AbsenceMasuk extends Component {
                   fontSize: 12,
                 }}>
                 Hi, {this.state.datalogin.username}
-                {/* {this.state.iduser} */}
                 {'\n'}Anda terakhir login pada,{' '}
                 {this.state.datalogin.last_login}
-                {/* {'\n'}token, {this.state.token} */}
               </Text>
-            </View>
+            </View> */}
 
             <View style={styles.body}>
               <Text
-                style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
+                style={{
+                  textAlign: 'center',
+                  fontSize: 12,
+                  padding: 5,
+                  fontWeight: 'bold',
+                }}>
                 PICK IMAGES FROM CAMERA
               </Text>
               {/* <Image source={{uri: this.state.fileUri}} style={styles.images} /> */}
@@ -663,8 +755,9 @@ class AbsenceMasuk extends Component {
                 </TouchableOpacity> */}
               </View>
               <View style={styles.btnParentSection}>
-                <Text style={{fontSize: 20, color: 'red'}}>
-                  ===={this.state.locationStatus}====
+                <Text
+                  style={{fontSize: 20, color: '#812626', fontWeight: 'bold'}}>
+                  {this.state.locationStatus}
                 </Text>
 
                 {/* <Text
@@ -700,13 +793,14 @@ class AbsenceMasuk extends Component {
             {/* <Text style={styles.boldText}>{locationStatus}</Text> */}
           </View>
 
-          <View style={{height: 200}}>
+          <View style={{height: 200, flexDirection: 'row'}}>
             <WebView
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 flex: 1,
                 marginTop: 10,
+                // width: '50%',
               }}
               source={{
                 html:
@@ -714,13 +808,16 @@ class AbsenceMasuk extends Component {
                   this.state.currentLatitude +
                   ', ' +
                   this.state.currentLongitude +
-                  '&z=17&output=embed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>',
+                  '&z=20&output=embed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>',
               }}
               javaScriptEnabled={true}
               domStorageEnabled={true}
               onLoadStart={() => this.showLoader()}
               onLoad={() => this.hideLoader()}
             />
+            <View style={{width: '50%', marginTop: 10, marginHorizontal: 5}}>
+              <Text>Place : {this.state.place}</Text>
+            </View>
           </View>
         </ScrollView>
         <TouchableOpacity
@@ -768,28 +865,6 @@ class AbsenceMasuk extends Component {
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
           }}>
-          {/* Cuti */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              this.props.navigation.navigate('Cuti', {
-                data: this.state.datalogin,
-                token: this.state.token,
-              })
-            }>
-            <Icon name="ban" size={20} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Cuti
-            </Text>
-          </TouchableOpacity>
           {/* DAR */}
           <TouchableOpacity
             style={{
@@ -810,23 +885,6 @@ class AbsenceMasuk extends Component {
                 fontsize: 9,
               }}>
               DAR
-            </Text>
-          </TouchableOpacity>
-          {/* Home */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => this.props.navigation.navigate('Home')}>
-            <Icon name="home" size={25} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Home
             </Text>
           </TouchableOpacity>
           {/* Laporan */}
@@ -851,6 +909,47 @@ class AbsenceMasuk extends Component {
               Laporan
             </Text>
           </TouchableOpacity>
+          {/* Home */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => this.props.navigation.navigate('Home')}>
+            <Icon name="home" size={25} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Home
+            </Text>
+          </TouchableOpacity>
+
+          {/* Cuti */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Cuti', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="ban" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Cuti
+            </Text>
+          </TouchableOpacity>
+
           {/* Logout */}
           <TouchableOpacity
             style={{
@@ -858,7 +957,7 @@ class AbsenceMasuk extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={this.logout}>
+            onPress={this.showConfirmDialog}>
             <Icon name="sign-out-alt" size={20} color="#ffffff" />
             <Text
               style={{
@@ -880,10 +979,13 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#acacac',
     justifyContent: 'center',
-    borderColor: 'black',
-    borderWidth: 1,
+    borderRadius: 10,
+
+    // borderColor: 'black',
+    // borderWidth: 1,
+    marginTop: 10,
     // height: Dimensions.get('screen').height - 20,
     // width: Dimensions.get('screen').width,
   },
@@ -895,8 +997,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images: {
-    width: 115,
-    height: 115,
+    width: 180,
+    height: 270,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
@@ -906,8 +1008,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   btnSection: {
-    width: 225,
-    height: 20,
+    width: 180,
+    height: 40,
     backgroundColor: '#DCDCDC',
     alignItems: 'center',
     justifyContent: 'center',
@@ -923,7 +1025,7 @@ const styles = StyleSheet.create({
   btnAbsence: {
     marginBottom: 10,
     paddingVertical: 10,
-    marginHorizontal: 20,
+    // marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 9,

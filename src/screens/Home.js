@@ -702,6 +702,28 @@ class Home extends Component {
                   Logout
                 </Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  this.props.navigation.navigate('Rneui', {
+                    data: this.state.datalogin,
+                    token: this.state.token,
+                  })
+                }>
+                <Icon name="ban" size={20} color="#ffffff" />
+                <Text
+                  style={{
+                    color: '#ffffff',
+                    fontsize: 9,
+                  }}>
+                  coba
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </MenuDrawer>

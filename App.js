@@ -25,6 +25,7 @@ import Bantuan from './src/screens/Bantuan';
 import KritikSaran from './src/screens/KritikSaran';
 
 import Notifee from './src/screens/Notifee';
+import Rneui from './src/screens/Rneui';
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
         <Stack.Screen name="KritikSaran" component={KritikSaran} />
 
         <Stack.Screen name="Notifee" component={Notifee} />
+        <Stack.Screen name="Rneui" component={Rneui} />
       </Stack.Navigator>
     </NavigationContainer>
   );

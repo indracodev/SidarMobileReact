@@ -140,6 +140,10 @@ class AbsenceMasuk extends Component {
 
   lCamera = () => {
     let options = {
+      quality: 1,
+      maxWidth: 400,
+      maxHeight: 400,
+      allowsEditing: false,
       storageOptions: {
         skipBackup: true,
         path: 'images',

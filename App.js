@@ -24,6 +24,8 @@ import Tentang from './src/screens/Tentang';
 import Bantuan from './src/screens/Bantuan';
 import KritikSaran from './src/screens/KritikSaran';
 
+import Notifee from './src/screens/Notifee';
+
 function App() {
   return (
     <NavigationContainer>
@@ -51,6 +53,8 @@ function App() {
         <Stack.Screen name="Tentang" component={Tentang} />
         <Stack.Screen name="Bantuan" component={Bantuan} />
         <Stack.Screen name="KritikSaran" component={KritikSaran} />
+
+        <Stack.Screen name="Notifee" component={Notifee} />
       </Stack.Navigator>
     </NavigationContainer>
   );

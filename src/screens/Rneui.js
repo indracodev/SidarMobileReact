@@ -23,9 +23,15 @@ import {
   StyleSheet,
   Alert,
   Image,
+  TextInput,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {SearchBar, Header} from '@rneui/themed';
+
+import {Header as HeaderRNE, HeaderProps, Icon} from '@rneui/themed';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
+// import Icon from 'react-native-vector-icons/FontAwesome5';
+import {SearchBar} from '@rneui/themed';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -234,11 +240,47 @@ class LaporanDar extends Component {
           </View>
         ) : (
           <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
-            <SearchBar
+            <HeaderRNE
+              leftComponent={{
+                icon: 'menu',
+                color: '#fff',
+              }}
+              rightComponent={
+                <View style={styles.headerRight}>
+                  <TouchableOpacity
+                  // onPress={}
+                  >
+                    <Icon name="description" color="white" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{marginLeft: 10}}
+                    // onPress={}
+                  >
+                    <Icon type="antdesign" name="rocket1" color="white" />
+                  </TouchableOpacity>
+                </View>
+              }
+              centerComponent={
+                <TextInput
+                  style={{
+                    height: 40,
+                    color: '#fffff6',
+                  }}
+                  placeholderTextColor="#fffff9"
+                  onChangeText={text => this.searchFilterFunction(text)}
+                  value={this.state.search}
+                  underlineColorAndroid="transparent"
+                  placeholder="pencarian tanggal (yyyy-mm-dd)"
+                />
+              }
+              centerContainerStyle={{color: '#fffff6'}}
+              backgroundColor="#363636"
+            />
+            {/* <SearchBar
               placeholder="pencarian tanggal (yyyy-mm-dd)"
               onChangeText={text => this.searchFilterFunction(text)}
               value={this.state.search}
-            />
+            /> */}
             <View
               style={{
                 borderBottomRightRadius: 20,
@@ -460,6 +502,30 @@ class LaporanDar extends Component {
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2b2b2b',
+    marginBottom: 20,
+    width: '100%',
+    paddingVertical: 15,
+  },
+  heading: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  headerRight: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 5,
+  },
+  subheaderText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
   viewheader: {
     marginTop: 10,
     marginBottom: 5,

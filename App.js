@@ -1,8 +1,16 @@
 import * as React from 'react';
+import {View, Text, Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+
 import SplashScreen from './src/screens/SplashScreen';
 import LoginLanding from './src/screens/LoginLanding';
 import Login from './src/screens/Login';
@@ -24,17 +32,84 @@ import Tentang from './src/screens/Tentang';
 import Bantuan from './src/screens/Bantuan';
 import KritikSaran from './src/screens/KritikSaran';
 
-import Notifee from './src/screens/Notifee';
-import Rneui from './src/screens/Rneui';
+const Drawer = createDrawerNavigator();
+function Feed({navigation}) {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Feed Screen</Text>
+      <Button title="Open drawer" onPress={() => navigation.openDrawer()} />
+      <Button title="Toggle drawer" onPress={() => navigation.toggleDrawer()} />
+    </View>
+  );
+}
 
-function App() {
+function Notifications() {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Notifications Screen</Text>
+    </View>
+  );
+}
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Close drawer"
+        onPress={() => props.navigation.closeDrawer()}
+      />
+      <DrawerItem
+        label="Toggle drawer"
+        onPress={() => props.navigation.toggleDrawer()}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
+function HomeScreen() {
+  return (
+    <Drawer.Navigator
+      useLegacyImplementation
+      drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Cuti" component={Cuti} />
+      <Drawer.Screen name="Dar" component={Dar} />
+      <Drawer.Screen name="Home" component={Home} />
+
+      <Drawer.Screen name="AbsenceMasuk" component={AbsenceMasuk} />
+      <Drawer.Screen name="AbsenceKeluar" component={AbsenceKeluar} />
+    </Drawer.Navigator>
+  );
+}
+
+function NotificationsScreen({navigation}) {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>No New Notifications!</Text>
+      <Button onPress={() => navigation.goBack()} title="Go back home" />
+    </View>
+  );
+}
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator
+      useLegacyImplementation
+      drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Login" component={HomeScreen} />
+      <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+    </Drawer.Navigator>
+  );
+}
+
+export default function App() {
+  // function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="SplashScreen" //memberikan inisial route mana yang pertama kali dipilih
         screenOptions={{headerShown: false}} //mematika header
       >
-        {/* membuat routing*/}
         <Stack.Screen name="LoginLanding" component={LoginLanding} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignIn" component={SignIn} />
@@ -44,7 +119,6 @@ function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="AbsenceMasuk" component={AbsenceMasuk} />
         <Stack.Screen name="AbsenceKeluar" component={AbsenceKeluar} />
-
         <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Dar" component={Dar} />
         <Stack.Screen name="LaporanDar" component={LaporanDar} />
@@ -55,11 +129,10 @@ function App() {
         <Stack.Screen name="Bantuan" component={Bantuan} />
         <Stack.Screen name="KritikSaran" component={KritikSaran} />
 
-        <Stack.Screen name="Notifee" component={Notifee} />
-        <Stack.Screen name="Rneui" component={Rneui} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default App;
+// export default App;

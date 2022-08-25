@@ -26,11 +26,11 @@ import {
   TextInput,
 } from 'react-native';
 
-import {Header as HeaderRNE, HeaderProps, Icon} from '@rneui/themed';
+import {Header as HeaderRNE, HeaderProps} from '@rneui/themed';
 // import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-// import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {SearchBar} from '@rneui/themed';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -240,42 +240,6 @@ class LaporanDar extends Component {
           </View>
         ) : (
           <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
-            <HeaderRNE
-              leftComponent={{
-                icon: 'menu',
-                color: '#fff',
-              }}
-              rightComponent={
-                <View style={styles.headerRight}>
-                  <TouchableOpacity
-                  // onPress={}
-                  >
-                    <Icon name="description" color="white" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{marginLeft: 10}}
-                    // onPress={}
-                  >
-                    <Icon type="antdesign" name="rocket1" color="white" />
-                  </TouchableOpacity>
-                </View>
-              }
-              centerComponent={
-                <TextInput
-                  style={{
-                    height: 40,
-                    color: '#fffff6',
-                  }}
-                  placeholderTextColor="#fffff9"
-                  onChangeText={text => this.searchFilterFunction(text)}
-                  value={this.state.search}
-                  underlineColorAndroid="transparent"
-                  placeholder="pencarian tanggal (yyyy-mm-dd)"
-                />
-              }
-              centerContainerStyle={{color: '#fffff6'}}
-              backgroundColor="#363636"
-            />
             {/* <SearchBar
               placeholder="pencarian tanggal (yyyy-mm-dd)"
               onChangeText={text => this.searchFilterFunction(text)}
@@ -283,10 +247,13 @@ class LaporanDar extends Component {
             /> */}
             <View
               style={{
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
+                // borderBottomRightRadius: 20,
+                // borderBottomLeftRadius: 20,
+                marginTop: 20,
                 backgroundColor: '#393939',
-                padding: 15,
+                paddingTop: 15,
+                paddingRight: 15,
+                paddingLeft: 15,
               }}>
               {/* <TouchableOpacity onPress={this.toggleOpen}>
                 <Icon name="cog" size={30} color="#ffffff" />
@@ -312,6 +279,57 @@ class LaporanDar extends Component {
                 {/* token, {this.state.token} */}
               </Text>
             </View>
+
+            <HeaderRNE
+              // style={styles.headerContainer}
+              leftComponent={{
+                icon: 'menu',
+                color: '#fff',
+              }}
+              // rightComponent={
+              //   <View style={styles.headerRight}>
+              //     <TouchableOpacity
+              //     // onPress={}
+              //     >
+              //       <Icon name="description" color="white" />
+              //     </TouchableOpacity>
+              //     <TouchableOpacity
+              //       style={{marginLeft: 10}}
+              //       // onPress={}
+              //     >
+              //       <Icon type="antdesign" name="rocket1" color="white" />
+              //     </TouchableOpacity>
+              //   </View>
+              // }
+              centerComponent={
+                <View style={styles.searchSection}>
+                  <Icon
+                    style={styles.searchIcon}
+                    name="search"
+                    size={10}
+                    color="#2b2b2b"
+                  />
+                  <TextInput
+                    style={{
+                      paddingTop: 10,
+                      paddingRight: 10,
+                      paddingBottom: 10,
+                      paddingLeft: 10,
+                      height: 40,
+                      color: '#262626',
+                      flex: 1,
+                    }}
+                    placeholderTextColor="#c2c2c2"
+                    onChangeText={text => this.searchFilterFunction(text)}
+                    value={this.state.search}
+                    underlineColorAndroid="transparent"
+                    placeholder="pencarian tanggal (yyyy-mm-dd)"
+                  />
+                </View>
+              }
+              centerContainerStyle={{color: '#fffff6'}}
+              backgroundColor="#363636"
+            />
 
             <FlatList
               style={{marginTop: 0}}
@@ -560,6 +578,26 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
     fontSize: 10,
+  },
+
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  searchIcon: {
+    paddingLeft: 15,
+  },
+  input: {
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    backgroundColor: '#fff',
+    color: '#424242',
   },
 });
 

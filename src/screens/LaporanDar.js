@@ -23,15 +23,23 @@ import {
   StyleSheet,
   Alert,
   Image,
+  TextInput,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import {Header as HeaderRNE, HeaderProps} from '@rneui/themed';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {SearchBar} from '@rneui/themed';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
-
+// const [search, setSearch] = [];
+// const [filteredDataSource, setFilteredDataSource] = [];
+// const [masterDataSource, setMasterDataSource] = [];
 var product = [
   {backColor: '#2b2b2b', category: 'Kopi', brand: 'Ucafe', rasa: 'mocachinno'},
   {backColor: '#2b2b2b', category: 'Kopi', brand: 'Rasa Sayang', rasa: 'kopi'},
@@ -70,6 +78,8 @@ var product = [
   {backColor: '#2b2b2b', category: 'Kopi', brand: 'rasa sayang', rasa: 'kopi'},
 ];
 
+// const {parameter} = '';
+
 // var divisi = [];
 
 var cobavar = 'suryo';
@@ -84,10 +94,32 @@ class LaporanDar extends Component {
       datalogin: [],
       iduser: '',
       status_loading: true,
+      search: [],
+      setSearch: [],
+
+      filteredDataSource: [],
+      setFilteredDataSource: [],
+      masterDataSource: [],
+      setMasterDataSource: [],
+
+      stateDrawer: '',
     };
   }
 
   componentDidMount() {
+    console.log('propsnya param');
+
+    try {
+      this.setState({
+        stateDrawer: this.props.route.params.parameter,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    // console.log(this.props.route.params.parameter);
+    // this.setState({
+    //   stateDrawer: parameter,
+    // });
     console.log('token');
     this.setState({status_loading: true});
     AsyncStorage.getItem('@storage_Key').then(value => {
@@ -130,6 +162,12 @@ class LaporanDar extends Component {
           })
             .then(response => {
               this.setState({dar: response.data.data.sidar_dar});
+              this.setState({
+                filteredDataSource: response.data.data.sidar_dar,
+              });
+              this.setState({
+                masterDataSource: response.data.data.sidar_dar,
+              });
               this.setState({status_loading: false});
             })
             .catch(function (err) {
@@ -142,25 +180,6 @@ class LaporanDar extends Component {
           this.setState({status_loading: false});
         });
     });
-
-    // this.unsubsribe = this.props.navigation.addListener('focus', () => {
-    //   console.log('ini did mount laporan dar');
-    //   console.log(this.props.route.params.token);
-    //   axios({
-    //     method: 'get',
-    //     url: `${baseUrl}/api/sidar_dar/all`,
-    //     headers: {
-    //       'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-    //       'X-Token': this.props.route.params.token,
-    //     },
-    //   })
-    //     .then(response => {
-    //       this.setState({dar: response.data.data.sidar_dar});
-    //     })
-    //     .catch(function (err) {
-    //       console.log(err);
-    //     });
-    // });
   }
 
   componentWillUnmount() {
@@ -193,6 +212,62 @@ class LaporanDar extends Component {
     ]);
   };
 
+  searchFilterFunction(text) {
+    console.log('in search function');
+    console.log(this.state.masterDataSource[0].tanggal);
+    console.log(this.props.route.params.parameter);
+    try {
+      this.setState({
+        stateDrawer: this.props.route.params.parameter,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+
+      if (this.props.route.params.parameter == 'FilterDate') {
+        const newData = this.state.masterDataSource.filter(function (item) {
+          // Applying filter for the inserted text in search bar
+          const itemData = item.tanggal
+            ? item.tanggal.toUpperCase()
+            : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        this.setState({filteredDataSource: newData});
+        this.setState({setSearch: text});
+      } else if (this.props.route.params.parameter == 'FilterTime') {
+        const newData = this.state.masterDataSource.filter(function (item) {
+          // Applying filter for the inserted text in search bar
+          const itemData = item.jam ? item.jam.toUpperCase() : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        this.setState({filteredDataSource: newData});
+        this.setState({setSearch: text});
+      } else if (this.props.route.params.parameter == 'FilterName') {
+        const newData = this.state.masterDataSource.filter(function (item) {
+          // Applying filter for the inserted text in search bar
+          const itemData = item.namakaryawan
+            ? item.namakaryawan.toUpperCase()
+            : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        this.setState({filteredDataSource: newData});
+        this.setState({setSearch: text});
+      }
+      // Filter the masterDataSource and update FilteredDataSource
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      this.setState({filteredDataSource: this.state.masterDataSource});
+      this.setState({setSearch: text});
+    }
+  }
+
   render() {
     return (
       <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
@@ -213,12 +288,20 @@ class LaporanDar extends Component {
           </View>
         ) : (
           <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
+            {/* <SearchBar
+              placeholder="pencarian tanggal (yyyy-mm-dd)"
+              onChangeText={text => this.searchFilterFunction(text)}
+              value={this.state.search}
+            /> */}
             <View
               style={{
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
+                // borderBottomRightRadius: 20,
+                // borderBottomLeftRadius: 20,
+                marginTop: 20,
                 backgroundColor: '#393939',
-                padding: 15,
+                paddingTop: 15,
+                paddingRight: 15,
+                paddingLeft: 15,
               }}>
               {/* <TouchableOpacity onPress={this.toggleOpen}>
                 <Icon name="cog" size={30} color="#ffffff" />
@@ -230,7 +313,7 @@ class LaporanDar extends Component {
                   fontWeight: 'bold',
                   marginTop: 5,
                 }}>
-                INDRACO - SIDAR
+                COBA - Rneui {this.state.stateDrawer}
               </Text>
               <Text
                 style={{
@@ -245,9 +328,68 @@ class LaporanDar extends Component {
               </Text>
             </View>
 
+            <HeaderRNE
+              // style={styles.headerContainer}
+              leftComponent={
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.toggleDrawer()}>
+                  <Icon name="cogs" size={20} color="white" />
+                </TouchableOpacity>
+
+                // {
+                //   icon: 'menu',
+                //   color: '#fff',
+                // }
+              }
+              // rightComponent={
+              //   <View style={styles.headerRight}>
+              //     <TouchableOpacity
+              //     // onPress={}
+              //     >
+              //       <Icon name="description" color="white" />
+              //     </TouchableOpacity>
+              //     <TouchableOpacity
+              //       style={{marginLeft: 10}}
+              //       // onPress={}
+              //     >
+              //       <Icon type="antdesign" name="rocket1" color="white" />
+              //     </TouchableOpacity>
+              //   </View>
+              // }
+              centerComponent={
+                <View style={styles.searchSection}>
+                  <Icon
+                    style={styles.searchIcon}
+                    name="search"
+                    size={10}
+                    color="#2b2b2b"
+                  />
+                  <TextInput
+                    style={{
+                      paddingTop: 10,
+                      paddingRight: 10,
+                      paddingBottom: 10,
+                      paddingLeft: 10,
+                      height: 40,
+                      color: '#262626',
+                      flex: 1,
+                    }}
+                    placeholderTextColor="#c2c2c2"
+                    onChangeText={text => this.searchFilterFunction(text)}
+                    value={this.state.search}
+                    underlineColorAndroid="transparent"
+                    placeholder="pencarian tanggal (yyyy-mm-dd)"
+                  />
+                </View>
+              }
+              centerContainerStyle={{color: '#fffff6'}}
+              backgroundColor="#363636"
+            />
+
             <FlatList
               style={{marginTop: 0}}
-              data={this.state.dar}
+              // data={this.state.dar}
+              data={this.state.filteredDataSource}
               renderItem={({item, index}) => (
                 //styling view
                 <TouchableOpacity
@@ -269,7 +411,7 @@ class LaporanDar extends Component {
                   }>
                   {/* <View style={{flex: 1}}></View> */}
 
-                  <Text style={[styles.textstatus, {color: '#393939'}]}>
+                  <Text style={[styles.textnamakaryawan, {color: '#393939'}]}>
                     {item.namakaryawan}
                   </Text>
                   <View style={{flexDirection: 'row'}}>
@@ -332,7 +474,7 @@ class LaporanDar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Dar', {
+              this.props.navigation.navigate('DrawerDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -354,7 +496,7 @@ class LaporanDar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('LaporanDar', {
+              this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -375,7 +517,7 @@ class LaporanDar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => this.props.navigation.navigate('Home')}>
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{
@@ -394,7 +536,7 @@ class LaporanDar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Cuti', {
+              this.props.navigation.navigate('DrawerCuti', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -433,6 +575,30 @@ class LaporanDar extends Component {
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2b2b2b',
+    marginBottom: 20,
+    width: '100%',
+    paddingVertical: 15,
+  },
+  heading: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  headerRight: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 5,
+  },
+  subheaderText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
   viewheader: {
     marginTop: 10,
     marginBottom: 5,
@@ -458,6 +624,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
+  textnamakaryawan: {
+    borderRadius: 50,
+    paddingHorizontal: 0,
+    width: 200,
+    paddingVertical: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   textstatus: {
     borderRadius: 50,
     paddingHorizontal: 5,
@@ -467,6 +643,26 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
     fontSize: 10,
+  },
+
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  searchIcon: {
+    paddingLeft: 15,
+  },
+  input: {
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    backgroundColor: '#fff',
+    color: '#424242',
   },
 });
 

@@ -284,7 +284,8 @@ class Home extends Component {
                   padding: 1,
                 }}
                 // onPress={() => this.props.navigation.navigate('Maps')}>
-                onPress={() => this.props.navigation.navigate('AbsenceMasuk')}>
+                // onPress={() => this.props.navigation.navigate('AbsenceMasuk')}
+                onPress={() => this.props.navigation.navigate('SecondPage')}>
                 <Text
                   style={{
                     color: '#FFFFFF',
@@ -608,7 +609,7 @@ class Home extends Component {
                   alignItems: 'center',
                 }}
                 onPress={() =>
-                  this.props.navigation.navigate('Dar', {
+                  this.props.navigation.navigate('DrawerDar', {
                     data: this.state.datalogin,
                     token: this.state.token,
                   })
@@ -630,7 +631,7 @@ class Home extends Component {
                   alignItems: 'center',
                 }}
                 onPress={() =>
-                  this.props.navigation.navigate('LaporanDar', {
+                  this.props.navigation.navigate('DrawerLaporanDar', {
                     data: this.state.datalogin,
                     token: this.state.token,
                   })
@@ -651,7 +652,7 @@ class Home extends Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onPress={() => this.props.navigation.navigate('Home')}>
+                onPress={() => this.props.navigation.navigate('DrawerHome')}>
                 <Icon name="home" size={25} color="#ffffff" />
                 <Text
                   style={{
@@ -670,7 +671,7 @@ class Home extends Component {
                   alignItems: 'center',
                 }}
                 onPress={() =>
-                  this.props.navigation.navigate('Cuti', {
+                  this.props.navigation.navigate('DrawerCuti', {
                     data: this.state.datalogin,
                     token: this.state.token,
                   })

@@ -69,15 +69,209 @@ function CustomDrawerContent(props) {
 
 function HomeScreen() {
   return (
-    <Drawer.Navigator
-      useLegacyImplementation
-      drawerContent={props => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Cuti" component={Cuti} />
-      <Drawer.Screen name="Dar" component={Dar} />
-      <Drawer.Screen name="Home" component={Home} />
+    // <Drawer.Navigator
+    //   useLegacyImplementation
+    //   screenOptions={{headerShown: false}}
+    //   drawerContent={props => <CustomDrawerContent {...props} />}>
+    //   <Drawer.Screen name="Cuti" component={Cuti} />
+    //   <Drawer.Screen name="Dar" component={Dar} />
+    //   <Drawer.Screen name="Home" component={Home} />
+    //   <Drawer.Screen name="LaporanDar" component={LaporanDar} />
 
-      <Drawer.Screen name="AbsenceMasuk" component={AbsenceMasuk} />
-      <Drawer.Screen name="AbsenceKeluar" component={AbsenceKeluar} />
+    //   <Drawer.Screen
+    //     name="AbsenceMasuk"
+    //     component={AbsenceMasuk}
+    //     options={{
+    //       drawerLabel: () => null,
+    //       title: null,
+    //       drawerIcon: () => null,
+    //     }}
+    //   />
+    //   <Drawer.Screen name="AbsenceKeluar" component={AbsenceKeluar} />
+    // </Drawer.Navigator>
+
+    <Drawer.Navigator
+      // drawerContentOptions={{
+      //   activeTintColor: '#e91e63',
+      //   itemStyle: {padding: 0},
+      // }}
+      screenOptions={{headerShown: false}}
+      // drawerContent={props => {
+      //   const filteredProps = {
+      //     ...props,
+      //     state: {
+      //       ...props.state,
+      //       routeNames: props.state.routeNames.filter(
+      //         // To hide single option
+      //         // (routeName) => routeName !== 'HiddenPage1',
+      //         // To hide multiple options you can add & condition
+      //         routeName => {
+      //           routeName !== 'HiddenPage1' && routeName !== 'HiddenPage2';
+      //         },
+      //       ),
+      //       routes: props.state.routes.filter(
+      //         route =>
+      //           route.name !== 'HiddenPage1' && route.name !== 'HiddenPage2',
+      //       ),
+      //     },
+      //   };
+      //   return (
+      //     <DrawerContentScrollView {...filteredProps}>
+      //       <DrawerItemList {...filteredProps} />
+      //     </DrawerContentScrollView>
+      //   );
+      // }}
+
+      drawerContent={props => {
+        state: {
+          props.state;
+        }
+        console.log('isi props state');
+        console.log(props.state);
+        console.log('index drawer aktif');
+        console.log(props.state.index);
+
+        //menu home
+        if (props.state.index == 0) {
+          console.log('index ke nol, jalankan help');
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItem
+                label="Tentang"
+                onPress={() => props.navigation.navigate('DrawerTentang')}
+              />
+              <DrawerItem
+                label="Bantuan"
+                onPress={() => props.navigation.navigate('DrawerBantuan')}
+              />
+              <DrawerItem
+                label="Kritik & Saran"
+                onPress={() => props.navigation.navigate('DrawerKritikSaran')}
+              />
+
+              <DrawerItem
+                label="Toggle drawer"
+                onPress={() => props.navigation.toggleDrawer()}
+              />
+            </DrawerContentScrollView>
+          );
+        }
+        //menu tentang
+        else if (props.state.index == 1) {
+          console.log('index ke 1, jalankan home');
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItem
+                label="Tentang"
+                onPress={() => props.navigation.navigate('DrawerTentang')}
+              />
+              <DrawerItem
+                label="Bantuan"
+                onPress={() => props.navigation.navigate('DrawerBantuan')}
+              />
+              <DrawerItem
+                label="Kritik & Saran"
+                onPress={() => props.navigation.navigate('DrawerKritikSaran')}
+              />
+
+              <DrawerItem
+                label="Toggle drawer"
+                onPress={() => props.navigation.toggleDrawer()}
+              />
+            </DrawerContentScrollView>
+          );
+        }
+        //menu Dar
+        else if (props.state.index == 4) {
+          console.log('index ke 4, jalankan home');
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItem
+                label="Tentang"
+                onPress={() => props.navigation.navigate('DrawerTentang')}
+              />
+              <DrawerItem
+                label="Bantuan"
+                onPress={() => props.navigation.navigate('DrawerBantuan')}
+              />
+              <DrawerItem
+                label="Kritik & Saran"
+                onPress={() => props.navigation.navigate('DrawerKritikSaran')}
+              />
+
+              <DrawerItem
+                label="Toggle drawer"
+                onPress={() => props.navigation.toggleDrawer()}
+              />
+            </DrawerContentScrollView>
+          );
+        }
+        //menu laporan Dar
+        else if (props.state.index == 5) {
+          console.log('index ke 5, jalankan home');
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItem
+                label="Filter By Date"
+                onPress={() =>
+                  props.navigation.navigate('DrawerLaporanDar', {
+                    parameter: 'FilterDate',
+                  })
+                }
+              />
+              <DrawerItem
+                label="Filter By Time"
+                onPress={() =>
+                  props.navigation.navigate('DrawerLaporanDar', {
+                    parameter: 'FilterTime',
+                  })
+                }
+              />
+
+              <DrawerItem
+                label="Filter By Name"
+                onPress={() =>
+                  props.navigation.navigate('DrawerLaporanDar', {
+                    parameter: 'FilterName',
+                  })
+                }
+              />
+            </DrawerContentScrollView>
+          );
+        }
+      }}>
+      <Drawer.Screen
+        name="DrawerHome"
+        options={{drawerLabel: 'First Page Option'}}
+        component={Home}
+      />
+      <Drawer.Screen
+        name="DrawerTentang"
+        options={{drawerLabel: 'Second Page Option'}}
+        component={Tentang}
+      />
+      <Drawer.Screen
+        name="DrawerBantuan"
+        options={{drawerLabel: 'Hidden Page One option'}}
+        component={Bantuan}
+      />
+      <Drawer.Screen
+        name="DrawerKritikSaran"
+        options={{drawerLabel: 'Hidden Page Two option'}}
+        component={KritikSaran}
+      />
+
+      <Drawer.Screen
+        name="DrawerDar"
+        options={{drawerLabel: 'Hidden Page Two option'}}
+        component={Dar}
+      />
+
+      <Drawer.Screen
+        name="DrawerLaporanDar"
+        options={{drawerLabel: 'Hidden Page Two option'}}
+        component={LaporanDar}
+      />
     </Drawer.Navigator>
   );
 }

@@ -333,6 +333,7 @@ class Login extends Component {
                 paddingLeft: 10,
                 color: '#252525',
               }}
+              placeholderTextColor="#292929"
               placeholder="Masukkan Username Anda"
             />
             <TextInput
@@ -346,6 +347,7 @@ class Login extends Component {
                 paddingLeft: 10,
                 color: '#252525',
               }}
+              placeholderTextColor="#292929"
               placeholder="Masukkan Password Anda"
               secureTextEntry={true}
             />

@@ -23,7 +23,9 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  useWindowDimensions,
 } from 'react-native';
+import RenderHtml from 'react-native-render-html';
 import {StackActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignInHeader from '../components/SignInHeader';
@@ -33,6 +35,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WebView} from 'react-native-webview';
 
 const baseUrl = 'http://new.sidar.id';
+// var width = useWindowDimensions();
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
   constructor(props) {
@@ -66,7 +69,28 @@ class Dar extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    // this.setState({
+    //   activity: {
+    //     html:
+    //       `<p style='text-align:center;'>` +
+    //       this.props.route.params.data.activity +
+    //       `</p>`,
+    //   },
+    //   result: {
+    //     html:
+    //       `<p style='text-align:center;'>` +
+    //       this.props.route.params.data.result +
+    //       `</p>`,
+    //   },
+    //   plan: {
+    //     html:
+    //       `<p style='text-align:center;'>` +
+    //       this.props.route.params.data.plan +
+    //       `</p>`,
+    //   },
+    // });
+  }
 
   componentWillUnmount() {}
 
@@ -97,6 +121,7 @@ class Dar extends Component {
       },
     ]);
   };
+
   render() {
     return (
       <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
@@ -127,15 +152,15 @@ class Dar extends Component {
         <View
           style={{
             marginTop: 30,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
+            // borderBottomRightRadius: 20,
+            // borderBottomLeftRadius: 20,
             backgroundColor: '#898989',
             padding: 15,
           }}>
           {/* <TouchableOpacity onPress={this.toggleOpen}>
                 <Icon name="cog" size={30} color="#ffffff" />
               </TouchableOpacity> */}
-          <Text
+          {/* <Text
             style={{
               color: '#ffffff',
               fontSize: 25,
@@ -143,7 +168,7 @@ class Dar extends Component {
               marginTop: 5,
             }}>
             SIDAR - DAR
-          </Text>
+          </Text> */}
           <Text
             style={{
               color: '#FFFFFF',
@@ -178,20 +203,44 @@ class Dar extends Component {
 
         {/* <TextArea placeholder="Description" /> */}
 
-        <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
-          {/* <View style={styles.viewbody}>
-            <Text style={styles.textmin}>
-              Hi, {this.props.route.params.data.namakaryawan}
-              {'\n'}Berikut data DAR anda pada tanggal,{' '}
-              {this.props.route.params.data.tanggaldar} , diisi pada tanggal{' '}
-              {this.props.route.params.data.tanggal}, Jam{' '}
-              {this.props.route.params.data.jam}
-            </Text>
-          </View> */}
+        <WebView
+          scalesPageToFit={false}
+          nestedScrollEnabled
+          originWhitelist={['*']}
+          source={{
+            html:
+              '<h2>Activity</h2>' +
+              '<p style="font-size:20px">' +
+              this.props.route.params.data.activity +
+              '</p><hr>' +
+              '<h2>Result</h2>' +
+              '<p style="font-size:20px">' +
+              this.props.route.params.data.result +
+              '</p><hr>' +
+              '<h2>Plan</h2>' +
+              '<p style="font-size:20px">' +
+              this.props.route.params.data.plan +
+              '</p><hr>',
+          }}
+        />
+
+        {/* <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+          <WebView
+            scalesPageToFit={false}
+            nestedScrollEnabled
+            originWhitelist={['*']}
+            source={{
+              html:
+                '<p style="font-size:40px">' +
+                this.props.route.params.data.activity +
+                '</p>',
+            }}
+          />
 
           <View style={{height: 200, marginHorizontal: 5, marginBottom: 10}}>
             <Text>ACTIVITY</Text>
             <WebView
+              scalesPageToFit={false}
               nestedScrollEnabled
               originWhitelist={['*']}
               source={{
@@ -202,7 +251,8 @@ class Dar extends Component {
               }}
             />
           </View>
-
+          <View style={{backgroundColor: '#fffff2', color: '#292929'}}></View>
+        
           <View style={{height: 200, marginHorizontal: 5, marginBottom: 10}}>
             <Text>RESULT</Text>
             <WebView
@@ -225,28 +275,8 @@ class Dar extends Component {
             />
           </View>
 
-          {/* <View style={styles.viewbody}>
-            <Text style={styles.textmin}>
-              ACTIVITY
-              {'\n'}
-              {this.props.route.params.data.activity} ,
-            </Text>
-          </View> */}
-          {/* <View style={styles.viewbody}>
-            <Text style={styles.textmin}>
-              RESULT
-              {'\n'}
-              {this.props.route.params.data.result} ,
-            </Text>
-          </View> */}
-          {/* <View style={styles.viewbody}>
-            <Text style={styles.textmin}>
-              PLAN
-              {'\n'}
-              {this.props.route.params.data.plan} ,
-            </Text>
-          </View> */}
-        </ScrollView>
+        
+        </ScrollView> */}
 
         {/* <TouchableOpacity
           style={{

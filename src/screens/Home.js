@@ -241,26 +241,39 @@ class Home extends Component {
 
             <View
               style={{
-                marginTop: 5,
+                marginTop: 30,
                 padding: 10,
-                backgroundColor: '#f9ffff',
+                backgroundColor: '#fffff2',
+                display: 'flex',
+                flexDirection: 'row',
                 paddingVertical: 10,
-                borderTopRightRadius: 12,
-                borderTopLeftRadius: 12,
+
                 borderBottomRightRadius: 12,
                 borderBottomLeftRadius: 12,
               }}>
+              <TouchableOpacity
+                style={{
+                  borderRadius: 5,
+                  padding: 1,
+                }}
+                onPress={() => this.props.navigation.toggleDrawer()}>
+                <Icon name="bars" size={30} color="#797979" />
+              </TouchableOpacity>
+
               <Text
                 style={{
-                  color: '#393939',
+                  color: '#212121',
                   fontSize: 12,
+                  marginLeft: 20,
+                  marginTop: 5,
                 }}>
                 Hi, {this.state.datalogin.username}
+                {/* - {this.state.iduser} */}
                 {'\n'}Anda terakhir login pada,{' '}
                 {this.state.datalogin.last_login}
-                {'\n'}
                 {/* token, {this.state.token} */}
               </Text>
+              {/* </TouchableOpacity> */}
             </View>
 
             <View
@@ -382,7 +395,7 @@ class Home extends Component {
                       borderRadius: 16,
                     },
                   }}
-                  backgroundColor="#2b2b2b"
+                  backgroundColor="#797979"
                   accessor="population"
                   paddingLeft="15"
                   absolute
@@ -595,7 +608,7 @@ class Home extends Component {
 
             <View
               style={{
-                backgroundColor: '#2b2b2b',
+                backgroundColor: '#898989',
                 flexDirection: 'row',
                 paddingVertical: 10,
                 borderTopRightRadius: 12,
@@ -701,28 +714,6 @@ class Home extends Component {
                     fontsize: 9,
                   }}>
                   Logout
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() =>
-                  this.props.navigation.navigate('Rneui', {
-                    data: this.state.datalogin,
-                    token: this.state.token,
-                  })
-                }>
-                <Icon name="ban" size={20} color="#ffffff" />
-                <Text
-                  style={{
-                    color: '#ffffff',
-                    fontsize: 9,
-                  }}>
-                  coba
                 </Text>
               </TouchableOpacity>
             </View>

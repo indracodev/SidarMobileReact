@@ -152,34 +152,16 @@ class Cuti extends Component {
   };
   render() {
     return (
-      <View style={{backgroundColor: '#373737', flex: 1}}>
+      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
         <View
           style={{
+            marginTop: 30,
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
+            backgroundColor: '#898989',
             padding: 20,
           }}>
-          <TouchableOpacity onPress={this.toggleOpen}>
-            <Icon name="cog" size={30} color="#ffffff" />
-            {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-            }}>
-            INDRACO - SIDAR
-          </Text>
           <Text
             style={{
               color: '#FFFFFF',
@@ -192,7 +174,8 @@ class Cuti extends Component {
           </Text>
           {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
         </View>
-        <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+        <ScrollView
+          style={{flexDirection: 'column', marginBottom: 20, marginTop: 20}}>
           <View>
             <Text
               style={{
@@ -200,10 +183,10 @@ class Cuti extends Component {
                 fontWeight: 'bold',
                 fontSize: 18,
                 marginTop: 0,
-                color: 'orange',
+                color: '#d68b8b',
               }}>
               {'PENGAJUAN CUTI'}
-              {'\n'} {'\n'} {'\n'}
+              {'\n'} {'\n'}
               {'MAAF, FITUR MASIH DALAM TAHAP PENGEMBAGAN'}
             </Text>
           </View>
@@ -211,7 +194,7 @@ class Cuti extends Component {
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -225,7 +208,7 @@ class Cuti extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Dar', {
+              this.props.navigation.navigate('DrawerDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -247,7 +230,7 @@ class Cuti extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('LaporanDar', {
+              this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -268,7 +251,7 @@ class Cuti extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => this.props.navigation.navigate('Home')}>
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{
@@ -287,7 +270,7 @@ class Cuti extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Cuti', {
+              this.props.navigation.navigate('DrawerCuti', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })

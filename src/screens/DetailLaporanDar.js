@@ -126,9 +126,10 @@ class Dar extends Component {
 
         <View
           style={{
+            marginTop: 30,
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
+            backgroundColor: '#898989',
             padding: 15,
           }}>
           {/* <TouchableOpacity onPress={this.toggleOpen}>
@@ -266,7 +267,7 @@ class Dar extends Component {
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -280,7 +281,7 @@ class Dar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Dar', {
+              this.props.navigation.navigate('DrawerDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -302,7 +303,7 @@ class Dar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('LaporanDar', {
+              this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -323,7 +324,7 @@ class Dar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => this.props.navigation.navigate('Home')}>
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{

@@ -70,45 +70,12 @@ class Dar extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#373737', flex: 1}}>
-        {/* <View style={{flex: 1}}> */}
+      <View style={{backgroundColor: '#fffff2', flex: 1}}>
         <View
           style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 20,
-          }}>
-          <TouchableOpacity onPress={this.toggleOpen}>
-            <Icon name="cog" size={30} color="#ffffff" />
-            {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-            }}>
-            INDRACO - SIDAR
-          </Text>
-          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-        </View>
-        {/* </View> */}
-
-        <View
-          style={{
-            marginTop: 10,
+            marginTop: 30,
             marginBottom: 5,
-            backgroundColor: '#2b2b2b',
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
+            backgroundColor: '#898989',
             borderBottomRightRadius: 12,
             borderBottomLeftRadius: 12,
           }}>
@@ -134,7 +101,7 @@ class Dar extends Component {
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <View
             style={{
-              backgroundColor: '#2b2b2b',
+              backgroundColor: '#797979',
               padding: 25,
               marginLeft: 5,
               marginRight: 5,
@@ -171,7 +138,7 @@ class Dar extends Component {
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -185,7 +152,7 @@ class Dar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Dar', {
+              this.props.navigation.navigate('DrawerDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -207,7 +174,7 @@ class Dar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('LaporanDar', {
+              this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -228,7 +195,7 @@ class Dar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => this.props.navigation.navigate('Home')}>
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{

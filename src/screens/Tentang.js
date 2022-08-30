@@ -109,41 +109,12 @@ class Dar extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#373737', flex: 1}}>
-        {/* <View
-          style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 20,
-          }}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.toggleDrawer()}>
-            <Icon
-              style={{
-                marginTop: 20,
-              }}
-              name="list"
-              size={15}
-              color="#ffffff"
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-            }}>
-            SIDAR
-          </Text>
-        </View> */}
-
+      <View style={{backgroundColor: '#fffff2', flex: 1}}>
         <View
           style={{
-            marginTop: 10,
+            marginTop: 30,
             marginBottom: 5,
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
             borderBottomRightRadius: 12,
@@ -171,7 +142,7 @@ class Dar extends Component {
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <View
             style={{
-              backgroundColor: '#2b2b2b',
+              backgroundColor: '#797979',
               padding: 25,
               marginLeft: 5,
               marginRight: 5,
@@ -189,7 +160,7 @@ class Dar extends Component {
               Activity Report)
               {'\n'}
               {'\n'}
-              Versi 0.183.0
+              Versi 2.1.0
               {'\n'}
               {'\n'}
               Copyright @ 2022 Indraco . All Rights Reserved
@@ -199,34 +170,12 @@ class Dar extends Component {
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,
           }}>
-          {/* Cuti */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              this.props.navigation.navigate('DrawerCuti', {
-                data: this.state.datalogin,
-                token: this.state.token,
-              })
-            }>
-            <Icon name="ban" size={20} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Cuti
-            </Text>
-          </TouchableOpacity>
           {/* DAR */}
           <TouchableOpacity
             style={{
@@ -247,23 +196,6 @@ class Dar extends Component {
                 fontsize: 9,
               }}>
               DAR
-            </Text>
-          </TouchableOpacity>
-          {/* Home */}
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => this.props.navigation.navigate('DrawerHome')}>
-            <Icon name="home" size={25} color="#ffffff" />
-            <Text
-              style={{
-                color: '#ffffff',
-                fontsize: 9,
-              }}>
-              Home
             </Text>
           </TouchableOpacity>
           {/* Laporan */}
@@ -288,6 +220,47 @@ class Dar extends Component {
               Laporan
             </Text>
           </TouchableOpacity>
+          {/* Home */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
+            <Icon name="home" size={25} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Home
+            </Text>
+          </TouchableOpacity>
+
+          {/* Cuti */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('Cuti', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Icon name="ban" size={20} color="#ffffff" />
+            <Text
+              style={{
+                color: '#ffffff',
+                fontsize: 9,
+              }}>
+              Cuti
+            </Text>
+          </TouchableOpacity>
+
           {/* Logout */}
           <TouchableOpacity
             style={{
@@ -295,7 +268,7 @@ class Dar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={this.logout}>
+            onPress={this.showConfirmDialog}>
             <Icon name="sign-out-alt" size={20} color="#ffffff" />
             <Text
               style={{

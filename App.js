@@ -2,6 +2,7 @@ import * as React from 'react';
 import {View, Text, Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Stack = createNativeStackNavigator();
 import {
@@ -135,23 +136,41 @@ function HomeScreen() {
         if (props.state.index == 0) {
           console.log('index ke nol, jalankan help');
           return (
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView
+              {...props}
+              style={{
+                backgroundColor: '#fffff2',
+              }}>
+              <View
+                style={{
+                  backgroundColor: '#898989',
+                  height: 140,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="home" size={20} color="white" />
+                <Text style={{color: 'white', fontSize: 20}}>HOME</Text>
+              </View>
               <DrawerItem
                 label="Tentang"
+                labelStyle={{
+                  color: '#393939',
+                }}
                 onPress={() => props.navigation.navigate('DrawerTentang')}
               />
               <DrawerItem
                 label="Bantuan"
+                labelStyle={{
+                  color: '#393939',
+                }}
                 onPress={() => props.navigation.navigate('DrawerBantuan')}
               />
               <DrawerItem
                 label="Kritik & Saran"
+                labelStyle={{
+                  color: '#393939',
+                }}
                 onPress={() => props.navigation.navigate('DrawerKritikSaran')}
-              />
-
-              <DrawerItem
-                label="Toggle drawer"
-                onPress={() => props.navigation.toggleDrawer()}
               />
             </DrawerContentScrollView>
           );
@@ -160,17 +179,30 @@ function HomeScreen() {
         else if (props.state.index == 1) {
           console.log('index ke 1, jalankan home');
           return (
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView
+              {...props}
+              style={{
+                backgroundColor: '#fffff2',
+              }}>
               <DrawerItem
+                labelStyle={{
+                  color: '#393939',
+                }}
                 label="Tentang"
                 onPress={() => props.navigation.navigate('DrawerTentang')}
               />
               <DrawerItem
                 label="Bantuan"
+                labelStyle={{
+                  color: '#393939',
+                }}
                 onPress={() => props.navigation.navigate('DrawerBantuan')}
               />
               <DrawerItem
                 label="Kritik & Saran"
+                labelStyle={{
+                  color: '#393939',
+                }}
                 onPress={() => props.navigation.navigate('DrawerKritikSaran')}
               />
 
@@ -185,23 +217,41 @@ function HomeScreen() {
         else if (props.state.index == 4) {
           console.log('index ke 4, jalankan home');
           return (
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView
+              {...props}
+              style={{
+                backgroundColor: '#fffff2',
+              }}>
+              <View
+                style={{
+                  backgroundColor: '#898989',
+                  height: 140,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="book" size={20} color="white" />
+                <Text style={{color: 'white', fontSize: 20}}>DAR</Text>
+              </View>
               <DrawerItem
+                labelStyle={{
+                  color: '#393939',
+                }}
                 label="Tentang"
                 onPress={() => props.navigation.navigate('DrawerTentang')}
               />
               <DrawerItem
+                labelStyle={{
+                  color: '#393939',
+                }}
                 label="Bantuan"
                 onPress={() => props.navigation.navigate('DrawerBantuan')}
               />
               <DrawerItem
+                labelStyle={{
+                  color: '#393939',
+                }}
                 label="Kritik & Saran"
                 onPress={() => props.navigation.navigate('DrawerKritikSaran')}
-              />
-
-              <DrawerItem
-                label="Toggle drawer"
-                onPress={() => props.navigation.toggleDrawer()}
               />
             </DrawerContentScrollView>
           );
@@ -210,7 +260,22 @@ function HomeScreen() {
         else if (props.state.index == 5) {
           console.log('index ke 5, jalankan home');
           return (
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView
+              {...props}
+              style={{
+                backgroundColor: '#fffff2',
+              }}>
+              <View
+                style={{
+                  backgroundColor: '#898989',
+                  height: 140,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="chart-bar" size={20} color="white" />
+                <Text style={{color: 'white', fontSize: 20}}>FILTER</Text>
+              </View>
+
               <DrawerItem
                 label="Filter By Date"
                 onPress={() =>
@@ -235,6 +300,47 @@ function HomeScreen() {
                     parameter: 'FilterName',
                   })
                 }
+              />
+            </DrawerContentScrollView>
+          );
+        } else {
+          console.log('index ke nol, jalankan help');
+          return (
+            <DrawerContentScrollView
+              {...props}
+              style={{
+                backgroundColor: '#fffff2',
+              }}>
+              <View
+                style={{
+                  backgroundColor: '#898989',
+                  height: 140,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="cogs" size={20} color="white" />
+                <Text style={{color: 'white', fontSize: 20}}>FILTER</Text>
+              </View>
+              <DrawerItem
+                label="Tentang"
+                labelStyle={{
+                  color: '#393939',
+                }}
+                onPress={() => props.navigation.navigate('DrawerTentang')}
+              />
+              <DrawerItem
+                label="Bantuan"
+                labelStyle={{
+                  color: '#393939',
+                }}
+                onPress={() => props.navigation.navigate('DrawerBantuan')}
+              />
+              <DrawerItem
+                label="Kritik & Saran"
+                labelStyle={{
+                  color: '#393939',
+                }}
+                onPress={() => props.navigation.navigate('DrawerKritikSaran')}
               />
             </DrawerContentScrollView>
           );
@@ -271,6 +377,12 @@ function HomeScreen() {
         name="DrawerLaporanDar"
         options={{drawerLabel: 'Hidden Page Two option'}}
         component={LaporanDar}
+      />
+
+      <Drawer.Screen
+        name="DrawerCuti"
+        options={{drawerLabel: 'Hidden Page Two option'}}
+        component={Cuti}
       />
     </Drawer.Navigator>
   );

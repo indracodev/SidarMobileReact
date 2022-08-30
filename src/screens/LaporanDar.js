@@ -295,30 +295,28 @@ class LaporanDar extends Component {
             /> */}
             <View
               style={{
-                // borderBottomRightRadius: 20,
-                // borderBottomLeftRadius: 20,
-                marginTop: 20,
-                backgroundColor: '#393939',
-                paddingTop: 15,
-                paddingRight: 15,
-                paddingLeft: 15,
+                marginTop: 30,
+                padding: 10,
+                backgroundColor: '#fffff2',
+                display: 'flex',
+                flexDirection: 'row',
+                paddingVertical: 10,
               }}>
-              {/* <TouchableOpacity onPress={this.toggleOpen}>
-                <Icon name="cog" size={30} color="#ffffff" />
+              {/* <TouchableOpacity
+                style={{
+                  borderRadius: 5,
+                  padding: 1,
+                }}
+                onPress={() => this.props.navigation.toggleDrawer()}>
+                <Icon name="bars" size={30} color="#ffffff" />
               </TouchableOpacity> */}
+
               <Text
                 style={{
-                  color: '#ffffff',
-                  fontSize: 25,
-                  fontWeight: 'bold',
-                  marginTop: 5,
-                }}>
-                COBA - Rneui {this.state.stateDrawer}
-              </Text>
-              <Text
-                style={{
-                  color: '#FFFFFF',
+                  color: '#292929',
                   fontSize: 12,
+                  // marginLeft: 5,
+                  marginTop: 5,
                 }}>
                 Hi, {this.state.datalogin.username}
                 {/* - {this.state.iduser} */}
@@ -326,6 +324,7 @@ class LaporanDar extends Component {
                 {this.state.datalogin.last_login}
                 {/* token, {this.state.token} */}
               </Text>
+              {/* </TouchableOpacity> */}
             </View>
 
             <HeaderRNE
@@ -362,7 +361,7 @@ class LaporanDar extends Component {
                     style={styles.searchIcon}
                     name="search"
                     size={10}
-                    color="#2b2b2b"
+                    color="#898989"
                   />
                   <TextInput
                     style={{
@@ -374,16 +373,16 @@ class LaporanDar extends Component {
                       color: '#262626',
                       flex: 1,
                     }}
-                    placeholderTextColor="#c2c2c2"
+                    placeholderTextColor="#292929"
                     onChangeText={text => this.searchFilterFunction(text)}
                     value={this.state.search}
                     underlineColorAndroid="transparent"
-                    placeholder="pencarian tanggal (yyyy-mm-dd)"
+                    placeholder={this.props.route.params.parameter}
                   />
                 </View>
               }
               centerContainerStyle={{color: '#fffff6'}}
-              backgroundColor="#363636"
+              backgroundColor="#898989"
             />
 
             <FlatList
@@ -411,7 +410,7 @@ class LaporanDar extends Component {
                   }>
                   {/* <View style={{flex: 1}}></View> */}
 
-                  <Text style={[styles.textnamakaryawan, {color: '#393939'}]}>
+                  <Text style={[styles.textnamakaryawan, {color: '#898989'}]}>
                     {item.namakaryawan}
                   </Text>
                   <View style={{flexDirection: 'row'}}>
@@ -421,7 +420,7 @@ class LaporanDar extends Component {
                           // marginLeft: 5,
                           fontWeight: 'bold',
                           fontSize: 16,
-                          color: '#393939',
+                          color: '#797979',
                         }}>
                         {item.tanggaldar} / {item.jam}
                       </Text>
@@ -460,7 +459,7 @@ class LaporanDar extends Component {
         )}
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -602,14 +601,14 @@ const styles = StyleSheet.create({
   viewheader: {
     marginTop: 10,
     marginBottom: 5,
-    backgroundColor: '#2b2b2b',
+    backgroundColor: '#898989',
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     borderBottomRightRadius: 12,
     borderBottomLeftRadius: 12,
   },
   viewbody: {
-    backgroundColor: '#2b2b2b',
+    backgroundColor: '#898989',
     padding: 25,
     marginLeft: 5,
     marginRight: 5,

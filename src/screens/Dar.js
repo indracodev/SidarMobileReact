@@ -260,104 +260,41 @@ class Dar extends Component {
   render() {
     return (
       <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
-        {/* <View
+        <View
           style={{
-            marginTop: 10,
-            marginBottom: 5,
-            marginHorizontal: 5,
-            backgroundColor: '#2b2b2b',
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
+            marginTop: 30,
+            padding: 10,
+            backgroundColor: '#fffff2',
+            display: 'flex',
+            flexDirection: 'row',
+            paddingVertical: 10,
+
             borderBottomRightRadius: 12,
             borderBottomLeftRadius: 12,
           }}>
-          <Text
+          <TouchableOpacity
             style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              color: '#ffffff',
-              textAlign: 'center',
-              marginVertical: 5,
-            }}>
-            Laporan Aktivitas Harian
-          </Text>
-        </View> */}
+              borderRadius: 5,
+              padding: 1,
+            }}
+            onPress={() => this.props.navigation.toggleDrawer()}>
+            <Icon name="bars" size={30} color="#797979" />
+          </TouchableOpacity>
 
-        <View
-          style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 15,
-          }}>
-          {/* <TouchableOpacity onPress={this.toggleOpen}>
-                <Icon name="cog" size={30} color="#ffffff" />
-              </TouchableOpacity> */}
           <Text
             style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 5,
-            }}>
-            SIDAR - DAR
-          </Text>
-          <Text
-            style={{
-              color: '#FFFFFF',
+              color: '#393939',
               fontSize: 12,
+              marginLeft: 20,
+              marginTop: 5,
             }}>
             Hi, {this.state.datalogin.username}
             {/* - {this.state.iduser} */}
             {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
             {/* token, {this.state.token} */}
           </Text>
+          {/* </TouchableOpacity> */}
         </View>
-
-        {/* <View
-          style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 20,
-          }}>
-          <TouchableOpacity onPress={this.toggleOpen}>
-            <Icon name="cog" size={30} color="#ffffff" />
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-            }}>
-            INDRACO - SIDAR
-          </Text>
-        </View> */}
-
-        {/* <View
-          style={{
-            marginTop: 5,
-            padding: 10,
-            backgroundColor: '#f9ffff',
-            paddingVertical: 10,
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
-          }}>
-          <Text
-            style={{
-              color: '#393939',
-              fontSize: 12,
-            }}>
-            Hi, {this.state.datalogin.username}
-            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-            {'\n'}
-          </Text>
-        </View> */}
-
-        {/* <TextArea placeholder="Description" /> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           {this.state.periodetanggaldar.length === 0 ? (
@@ -638,7 +575,7 @@ class Dar extends Component {
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,

@@ -57,7 +57,7 @@ class Login extends Component {
         tokens = value;
 
         if (tokens) {
-          this.props.navigation.navigate('Home', {
+          this.props.navigation.navigate('HomeScreen', {
             // data: res.data.data,
             token: tokens,
           });
@@ -173,7 +173,7 @@ class Login extends Component {
           AsyncStorage.setItem('@storage_Key', res.data.token);
           // AsyncStorage.setItem('datalog', res.data.data);
           try {
-            this.props.navigation.navigate('Home', {
+            this.props.navigation.navigate('HomeScreen', {
               data: res.data.data,
               token: res.data.token,
             });

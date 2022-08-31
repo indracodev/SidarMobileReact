@@ -29,7 +29,7 @@ class SplashScreen extends Component {
       // this.props.navigation.dispatch(StackActions.replace('SignIn'));
       // this.props.navigation.dispatch(StackActions.replace('Rneui'));
       // this.props.navigation.dispatch(StackActions.replace('Login'));
-      this.props.navigation.dispatch(StackActions.replace('HomeScreen'));
+      this.props.navigation.dispatch(StackActions.replace('Login'));
     }, 2500);
   };
 

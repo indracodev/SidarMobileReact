@@ -88,6 +88,7 @@ class AbsenceMasuk extends Component {
       datalogin: [],
       iduser: '',
       place: '',
+      note: '',
     };
   }
 
@@ -246,8 +247,8 @@ class AbsenceMasuk extends Component {
     LogBox.ignoreLogs(['Require cycle:']);
     LogBox.ignoreAllLogs();
     AsyncStorage.getItem('@storage_Key').then(value => {
-      console.log('coba get value token');
-      console.log(value);
+      // console.log('coba get value token');
+      // console.log(value);
       this.setState({token: value});
       tokens = value;
 
@@ -262,11 +263,11 @@ class AbsenceMasuk extends Component {
         },
       })
         .then(responseprofile => {
-          console.log('ini profile user');
-          console.log(responseprofile.data);
-          console.log('ini axios di dlam sync');
-          console.log(responseprofile.data.data.user.id_karyawan);
-          console.log(this.state.token);
+          // console.log('ini profile user');
+          // console.log(responseprofile.data);
+          // console.log('ini axios di dlam sync');
+          // console.log(responseprofile.data.data.user.id_karyawan);
+          // console.log(this.state.token);
 
           this.setState({
             datalogin: responseprofile.data.data.user,
@@ -321,13 +322,7 @@ class AbsenceMasuk extends Component {
             },
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            //To Check, If Permission is granted
             this.getOneTimeLocation();
-
-            //masukkan kode axios disini
-            // console.log('hasil axios mapbox');
-            //end
-
             this.subscribeLocationLocation();
           } else {
             this.setState({locationStatus: 'Permission Denied'});
@@ -343,7 +338,9 @@ class AbsenceMasuk extends Component {
     };
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    // this.unsubsribe();
+  }
 
   selectOneFile = async () => {
     var uri;
@@ -516,7 +513,7 @@ class AbsenceMasuk extends Component {
     bodyFormData.append('latitude', this.state.currentLatitude);
 
     bodyFormData.append('longitude', this.state.currentLongitude);
-    bodyFormData.append('note', 'absen on mobile');
+    bodyFormData.append('note', this.state.note);
     bodyFormData.append('file', {
       // name: 'file',
       name: this.state.name,
@@ -556,6 +553,12 @@ class AbsenceMasuk extends Component {
         if (response.data.status == true) {
           alert('berhasil');
           this.setState({status_simpan: true});
+
+          try {
+            this.props.navigation.navigate('HomeScreen');
+          } catch (error) {
+            console.error(error);
+          }
         } else {
           alert('periksa kembali inputan  anda test');
           this.setState({status_simpan: true});
@@ -661,21 +664,21 @@ class AbsenceMasuk extends Component {
               style={{
                 borderBottomRightRadius: 20,
                 borderBottomLeftRadius: 20,
-                backgroundColor: '#393939',
+                backgroundColor: '#898989',
                 padding: 15,
               }}>
               {/* <TouchableOpacity onPress={this.toggleOpen}>
                 <Icon name="cog" size={30} color="#ffffff" />
               </TouchableOpacity> */}
-              <Text
+              {/* <Text
                 style={{
                   color: '#ffffff',
                   fontSize: 25,
                   fontWeight: 'bold',
-                  marginTop: 5,
+                  marginTop: 25,
                 }}>
                 SIDAR - DAR
-              </Text>
+              </Text> */}
               <Text
                 style={{
                   color: '#FFFFFF',
@@ -734,7 +737,7 @@ class AbsenceMasuk extends Component {
                 </View> */}
                 <View>
                   {this.renderFileUri()}
-                  <Text style={{textAlign: 'center'}}>File Uri</Text>
+                  {/* <Text style={{textAlign: 'center'}}>File Uri</Text> */}
                 </View>
               </View>
               <View style={styles.btnParentSection}>
@@ -820,11 +823,24 @@ class AbsenceMasuk extends Component {
               onLoad={() => this.hideLoader()}
             />
             <View style={{width: '50%', marginTop: 10, marginHorizontal: 5}}>
-              <Text>Place : {this.state.place}</Text>
+              <TouchableOpacity
+                style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+                onPress={this.getOneTimeLocation}>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  REFRESH GPS
+                </Text>
+              </TouchableOpacity>
+              <Text style={{color: '#393939'}}>Place : {this.state.place}</Text>
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
           onPress={this.getOneTimeLocation}>
           <Text
@@ -836,7 +852,22 @@ class AbsenceMasuk extends Component {
             }}>
             REFRESH GPS
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        <TextInput
+          onChangeText={text => this.setState({note: text})}
+          style={{
+            // marginHorizontal: 5,
+            backgroundColor: '#FFFFFF',
+            marginBottom: 5,
+            borderRadius: 9,
+            elevation: 2,
+            paddingLeft: 10,
+            color: '#252525',
+          }}
+          placeholderTextColor="#292929"
+          placeholder="Note"
+        />
 
         {this.state.status_simpan == true ? (
           <TouchableOpacity
@@ -863,7 +894,7 @@ class AbsenceMasuk extends Component {
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -877,7 +908,7 @@ class AbsenceMasuk extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Dar', {
+              this.props.navigation.navigate('DrawerDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -899,7 +930,7 @@ class AbsenceMasuk extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('LaporanDar', {
+              this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -920,7 +951,7 @@ class AbsenceMasuk extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => this.props.navigation.navigate('Home')}>
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{
@@ -939,7 +970,7 @@ class AbsenceMasuk extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Cuti', {
+              this.props.navigation.navigate('DrawerCuti', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })

@@ -44,6 +44,8 @@ class Home extends Component {
     super(props);
     this.state = {
       statusdarthisday: [0, 0, 0, 0, 1],
+      statusabsenmasuk: 1,
+      statusabsenpulang: 1,
       d: 1,
       labelku: 'ontime',
       datalogin: [],
@@ -106,78 +108,89 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    // this.unsubsribe = this.props.navigation.addListener('focus', () => {
-    console.log('hello world');
-    console.log('ini isi token dari params');
-    // console.log(this.props.route.params.token);
-    var tokens = '';
-    AsyncStorage.getItem('@storage_Key').then(value => {
-      console.log('coba get value token');
-      console.log(value);
-      this.setState({token: value});
-      tokens = value;
+    this.unsubsribe = this.props.navigation.addListener('focus', () => {
+      console.log('refresh==========>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      console.log('duar');
+      // });
 
-      console.log(
-        '================================== axios di dalam sync=====================================================================',
-      );
+      // this.unsubsribe = this.props.navigation.addListener('focus', () => {
+      console.log('hello world');
+      console.log('ini isi token dari params');
+      // console.log(this.props.route.params.token);
+      var tokens = '';
+      AsyncStorage.getItem('@storage_Key').then(value => {
+        console.log('coba get value token');
+        console.log(value);
+        this.setState({token: value});
+        tokens = value;
 
-      axios({
-        method: 'get',
-        url: `${baseUrl}/api/user/profile`,
-        headers: {
-          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-          // 'X-Token':
-          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
-          'X-Token': value,
-        },
-      })
-        .then(responseprofile => {
-          console.log('ini profile user');
-          console.log(responseprofile.data);
-          console.log('ini axios di dlam sync');
-          console.log(responseprofile.data.data.user.id_karyawan);
-          console.log(this.state.token);
+        console.log(
+          '================================== axios di dalam sync=====================================================================',
+        );
 
-          this.setState({
-            datalogin: responseprofile.data.data.user,
-          });
-          let iduser = responseprofile.data.data.user.id_karyawan;
-          //ambild data di server bisa dilakukan disini
-          axios({
-            method: 'get',
-            url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
-            headers: {
-              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-              'X-Token': value,
-            },
-          })
-            .then(response => {
-              console.log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
-              );
-
-              console.log(response.data.data.sidar_masterkaryawan);
-              console.log(response.data.message);
-
-              console.log('check');
-              this.setState({
-                statusdarthisday:
-                  response.data.data.sidar_masterkaryawan[0].statusdarthisday,
-              });
-              console.log(this.state.statusdarthisday[4]);
-            })
-            .catch(function (err) {
-              console.log(err);
-            });
+        axios({
+          method: 'get',
+          url: `${baseUrl}/api/user/profile`,
+          headers: {
+            'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+            // 'X-Token':
+            //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+            'X-Token': value,
+          },
         })
-        .catch(function (err) {
-          console.log(err);
-        });
+          .then(responseprofile => {
+            console.log('ini profile user');
+            console.log(responseprofile.data);
+            console.log('ini axios di dlam sync');
+            console.log(responseprofile.data.data.user.id_karyawan);
+            console.log(this.state.token);
+
+            this.setState({
+              datalogin: responseprofile.data.data.user,
+            });
+            let iduser = responseprofile.data.data.user.id_karyawan;
+            //ambild data di server bisa dilakukan disini
+            axios({
+              method: 'get',
+              url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
+              headers: {
+                'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+                'X-Token': value,
+              },
+            })
+              .then(response => {
+                console.log(
+                  '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
+                );
+
+                console.log(response.data.data.sidar_masterkaryawan);
+                console.log(response.data.message);
+
+                console.log('check');
+                this.setState({
+                  statusdarthisday:
+                    response.data.data.sidar_masterkaryawan[0].statusdarthisday,
+                  statusabsenmasuk:
+                    response.data.data.sidar_masterkaryawan[0].statusabsenmasuk,
+                  statusabsenkeluar:
+                    response.data.data.sidar_masterkaryawan[0]
+                      .statusabsenkeluar,
+                });
+                console.log(this.state.statusdarthisday[4]);
+              })
+              .catch(function (err) {
+                console.log(err);
+              });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      });
     });
   }
 
   componentWillUnmount() {
-    // this.unsubsribe();
+    this.unsubsribe();
   }
 
   logout = async () => {
@@ -271,6 +284,8 @@ class Home extends Component {
                 {/* - {this.state.iduser} */}
                 {'\n'}Anda terakhir login pada,{' '}
                 {this.state.datalogin.last_login}
+                {'\n'}status absen masuk, {this.state.statusabsenmasuk}
+                {'\n'}status absen keluar, {this.state.statusabsenkeluar}
                 {/* token, {this.state.token} */}
               </Text>
               {/* </TouchableOpacity> */}
@@ -289,46 +304,95 @@ class Home extends Component {
                 borderBottomRightRadius: 12,
                 borderBottomLeftRadius: 12,
               }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#84b291',
-                  width: '50%',
-                  borderRadius: 5,
-                  padding: 1,
-                }}
-                // onPress={() => this.props.navigation.navigate('Maps')}>
-                // onPress={() => this.props.navigation.navigate('AbsenceMasuk')}
-                onPress={() => this.props.navigation.navigate('SecondPage')}>
-                <Text
+              {this.state.statusabsenmasuk == 0 ? (
+                <TouchableOpacity
                   style={{
-                    color: '#FFFFFF',
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                  }}>
-                  Masuk
-                </Text>
-              </TouchableOpacity>
+                    backgroundColor: '#84b291',
+                    width: '50%',
+                    borderRadius: 5,
+                    padding: 1,
+                  }}
+                  // onPress={() => this.props.navigation.navigate('Maps')}>
+                  // onPress={() => this.props.navigation.navigate('AbsenceMasuk')}
+                  onPress={() =>
+                    this.props.navigation.navigate('AbsenceMasuk')
+                  }>
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    Masuk
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#84b291',
+                    width: '50%',
+                    borderRadius: 5,
+                    padding: 1,
+                  }}
+                  // onPress={() => this.props.navigation.navigate('Maps')}>
+                  // onPress={() => this.props.navigation.navigate('AbsenceMasuk')}
+                >
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    Anda Sudah Absen Masuk
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#b28484',
-                  width: '50%',
-                  borderRadius: 5,
-                  padding: 1,
-                }}
-                // onPress={() => this.props.navigation.navigate('Maps')}>
-                onPress={() => this.props.navigation.navigate('AbsenceKeluar')}>
-                <Text
+              {this.state.statusabsenkeluar == 0 ? (
+                <TouchableOpacity
                   style={{
-                    color: '#FFFFFF',
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                  }}>
-                  Keluar
-                </Text>
-              </TouchableOpacity>
+                    backgroundColor: '#b28484',
+                    width: '50%',
+                    borderRadius: 5,
+                    padding: 1,
+                  }}
+                  // onPress={() => this.props.navigation.navigate('Maps')}>
+                  onPress={() =>
+                    this.props.navigation.navigate('AbsenceKeluar')
+                  }>
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    Absen Pulang
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#b28484',
+                    width: '50%',
+                    borderRadius: 5,
+                    padding: 1,
+                  }}
+                  // onPress={() => this.props.navigation.navigate('Maps')}>
+                >
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    Anda Sudah Absen Pulang
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
 
             <ScrollView>

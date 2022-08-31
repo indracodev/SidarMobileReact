@@ -29,6 +29,7 @@ import {
   Button,
   StatusBar,
   Dimensions,
+  LogBox,
   Alert,
 } from 'react-native';
 
@@ -49,6 +50,8 @@ import DocumentPicker from 'react-native-document-picker';
 import * as ImagePicker from 'react-native-image-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Geolocation from '@react-native-community/geolocation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {WebView} from 'react-native-webview';
 // import * as ImagePicker from 'react-native-image-picker';
 const options = {
   title: 'Select Avatar',
@@ -80,7 +83,21 @@ class AbsenceKeluar extends Component {
       currentLongitude: '',
       currentLatitude: '',
       locationStatus: 'PRESS REFRESH GPS TO GET COORDINATE',
+      status_simpan: true,
+      token: '',
+      datalogin: [],
+      iduser: '',
+      place: '',
+      note: '',
     };
+  }
+
+  showLoader() {
+    this.setState({isVisible: true});
+  }
+
+  hideLoader() {
+    this.setState({isVisible: false});
   }
 
   chooseImage = () => {
@@ -124,6 +141,10 @@ class AbsenceKeluar extends Component {
 
   lCamera = () => {
     let options = {
+      quality: 1,
+      maxWidth: 400,
+      maxHeight: 400,
+      allowsEditing: false,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -220,6 +241,73 @@ class AbsenceKeluar extends Component {
   }
 
   componentDidMount() {
+    console.disableYellowBox = true;
+    console.disableYellowBox = ['Warning: Each', 'Warning: Failed'];
+
+    LogBox.ignoreLogs(['Require cycle:']);
+    LogBox.ignoreAllLogs();
+    AsyncStorage.getItem('@storage_Key').then(value => {
+      // console.log('coba get value token');
+      // console.log(value);
+      this.setState({token: value});
+      tokens = value;
+
+      axios({
+        method: 'get',
+        url: `${baseUrl}/api/user/profile`,
+        headers: {
+          'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          // 'X-Token':
+          //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTk0MjA3MDIsImV4cCI6MTY1OTUwNzEwMn0.rMxjxCy1sBDujijf2aEl1DMEKQJXicMW0itDO_mwnLY',
+          'X-Token': value,
+        },
+      })
+        .then(responseprofile => {
+          // console.log('ini profile user');
+          // console.log(responseprofile.data);
+          // console.log('ini axios di dlam sync');
+          // console.log(responseprofile.data.data.user.id_karyawan);
+          // console.log(this.state.token);
+
+          this.setState({
+            datalogin: responseprofile.data.data.user,
+            iduser: responseprofile.data.data.user.id_karyawan,
+          });
+          let iduser = responseprofile.data.data.user.id_karyawan;
+          //ambild data di server bisa dilakukan disini
+          axios({
+            method: 'get',
+            url: `${baseUrl}/api/sidar_masterkaryawan/detail/?id=${iduser}`,
+            headers: {
+              'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+              'X-Token': value,
+            },
+          })
+            .then(response => {
+              console.log(
+                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
+              );
+
+              console.log(response.data.data.sidar_masterkaryawan);
+              console.log(response.data.message);
+
+              console.log('check');
+              this.setState({
+                statusdarthisday:
+                  response.data.data.sidar_masterkaryawan[0].statusdarthisday,
+              });
+              console.log(this.state.statusdarthisday[4]);
+              this.lCamera();
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+
     const requestLocationPermission = async () => {
       if (Platform.OS === 'ios') {
         this.getOneTimeLocation();
@@ -234,7 +322,6 @@ class AbsenceKeluar extends Component {
             },
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            //To Check, If Permission is granted
             this.getOneTimeLocation();
             this.subscribeLocationLocation();
           } else {
@@ -251,7 +338,9 @@ class AbsenceKeluar extends Component {
     };
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    // this.unsubsribe();
+  }
 
   selectOneFile = async () => {
     var uri;
@@ -308,6 +397,7 @@ class AbsenceKeluar extends Component {
   };
 
   getOneTimeLocation = () => {
+    // alert('masuk');
     this.setState({locationStatus: 'PLEASE WAIT...REFRESH LOCATION'});
     console.log('test');
     console.log(this.state.locationStatus);
@@ -328,6 +418,43 @@ class AbsenceKeluar extends Component {
 
         //Setting Longitude state
         this.setState({currentLatitude: currentLatitude});
+
+        console.log('longitude');
+        console.log(currentLongitude);
+        console.log('latitude');
+        console.log(currentLatitude);
+
+        axios({
+          method: 'get',
+          // url: `${baseUrl}/api/sidar_dar/all`,
+          url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentLongitude},${currentLatitude}.json?types=poi&access_token=pk.eyJ1Ijoic2dpd2ViIiwiYSI6ImNrc3E1bDFpazA5cnIyd252amJ6dmV6YzgifQ.eGVUcbmYW0T0vZ3rfZkEFw`,
+          // url: `${baseUrl}/api/sidar_dar/detail?option=2&iduser=${iduser}`,
+          // headers: {
+          //   'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
+          //   'X-Token': this.state.token,
+          // },
+        })
+          .then(response => {
+            console.log(response.data);
+            console.log('space');
+            console.log('space');
+            console.log(response.data.features[0].context);
+
+            console.log('ini isinya place');
+            console.log(response.data.features[0].context[2].text);
+            var text = '';
+            var i = 0;
+            while (i < response.data.features[0].context.length) {
+              text += response.data.features[0].context[i].text + '\r\n';
+              i++;
+            }
+            console.log(text);
+            this.setState({place: text});
+          })
+          .catch(function (err) {
+            console.log(err);
+            // this.setState({status_loading: false});
+          });
       },
       error => {
         this.setState({locationStatus: error.message});
@@ -344,7 +471,7 @@ class AbsenceKeluar extends Component {
     Geolocation.watchPosition(
       position => {
         //Will give you the location on location change
-
+        console.log('refresh GPS');
         this.setState({locationStatus: 'You are Here'});
         console.log(position);
 
@@ -359,6 +486,10 @@ class AbsenceKeluar extends Component {
 
         //Setting Longitude state
         this.setState({currentLatitude: currentLatitude});
+        console.log('longitude');
+        console.log(currentLongitude);
+        console.log('latitude');
+        console.log(currentLatitude);
       },
       error => {
         this.setState({locationStatus: error.message});
@@ -371,23 +502,18 @@ class AbsenceKeluar extends Component {
   };
 
   submitData = () => {
+    this.setState({status_simpan: false});
     console.log('tombol simpan mengirimkan data');
     console.log('token');
     console.log(this.state.fileData);
-    // console.log(this.props.route.params.token);
-
-    // let username = this.state.username;
-    // let password = this.state.password;
-    // bodyFormData.append('username', 'suryoatm');
-    // bodyFormData.append('password', '085649224822');
 
     var bodyFormData = new FormData();
-    bodyFormData.append('iduser', 770);
+    bodyFormData.append('iduser', this.state.iduser);
     bodyFormData.append('status_absen', 'absen keluar');
     bodyFormData.append('latitude', this.state.currentLatitude);
 
     bodyFormData.append('longitude', this.state.currentLongitude);
-    bodyFormData.append('note', 'absen on mobile');
+    bodyFormData.append('note', this.state.note);
     bodyFormData.append('file', {
       // name: 'file',
       name: this.state.name,
@@ -399,7 +525,6 @@ class AbsenceKeluar extends Component {
     console.log(this.state.currentLongitude);
     console.log('latitude');
     console.log(this.state.currentLatitude);
-    // bodyFormData.append('file', this.state.fileData);
     console.log('name');
     console.log(this.state.name);
     console.log('type');
@@ -417,21 +542,42 @@ class AbsenceKeluar extends Component {
       headers: {
         'Content-Type': 'multipart/form-data',
         'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-        'X-Token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiMSJ9LCJpYXQiOjE2NTkzMTc4MTMsImV4cCI6MTY1OTQwNDIxM30.QY6tio_sbGDNRQN4aeQp1J1CyTQIdL6Aa25uLqKQq4s',
+        'X-Token': this.state.token,
       },
     })
       .then(response => {
+        console.log('proses simpan');
+        console.log('isi token');
+        console.log(this.state.login);
+
         if (response.data.status == true) {
           alert('berhasil');
+          this.setState({status_simpan: true});
+
+          try {
+            this.props.navigation.navigate('HomeScreen');
+          } catch (error) {
+            console.error(error);
+          }
         } else {
-          alert('periksa kembali inputan  anda');
+          alert('periksa kembali inputan  anda test');
+          this.setState({status_simpan: true});
         }
       })
-      .catch(function (err) {
-        console.log(err);
-        alert('periksa kembali inputan anda');
+      .catch(error => {
+        alert('periksa kembali inputan anda gaes');
+        console.log('Error:' + error.message);
+        this.setState({status_simpan: true});
       });
+    // .catch(function (err) {
+    //   console.log(err);
+    //   alert('periksa kembali inputan anda gaes');
+    //   try {
+    //     this.setState({status_simpan: false});
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // });
   };
 
   logout = async () => {
@@ -462,80 +608,129 @@ class AbsenceKeluar extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#373737', flex: 1}}>
+      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
-
-        <View
-          style={{
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            backgroundColor: '#393939',
-            padding: 20,
-          }}>
-          <TouchableOpacity onPress={this.toggleOpen}>
-            <Icon name="cog" size={30} color="#ffffff" />
-            {/* <Text
-                    style={{
-                      color: '#000000',
-                      fontsize: 9,
-                    }}>
-                    gear
-                  </Text> */}
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-            }}>
-            INDRACO - SIDAR
-          </Text>
-          {/* <Text style={{color: '#ffffff', fontSize: 12}}>DAR</Text> */}
-        </View>
-        {/* </View> */}
-
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: 5,
-            backgroundColor: '#2b2b2b',
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
-          }}>
-          {/* <Image
-            source={uri(
-              'content://com.android.providers.media.documents/document/image:307420',
-            )}
-          /> */}
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              color: '#ffffff',
-              textAlign: 'center',
-              marginTop: 10,
-            }}>
-            ABSEN KELUAR
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 16,
-            }}></Text>
-        </View>
-
-        {/* <TextArea placeholder="Description" /> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <SafeAreaView>
+            {/* <View
+              style={{
+                borderBottomRightRadius: 20,
+                borderBottomLeftRadius: 20,
+                backgroundColor: '#393939',
+                padding: 10,
+              }}>
+              <TouchableOpacity onPress={this.toggleOpen}>
+                <Icon name="cog" size={30} color="#ffffff" />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: '#ffffff',
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  marginTop: 10,
+                }}>
+                INDRACO - SIDAR
+              </Text>
+            </View> */}
+            {/* <View
+              style={{
+                marginTop: 5,
+                marginBottom: 5,
+                backgroundColor: '#2b2b2b',
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+                borderBottomRightRadius: 12,
+                borderBottomLeftRadius: 12,
+              }}>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  color: '#ffffff',
+                  textAlign: 'center',
+                  marginTop: 10,
+                }}>
+                ABSEN MASUK
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 16,
+                }}></Text>
+            </View> */}
+
+            <View
+              style={{
+                marginTop: 30,
+                borderBottomRightRadius: 20,
+                borderBottomLeftRadius: 20,
+                backgroundColor: '#898989',
+                padding: 15,
+              }}>
+              {/* <TouchableOpacity onPress={this.toggleOpen}>
+                <Icon name="cog" size={30} color="#ffffff" />
+              </TouchableOpacity> */}
+              {/* <Text
+                style={{
+                  color: '#ffffff',
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  marginTop: 25,
+                }}>
+                SIDAR - DAR
+              </Text> */}
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                }}>
+                Hi, {this.state.datalogin.username}
+                {/* - {this.state.iduser} */}
+                {'\n'}Anda terakhir login pada,{' '}
+                {this.state.datalogin.last_login}
+                {/* token, {this.state.token} */}
+              </Text>
+            </View>
+
+            {/* <View
+              style={{
+                marginTop: 5,
+                padding: 10,
+                backgroundColor: '#2b2b2b',
+                paddingVertical: 10,
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+                borderBottomRightRadius: 12,
+                borderBottomLeftRadius: 12,
+              }}>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                }}>
+                Hi, {this.state.datalogin.username}
+                {'\n'}Anda terakhir login pada,{' '}
+                {this.state.datalogin.last_login}
+              </Text>
+            </View> */}
+
             <View style={styles.body}>
               <Text
-                style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
+                style={{
+                  textAlign: 'center',
+                  fontSize: 12,
+                  padding: 5,
+                  fontWeight: 'bold',
+                }}>
                 PICK IMAGES FROM CAMERA
               </Text>
+              {/* <Image source={{uri: this.state.fileUri}} style={styles.images} /> */}
+              {/* <Image source={require('../images/loading.gif')} /> */}
+              {/* <Image
+                source={require('../images/loading-slow-net.gif')}
+                style={{width: 41, height: 50}}
+              /> */}
               <View style={[styles.ImageSections, {alignItems: 'center'}]}>
                 {/* <View>
                   {this.renderFileData()}
@@ -543,10 +738,9 @@ class AbsenceKeluar extends Component {
                 </View> */}
                 <View>
                   {this.renderFileUri()}
-                  <Text style={{textAlign: 'center'}}>File Uri</Text>
+                  {/* <Text style={{textAlign: 'center'}}>File Uri</Text> */}
                 </View>
               </View>
-
               <View style={styles.btnParentSection}>
                 {/* <TouchableOpacity
                   onPress={this.chooseImage}
@@ -568,30 +762,30 @@ class AbsenceKeluar extends Component {
                   </Text>
                 </TouchableOpacity> */}
               </View>
-
               <View style={styles.btnParentSection}>
-                <Text style={{fontSize: 20, color: 'red'}}>
-                  ===={this.state.locationStatus}====
+                <Text
+                  style={{fontSize: 20, color: '#812626', fontWeight: 'bold'}}>
+                  {this.state.locationStatus}
                 </Text>
 
-                <Text
+                {/* <Text
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 16,
-                    fontSize: 25,
+                    fontSize: 20,
                   }}>
                   LONGITUDE : {this.state.currentLongitude}
-                </Text>
-                <Text
+                </Text> */}
+                {/* <Text
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 16,
-                    fontSize: 25,
+                    fontSize: 20,
                   }}>
                   LATITUDE : {this.state.currentLatitude}
-                </Text>
+                </Text> */}
               </View>
             </View>
           </SafeAreaView>
@@ -606,38 +800,102 @@ class AbsenceKeluar extends Component {
             {/* <Text>ABSENCE MASUK</Text> */}
             {/* <Text style={styles.boldText}>{locationStatus}</Text> */}
           </View>
+
+          <View style={{height: 200, flexDirection: 'row'}}>
+            <WebView
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                marginTop: 10,
+                // width: '50%',
+              }}
+              source={{
+                html:
+                  '<iframe width="100%" height="100%" src="https://maps.google.com/maps?q=' +
+                  this.state.currentLatitude +
+                  ', ' +
+                  this.state.currentLongitude +
+                  '&z=20&output=embed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>',
+              }}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              onLoadStart={() => this.showLoader()}
+              onLoad={() => this.hideLoader()}
+            />
+            <View style={{width: '50%', marginTop: 10, marginHorizontal: 5}}>
+              <TouchableOpacity
+                style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+                onPress={this.getOneTimeLocation}>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  REFRESH GPS
+                </Text>
+              </TouchableOpacity>
+              <Text style={{color: '#393939'}}>Place : {this.state.place}</Text>
+            </View>
+          </View>
         </ScrollView>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
           onPress={this.getOneTimeLocation}>
           <Text
             style={{
               color: '#FFFFFF',
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: 'bold',
               textAlign: 'center',
             }}>
             REFRESH GPS
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity
-          style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
-          onPress={this.submitData}>
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 18,
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}>
-            SIMPAN
-          </Text>
-        </TouchableOpacity>
+        <TextInput
+          onChangeText={text => this.setState({note: text})}
+          style={{
+            // marginHorizontal: 5,
+            backgroundColor: '#FFFFFF',
+            marginBottom: 5,
+            borderRadius: 9,
+            elevation: 2,
+            paddingLeft: 10,
+            color: '#252525',
+          }}
+          placeholderTextColor="#292929"
+          placeholder="Note"
+        />
+
+        {this.state.status_simpan == true ? (
+          <TouchableOpacity
+            style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+            onPress={this.submitData}>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: 16,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              SIMPAN
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image
+              source={require('../images/loading-slow-net.gif')}
+              style={{width: 41, height: 50}}
+            />
+          </View>
+        )}
 
         <View
           style={{
-            backgroundColor: '#2b2b2b',
+            backgroundColor: '#898989',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -651,7 +909,7 @@ class AbsenceKeluar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Dar', {
+              this.props.navigation.navigate('DrawerDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -673,7 +931,7 @@ class AbsenceKeluar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('LaporanDar', {
+              this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -694,7 +952,7 @@ class AbsenceKeluar extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => this.props.navigation.navigate('Home')}>
+            onPress={() => this.props.navigation.navigate('DrawerHome')}>
             <Icon name="home" size={25} color="#ffffff" />
             <Text
               style={{
@@ -713,7 +971,7 @@ class AbsenceKeluar extends Component {
               alignItems: 'center',
             }}
             onPress={() =>
-              this.props.navigation.navigate('Cuti', {
+              this.props.navigation.navigate('DrawerCuti', {
                 data: this.state.datalogin,
                 token: this.state.token,
               })
@@ -757,10 +1015,13 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#acacac',
     justifyContent: 'center',
-    borderColor: 'black',
-    borderWidth: 1,
+    borderRadius: 10,
+
+    // borderColor: 'black',
+    // borderWidth: 1,
+    marginTop: 10,
     // height: Dimensions.get('screen').height - 20,
     // width: Dimensions.get('screen').width,
   },
@@ -772,24 +1033,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images: {
-    width: 150,
-    height: 150,
+    width: 180,
+    height: 270,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
   },
   btnParentSection: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
   },
   btnSection: {
-    width: 225,
-    height: 50,
+    width: 180,
+    height: 40,
     backgroundColor: '#DCDCDC',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,
-    marginBottom: 10,
   },
   btnText: {
     textAlign: 'center',
@@ -799,9 +1059,9 @@ const styles = StyleSheet.create({
   },
 
   btnAbsence: {
-    marginBottom: 20,
+    marginBottom: 10,
     paddingVertical: 10,
-    marginHorizontal: 20,
+    // marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 9,

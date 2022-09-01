@@ -52,6 +52,7 @@
 - project/rneui
 - project/select
 - project/sidebar
+- project/htmltopdf
 
 **notes**
 - author : Suryo Atmojo <suryoatm@gmail.com>

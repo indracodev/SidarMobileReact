@@ -13,7 +13,7 @@
  * Start-date : 23-07-2022
  */
 
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {
   Text,
   View,
@@ -33,8 +33,9 @@ import TextArea from '../components/TextArea';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WebView} from 'react-native-webview';
-
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 const baseUrl = 'http://new.sidar.id';
+
 // var width = useWindowDimensions();
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
@@ -66,30 +67,35 @@ class Dar extends Component {
       plan: 'tanggal 27 ini dari mobile',
       tag: '',
       file: '',
+      filePath: '',
     };
   }
 
-  componentDidMount() {
-    // this.setState({
-    //   activity: {
-    //     html:
-    //       `<p style='text-align:center;'>` +
-    //       this.props.route.params.data.activity +
-    //       `</p>`,
-    //   },
-    //   result: {
-    //     html:
-    //       `<p style='text-align:center;'>` +
-    //       this.props.route.params.data.result +
-    //       `</p>`,
-    //   },
-    //   plan: {
-    //     html:
-    //       `<p style='text-align:center;'>` +
-    //       this.props.route.params.data.plan +
-    //       `</p>`,
-    //   },
-    // });
+  componentDidMount() {}
+
+  createPDF() {
+    alert('test');
+    // if (await isPermitted()) {
+    try {
+      let options = {
+        //Content to print
+        html: '<h1 style="text-align: center;"><strong>Hello Guys</strong></h1><p style="text-align: center;">Here is an example of pdf Print in React Native</p><p style="text-align: center;"><strong>Team About React</strong></p>',
+        //File Name
+        fileName: 'test',
+        //File directory
+        directory: 'docs',
+      };
+      try {
+        let file = RNHTMLtoPDF.convert(options);
+        console.log(file.filePath);
+        setFilePath(file.filePath);
+      } catch (err) {
+        console.log(err);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    // }
   }
 
   componentWillUnmount() {}
@@ -225,6 +231,19 @@ class Dar extends Component {
               '</p><hr>',
           }}
         />
+
+        <TouchableOpacity onPress={() => this.createPDF()}>
+          <View>
+            {/* <Image
+              //We are showing the Image from online
+              source={{
+                uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/pdf.png',
+              }}
+              style={styles.imageStyle}
+            /> */}
+            <Text style={styles.textStyle}>Create PDF</Text>
+          </View>
+        </TouchableOpacity>
 
         {/* <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <WebView

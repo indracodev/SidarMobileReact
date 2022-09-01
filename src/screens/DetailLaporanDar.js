@@ -175,6 +175,8 @@ class Dar extends Component {
               fontSize: 12,
             }}>
             Hi, {this.props.route.params.data.namakaryawan}
+            {'\n'}
+            Nama Divisi : {this.props.route.params.namadivisi}
             {'\n'}Berikut data DAR anda pada tanggal,{' '}
             {this.props.route.params.data.tanggaldar} , diisi pada tanggal{' '}
             {this.props.route.params.data.tanggal}, Jam{' '}

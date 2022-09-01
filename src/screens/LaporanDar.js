@@ -97,6 +97,8 @@ class LaporanDar extends Component {
       search: [],
       setSearch: [],
 
+      namadivisi: '',
+
       filteredDataSource: [],
       setFilteredDataSource: [],
       masterDataSource: [],
@@ -148,6 +150,7 @@ class LaporanDar extends Component {
           this.setState({
             datalogin: responseprofile.data.data.user,
             iduser: responseprofile.data.data.user.id_karyawan,
+            namadivisi: responseprofile.data.profile.namadivisi,
           });
           let iduser = responseprofile.data.data.user.id_karyawan;
           //ambild data di server bisa dilakukan disini
@@ -406,6 +409,7 @@ class LaporanDar extends Component {
                   onPress={() =>
                     this.props.navigation.navigate('DetailLaporanDar', {
                       data: item,
+                      namadivisi: this.state.namadivisi,
                     })
                   }>
                   {/* <View style={{flex: 1}}></View> */}

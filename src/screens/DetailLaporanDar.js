@@ -13,7 +13,7 @@
  * Start-date : 23-07-2022
  */
 
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {
   Text,
   View,
@@ -24,6 +24,9 @@ import {
   ScrollView,
   Alert,
   useWindowDimensions,
+  Image,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import {StackActions} from '@react-navigation/native';
@@ -71,32 +74,72 @@ class Dar extends Component {
     };
   }
 
-  componentDidMount() {}
-
-  createPDF() {
-    alert('test');
-    // if (await isPermitted()) {
-    try {
-      let options = {
-        //Content to print
-        html: '<h1 style="text-align: center;"><strong>Hello Guys</strong></h1><p style="text-align: center;">Here is an example of pdf Print in React Native</p><p style="text-align: center;"><strong>Team About React</strong></p>',
-        //File Name
-        fileName: 'test',
-        //File directory
-        directory: 'docs',
-      };
-      try {
-        let file = RNHTMLtoPDF.convert(options);
-        console.log(file.filePath);
-        setFilePath(file.filePath);
-      } catch (err) {
-        console.log(err);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    // }
+  componentDidMount() {
+    // const [filePath, setFilePath] = useState('');
   }
+
+  isPermitted = async () => {
+    if (Platform.OS === 'android') {
+      console.log('its android gaes');
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs access to Storage data',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        alert('Write permission err', err);
+        return false;
+      }
+    } else {
+      alert('i dont know, what is this');
+      return true;
+    }
+  };
+
+  createPDF = async () => {
+    // alert('test');
+    try {
+      let permit = await this.isPermitted();
+      console.log('permit');
+      console.log(permit);
+
+      if (permit) {
+        let options = {
+          html:
+            '<h1 style="text-align: center;"><strong>test yoggi me Hello Guys</strong></h1><p style="text-align: center;">Here is an example of pdf Print in React Native</p><p style="text-align: center;"><strong>Team About React</strong></p><p style="font-size:20px">' +
+            this.props.route.params.data.activity +
+            '</p><hr>' +
+            '<h2>Result</h2>' +
+            '<p style="font-size:20px">' +
+            this.props.route.params.data.result +
+            '</p><hr>' +
+            '<h2>Plan</h2>' +
+            '<p style="font-size:20px">' +
+            this.props.route.params.data.plan +
+            '</p><hr>',
+          fileName: 'test9',
+          directory: 'docsme',
+        };
+        console.log(options);
+        //   try {
+        let file = await RNHTMLtoPDF.convert(options);
+        // console.log(file.filePath);
+        // console.log(file);
+        // alert(file.filePath);
+
+        //   this.setState({filePath: file.filePath});
+        // } catch (err) {
+        //   console.log(err);
+        // }
+      } else {
+      }
+      //alert(permit);
+    } catch {}
+  };
 
   componentWillUnmount() {}
 
@@ -232,7 +275,7 @@ class Dar extends Component {
           }}
         />
 
-        <TouchableOpacity onPress={() => this.createPDF()}>
+        <TouchableOpacity style={{height: 20}} onPress={() => this.createPDF()}>
           <View>
             {/* <Image
               //We are showing the Image from online

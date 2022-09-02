@@ -27,6 +27,8 @@ import {
   Image,
   PermissionsAndroid,
   Platform,
+  Button,
+  Linking,
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import {StackActions} from '@react-navigation/native';
@@ -37,6 +39,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WebView} from 'react-native-webview';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import * as RNFS from 'react-native-fs';
 const baseUrl = 'http://new.sidar.id';
 
 // var width = useWindowDimensions();
@@ -100,6 +103,28 @@ class Dar extends Component {
     }
   };
 
+  isPermittedread = async () => {
+    if (Platform.OS === 'android') {
+      console.log('its android gaes');
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Read Permission',
+            message: 'App needs access to Storage data',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        alert('Read permission err', err);
+        return false;
+      }
+    } else {
+      alert('i dont know, what is this');
+      return true;
+    }
+  };
+
   createPDF = async () => {
     // alert('test');
     try {
@@ -122,12 +147,29 @@ class Dar extends Component {
             this.props.route.params.data.plan +
             '</p><hr>',
           fileName: 'test9',
-          directory: 'docsme',
+          directory: 'Download',
         };
         console.log(options);
         //   try {
         let file = await RNHTMLtoPDF.convert(options);
-        // console.log(file.filePath);
+        console.log(file.filePath);
+
+        const pathcp = RNFS.DownloadDirectoryPath;
+
+        console.log(pathcp);
+
+        RNFS.copyFile(
+          file.filePath,
+          // '/storage/emulated/0/Android/data/com.sidarmobilereact/files/ayam.pdf',
+          '/storage/emulated/0/Download/test9.pdf',
+        )
+          .then(success => {
+            alert('File created, check on directory download'); // <--- here RNFS can read the file and returns this
+          })
+          .catch(err => {
+            console.log(err.message, err.code);
+            alert('error gaes');
+          });
         // console.log(file);
         // alert(file.filePath);
 
@@ -139,6 +181,100 @@ class Dar extends Component {
       }
       //alert(permit);
     } catch {}
+  };
+
+  openPdf = async () => {
+    // alert('open');
+    // require the module
+    // var RNFS = require('react-native-fs');
+
+    // RNFS.readFile(
+    //   '/storage/emulated/0/Android/data/com.sidarmobilereact/files/docsme/test6.pdf',
+    //   'ascii',
+    // )
+    //   .then(res => {
+    //     console.log('berhasil');
+    //     alert('mlaku gaes');
+
+    //   })
+    //   .catch(err => {
+    //     console.log(err.message, err.code);
+    //     alert('error gaes');
+    //   });
+
+    const pathcp = RNFS.DownloadDirectoryPath;
+
+    try {
+      let permit = await this.isPermittedread();
+      console.log('permit');
+      console.log(permit);
+
+      if (permit) {
+        RNFS.copyFile(
+          '/storage/emulated/0/Android/data/com.sidarmobilereact/files/docsme/test9.pdf',
+          '/storage/emulated/0/Android/data/com.sidarmobilereact/files/Ts/',
+        )
+          .then(success => {
+            alert('File copied'); // <--- here RNFS can read the file and returns this
+          })
+          .catch(err => {
+            console.log(err.message, err.code);
+            alert('error gaes');
+          });
+      }
+    } catch {}
+    // RNFS.exists(
+    //   '/storage/emulated/0/Android/data/com.sidarmobilereact/files/docsme/test6.pdf',
+    // ).then(status => {
+    //   if (status) {
+    //     alert('Yay! File exists');
+    //   } else {
+    //     alert('File not exists');
+    //   }
+    // });
+
+    // RNFS.exists(
+    //   '/storage/emulated/0/Android/data/com.sidarmobilereact/files/docsme/test6.pdf',
+    // ).then(success => {
+    //   alert('File Exists!'); // <--- here RNFS can read the file and returns this
+    // });
+
+    // } catch (errcp) {
+    //   console.log(errcp);
+    // }
+    // RNFS.downloadFile({
+    //   fromUrl:
+    //     'file://${/storage/emulated/0/Android/data/com.sidarmobilereact/files/docsme/test9.pdf}',
+    //   toFile: `${RNFS.DocumentDirectoryPath}/react-native.png`,
+    // }).promise.then(r => {
+    //   // this.setState({isDone: true});
+    // });
+
+    // alert('habis baca');
+
+    // // get a list of files and directories in the main bundle
+    // RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+    //   .then(result => {
+    //     console.log('GOT RESULT', result);
+
+    //     // stat the first file
+    //     return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+    //   })
+    //   .then(statResult => {
+    //     if (statResult[0].isFile()) {
+    //       // if we have a file, read it
+    //       return RNFS.readFile(statResult[1], 'utf8');
+    //     }
+
+    //     return 'no file';
+    //   })
+    //   .then(contents => {
+    //     // log the file contents
+    //     console.log(contents);
+    //   })
+    //   .catch(err => {
+    //     console.log(err.message, err.code);
+    //   });
   };
 
   componentWillUnmount() {}
@@ -274,19 +410,20 @@ class Dar extends Component {
               '</p><hr>',
           }}
         />
-
-        <TouchableOpacity style={{height: 20}} onPress={() => this.createPDF()}>
+        <Button title="Save As PDF" onPress={() => this.createPDF()} />
+        {/* <TouchableOpacity style={{height: 20}} onPress={() => this.createPDF()}>
           <View>
-            {/* <Image
-              //We are showing the Image from online
-              source={{
-                uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/pdf.png',
-              }}
-              style={styles.imageStyle}
-            /> */}
+           
             <Text style={styles.textStyle}>Create PDF</Text>
           </View>
         </TouchableOpacity>
+
+        <TouchableOpacity style={{height: 40}} onPress={() => this.openPdf()}>
+          <View style={{color: 'red'}}>
+           
+            <Text style={{color: 'red'}}>open</Text>
+          </View>
+        </TouchableOpacity> */}
 
         {/* <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <WebView

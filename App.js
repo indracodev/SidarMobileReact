@@ -24,6 +24,9 @@ import AbsenceKeluar from './src/screens/AbsenceKeluar';
 import AbsenceMasuk from './src/screens/AbsenceMasuk';
 
 import Cuti from './src/screens/Cuti';
+import ListCutiStaff from './src/screens/cuti/ListCutiStaff';
+import AddCuti from './src/screens/cuti/AddCuti';
+
 import Dar from './src/screens/Dar';
 import LaporanDar from './src/screens/LaporanDar';
 import DetailLaporanDar from './src/screens/DetailLaporanDar';
@@ -379,11 +382,10 @@ function HomeScreen() {
         component={LaporanDar}
       />
 
-      <Drawer.Screen
-        name="DrawerCuti"
-        options={{drawerLabel: 'Hidden Page Two option'}}
-        component={Cuti}
-      />
+      <Drawer.Screen name="DrawerCuti" component={Cuti} />
+
+      <Drawer.Screen name="DrawerListCutiStaff" component={ListCutiStaff} />
+      <Drawer.Screen name="DrawerAddCuti" component={AddCuti} />
     </Drawer.Navigator>
   );
 }

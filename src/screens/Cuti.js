@@ -100,25 +100,6 @@ class Cuti extends Component {
           console.log(err);
         });
     });
-
-    // this.unsubsribe = this.props.navigation.addListener('focus', () => {
-    //   console.log('ini did mount laporan dar');
-    //   console.log(this.props.route.params.token);
-    //   axios({
-    //     method: 'get',
-    //     url: `${baseUrl}/api/sidar_dar/all`,
-    //     headers: {
-    //       'X-Api-Key': '0ED40DE05125623C8753B6D3196C18DE',
-    //       'X-Token': this.props.route.params.token,
-    //     },
-    //   })
-    //     .then(response => {
-    //       this.setState({dar: response.data.data.sidar_dar});
-    //     })
-    //     .catch(function (err) {
-    //       console.log(err);
-    //     });
-    // });
   }
 
   componentWillUnmount() {
@@ -176,7 +157,7 @@ class Cuti extends Component {
         </View>
         <ScrollView
           style={{flexDirection: 'column', marginBottom: 20, marginTop: 20}}>
-          <View>
+          {/* <View>
             <Text
               style={{
                 textAlign: 'center', // <-- the magic
@@ -189,7 +170,63 @@ class Cuti extends Component {
               {'\n'} {'\n'}
               {'MAAF, FITUR MASIH DALAM TAHAP PENGEMBAGAN'}
             </Text>
-          </View>
+          </View> */}
+
+          <TouchableOpacity
+            style={{
+              marginBottom: 10,
+              backgroundColor: '#797979',
+              paddingVertical: 15,
+              marginHorizontal: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 9,
+              elevation: 2,
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('DrawerListCutiStaff', {
+                data: this.state.datalogin,
+                token: this.state.token,
+              })
+            }>
+            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
+              Cuti (In Progress)
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginBottom: 10,
+              backgroundColor: '#797979',
+              paddingVertical: 15,
+              marginHorizontal: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 9,
+              elevation: 2,
+            }}
+            // onPress={this.submitData}
+          >
+            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
+              Sakit (Next New Feature)
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginBottom: 10,
+              backgroundColor: '#797979',
+              paddingVertical: 15,
+              marginHorizontal: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 9,
+              elevation: 2,
+            }}
+            // onPress={this.submitData}
+          >
+            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
+              Unpaid Leave (Next New Feature)
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
 
         <View

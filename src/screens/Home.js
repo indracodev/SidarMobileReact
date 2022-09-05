@@ -394,7 +394,30 @@ class Home extends Component {
                 </TouchableOpacity>
               )}
             </View>
-
+            <View style={{flexDirection: 'row', height: 75}}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                <View
+                  style={{
+                    borderRadius: 5,
+                    backgroundColor: 'pink',
+                    width: 200,
+                    marginHorizontal: 5,
+                  }}>
+                  <Text>row 1</Text>
+                </View>
+                <View style={{backgroundColor: 'purple', width: 200}}>
+                  <Text>row 2</Text>
+                </View>
+                <View style={{backgroundColor: 'cyan', width: 200}}>
+                  <Text>row 3</Text>
+                </View>
+                <View style={{backgroundColor: 'pink', width: 200}}>
+                  <Text>row 4</Text>
+                </View>
+              </ScrollView>
+            </View>
             <ScrollView>
               <View style={{marginTop: 10, marginBottom: 5}}>
                 <Text

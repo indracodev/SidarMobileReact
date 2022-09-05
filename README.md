@@ -1,4 +1,4 @@
-# Sidar Mobile React - project/asyncstorage
+# Sidar Mobile React - project/datepicker
 
 **Requirement**
 - backend <https://github.com/indracodev/sidar-new>

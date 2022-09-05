@@ -517,6 +517,38 @@ class AddCuti extends Component {
           <View
             style={{
               backgroundColor: '#f7ffff',
+              marginLeft: 5,
+              marginRight: 5,
+              marginBottom: 20,
+            }}>
+            <TextInput
+              color="#292929"
+              underlineColorAndroid="transparent"
+              placeholder="Sisa Cuti"
+              placeholderTextColor="#393939"
+              onChangeText={text => this.setState({activity: text})}
+            />
+          </View>
+
+          <View
+            style={{
+              backgroundColor: '#f7ffff',
+              marginLeft: 5,
+              marginRight: 5,
+              marginBottom: 20,
+            }}>
+            <TextInput
+              color="#292929"
+              underlineColorAndroid="transparent"
+              placeholder="Jenis Cuti"
+              placeholderTextColor="#393939"
+              onChangeText={text => this.setState({activity: text})}
+            />
+          </View>
+
+          <View
+            style={{
+              backgroundColor: '#f7ffff',
               padding: 25,
               marginLeft: 5,
               marginRight: 5,

@@ -53,6 +53,7 @@
 - project/select
 - project/sidebar
 - project/htmltopdf
+- project/editor
 
 **notes**
 - author : Suryo Atmojo <suryoatm@gmail.com>

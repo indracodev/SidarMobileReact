@@ -138,8 +138,8 @@ class Cuti extends Component {
         <View
           style={{
             marginTop: 30,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
+            // borderBottomRightRadius: 20,
+            // borderBottomLeftRadius: 20,
             backgroundColor: '#898989',
             padding: 20,
           }}>
@@ -157,7 +157,7 @@ class Cuti extends Component {
         </View>
         <ScrollView
           style={{flexDirection: 'column', marginBottom: 20, marginTop: 20}}>
-          {/* <View>
+          <View>
             <Text
               style={{
                 textAlign: 'center', // <-- the magic
@@ -170,9 +170,9 @@ class Cuti extends Component {
               {'\n'} {'\n'}
               {'MAAF, FITUR MASIH DALAM TAHAP PENGEMBAGAN'}
             </Text>
-          </View> */}
+          </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               marginBottom: 10,
               backgroundColor: '#797979',
@@ -204,7 +204,7 @@ class Cuti extends Component {
               borderRadius: 9,
               elevation: 2,
             }}
-            // onPress={this.submitData}
+           
           >
             <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
               Sakit (Next New Feature)
@@ -221,12 +221,12 @@ class Cuti extends Component {
               borderRadius: 9,
               elevation: 2,
             }}
-            // onPress={this.submitData}
+          
           >
             <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
               Unpaid Leave (Next New Feature)
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
 
         <View

@@ -264,13 +264,13 @@ class Dar extends Component {
           style={{
             marginTop: 30,
             padding: 10,
-            backgroundColor: '#fffff2',
+            backgroundColor: '#898989',
             display: 'flex',
             flexDirection: 'row',
             paddingVertical: 10,
 
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
+            // borderBottomRightRadius: 12,
+            // borderBottomLeftRadius: 12,
           }}>
           <TouchableOpacity
             style={{
@@ -278,12 +278,12 @@ class Dar extends Component {
               padding: 1,
             }}
             onPress={() => this.props.navigation.toggleDrawer()}>
-            <Icon name="bars" size={30} color="#797979" />
+            <Icon name="bars" size={30} color="#fffff2" />
           </TouchableOpacity>
 
           <Text
             style={{
-              color: '#393939',
+              color: '#fffff2',
               fontSize: 12,
               marginLeft: 20,
               marginTop: 5,

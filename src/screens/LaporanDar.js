@@ -300,7 +300,7 @@ class LaporanDar extends Component {
               style={{
                 marginTop: 30,
                 padding: 10,
-                backgroundColor: '#fffff2',
+                backgroundColor: '#898989',
                 display: 'flex',
                 flexDirection: 'row',
                 paddingVertical: 10,
@@ -316,7 +316,7 @@ class LaporanDar extends Component {
 
               <Text
                 style={{
-                  color: '#292929',
+                  color: '#fffff2',
                   fontSize: 12,
                   // marginLeft: 5,
                   marginTop: 5,
@@ -397,7 +397,7 @@ class LaporanDar extends Component {
                 <TouchableOpacity
                   style={{
                     // backgroundColor: '#60a5f0',
-                    backgroundColor: '#f9ffff',
+                    backgroundColor: '#f8f6f4',
                     marginTop: 10,
                     marginHorizontal: 10,
                     padding: 20,
@@ -414,7 +414,7 @@ class LaporanDar extends Component {
                   }>
                   {/* <View style={{flex: 1}}></View> */}
 
-                  <Text style={[styles.textnamakaryawan, {color: '#898989'}]}>
+                  <Text style={[styles.textnamakaryawan, {color: '#494e75'}]}>
                     {item.namakaryawan}
                   </Text>
                   <View style={{flexDirection: 'row'}}>
@@ -424,7 +424,7 @@ class LaporanDar extends Component {
                           // marginLeft: 5,
                           fontWeight: 'bold',
                           fontSize: 16,
-                          color: '#797979',
+                          color: '#494e75',
                         }}>
                         {item.tanggaldar} / {item.jam}
                       </Text>

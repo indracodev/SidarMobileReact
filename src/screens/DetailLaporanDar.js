@@ -389,7 +389,7 @@ class Dar extends Component {
         </View> */}
 
         {/* <TextArea placeholder="Description" /> */}
-
+        <Button title="Save As PDF" onPress={() => this.createPDF()} />
         <WebView
           scalesPageToFit={false}
           nestedScrollEnabled
@@ -410,7 +410,7 @@ class Dar extends Component {
               '</p><hr>',
           }}
         />
-        <Button title="Save As PDF" onPress={() => this.createPDF()} />
+
         {/* <TouchableOpacity style={{height: 20}} onPress={() => this.createPDF()}>
           <View>
            

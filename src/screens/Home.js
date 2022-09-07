@@ -256,13 +256,13 @@ class Home extends Component {
               style={{
                 marginTop: 30,
                 padding: 10,
-                backgroundColor: '#fffff2',
+                backgroundColor: '#898989',
                 display: 'flex',
                 flexDirection: 'row',
                 paddingVertical: 10,
 
-                borderBottomRightRadius: 12,
-                borderBottomLeftRadius: 12,
+                // borderBottomRightRadius: 12,
+                // borderBottomLeftRadius: 12,
               }}>
               <TouchableOpacity
                 style={{
@@ -270,12 +270,12 @@ class Home extends Component {
                   padding: 1,
                 }}
                 onPress={() => this.props.navigation.toggleDrawer()}>
-                <Icon name="bars" size={30} color="#797979" />
+                <Icon name="bars" size={30} color="#fffff2" />
               </TouchableOpacity>
 
               <Text
                 style={{
-                  color: '#212121',
+                  color: '#fffff2',
                   fontSize: 12,
                   marginLeft: 20,
                   marginTop: 5,
@@ -284,8 +284,8 @@ class Home extends Component {
                 {/* - {this.state.iduser} */}
                 {'\n'}Anda terakhir login pada,{' '}
                 {this.state.datalogin.last_login}
-                {'\n'}status absen masuk, {this.state.statusabsenmasuk}
-                {'\n'}status absen keluar, {this.state.statusabsenkeluar}
+                {/* {'\n'}status absen masuk, {this.state.statusabsenmasuk}
+                {'\n'}status absen keluar, {this.state.statusabsenkeluar} */}
                 {/* token, {this.state.token} */}
               </Text>
               {/* </TouchableOpacity> */}
@@ -299,10 +299,10 @@ class Home extends Component {
                 display: 'flex',
                 flexDirection: 'row',
                 paddingVertical: 10,
-                borderTopRightRadius: 12,
-                borderTopLeftRadius: 12,
-                borderBottomRightRadius: 12,
-                borderBottomLeftRadius: 12,
+                // borderTopRightRadius: 12,
+                // borderTopLeftRadius: 12,
+                // borderBottomRightRadius: 12,
+                // borderBottomLeftRadius: 12,
               }}>
               {this.state.statusabsenmasuk == 0 ? (
                 <TouchableOpacity
@@ -394,7 +394,7 @@ class Home extends Component {
                 </TouchableOpacity>
               )}
             </View>
-            <View style={{flexDirection: 'row', height: 75}}>
+            {/* <View style={{flexDirection: 'row', height: 75}}>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}>
@@ -417,7 +417,7 @@ class Home extends Component {
                   <Text>row 4</Text>
                 </View>
               </ScrollView>
-            </View>
+            </View> */}
             <ScrollView>
               <View style={{marginTop: 10, marginBottom: 5}}>
                 <Text
@@ -440,49 +440,49 @@ class Home extends Component {
                     {
                       name: this.state.labelku,
                       population: this.state.statusdarthisday[0],
-                      color: 'green',
-                      legendFontColor: 'white',
+                      color: '#4a744f',
+                      legendFontColor: '#898989',
                       legendFontSize: 11,
                     },
                     {
                       name: 'Late',
                       population: this.state.statusdarthisday[1],
                       color: 'yellow',
-                      legendFontColor: 'white',
+                      legendFontColor: '#898989',
                       legendFontSize: 11,
                     },
                     {
                       name: 'Over',
                       population: this.state.statusdarthisday[2],
                       color: 'red',
-                      legendFontColor: 'white',
+                      legendFontColor: '#898989',
                       legendFontSize: 11,
                     },
                     {
                       name: 'No Data',
                       population: this.state.statusdarthisday[4],
-                      color: 'black',
-                      legendFontColor: 'white',
+                      color: '#4a4f74',
+                      legendFontColor: '#898989',
                       legendFontSize: 11,
                     },
                     {
                       name: 'Absence',
                       population: this.state.statusdarthisday[3],
                       color: 'blue',
-                      legendFontColor: 'white',
+                      legendFontColor: '#898989',
                       legendFontSize: 11,
                     },
                   ]}
                   width={Dimensions.get('window').width - 10} // from react-native
                   height={220}
                   chartConfig={{
-                    color: (opacity = 1) => `white`,
-                    labelColor: (opacity = 1) => `white`,
+                    color: (opacity = 1) => `#898989`,
+                    labelColor: (opacity = 1) => `#898989`,
                     style: {
                       borderRadius: 16,
                     },
                   }}
-                  backgroundColor="#797979"
+                  backgroundColor="#f8f6f4"
                   accessor="population"
                   paddingLeft="15"
                   absolute

@@ -608,7 +608,7 @@ class AbsenceKeluar extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
+      <View style={{backgroundColor: '#f8f6f4', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
@@ -663,8 +663,8 @@ class AbsenceKeluar extends Component {
             <View
               style={{
                 marginTop: 30,
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
+                // borderBottomRightRadius: 20,
+                // borderBottomLeftRadius: 20,
                 backgroundColor: '#898989',
                 padding: 15,
               }}>
@@ -718,6 +718,7 @@ class AbsenceKeluar extends Component {
             <View style={styles.body}>
               <Text
                 style={{
+                  color: '#4a4f74',
                   textAlign: 'center',
                   fontSize: 12,
                   padding: 5,
@@ -861,7 +862,7 @@ class AbsenceKeluar extends Component {
             // marginHorizontal: 5,
             backgroundColor: '#FFFFFF',
             marginBottom: 5,
-            borderRadius: 9,
+            // borderRadius: 9,
             elevation: 2,
             paddingLeft: 10,
             color: '#252525',
@@ -1015,9 +1016,9 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    backgroundColor: '#acacac',
+    backgroundColor: '#f8f6f4',
     justifyContent: 'center',
-    borderRadius: 10,
+    // borderRadius: 10,
 
     // borderColor: 'black',
     // borderWidth: 1,
@@ -1049,7 +1050,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#DCDCDC',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 3,
+    // borderRadius: 3,
   },
   btnText: {
     textAlign: 'center',
@@ -1064,7 +1065,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 9,
+    // borderRadius: 9,
     elevation: 2,
   },
 });

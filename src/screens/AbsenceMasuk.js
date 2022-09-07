@@ -608,7 +608,7 @@ class AbsenceMasuk extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
+      <View style={{backgroundColor: '#f8f6f4', flex: 1}}>
         {/* <View style={{flex: 1}}> */}
 
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
@@ -662,9 +662,10 @@ class AbsenceMasuk extends Component {
 
             <View
               style={{
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
-                backgroundColor: '#898989',
+                marginTop: 30,
+                // borderBottomRightRadius: 20,
+                // borderBottomLeftRadius: 20,
+                backgroundColor: '#494e75',
                 padding: 15,
               }}>
               {/* <TouchableOpacity onPress={this.toggleOpen}>
@@ -717,6 +718,7 @@ class AbsenceMasuk extends Component {
             <View style={styles.body}>
               <Text
                 style={{
+                  color: '#4a4f74',
                   textAlign: 'center',
                   fontSize: 12,
                   padding: 5,
@@ -824,7 +826,7 @@ class AbsenceMasuk extends Component {
             />
             <View style={{width: '50%', marginTop: 10, marginHorizontal: 5}}>
               <TouchableOpacity
-                style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+                style={[styles.btnAbsence, {backgroundColor: '#4a4f74'}]}
                 onPress={this.getOneTimeLocation}>
                 <Text
                   style={{
@@ -871,7 +873,7 @@ class AbsenceMasuk extends Component {
 
         {this.state.status_simpan == true ? (
           <TouchableOpacity
-            style={[styles.btnAbsence, {backgroundColor: '#525252'}]}
+            style={[styles.btnAbsence, {backgroundColor: '#4a4f74'}]}
             onPress={this.submitData}>
             <Text
               style={{
@@ -894,7 +896,7 @@ class AbsenceMasuk extends Component {
 
         <View
           style={{
-            backgroundColor: '#898989',
+            backgroundColor: '#494e75',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -1014,9 +1016,9 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    backgroundColor: '#acacac',
+    backgroundColor: '#f8f6f4',
     justifyContent: 'center',
-    borderRadius: 10,
+    // borderRadius: 10,
 
     // borderColor: 'black',
     // borderWidth: 1,
@@ -1045,7 +1047,7 @@ const styles = StyleSheet.create({
   btnSection: {
     width: 180,
     height: 40,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#ffcc7c',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,
@@ -1063,7 +1065,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 9,
+    // borderRadius: 9,
     elevation: 2,
   },
 });

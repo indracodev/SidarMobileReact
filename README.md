@@ -54,6 +54,8 @@
 - project/sidebar
 - project/htmltopdf
 - project/editor
+- project/realpath
+
 
 **notes**
 - author : Suryo Atmojo <suryoatm@gmail.com>

@@ -15,14 +15,22 @@
 
 import React, {Component} from 'react';
 import {
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  TextInput,
-  StyleSheet,
-  ScrollView,
   Alert,
+  Appearance,
+  Button,
+  Dimensions,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -31,20 +39,40 @@ import TextArea from '../components/TextArea';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SelectDropdown from 'react-native-select-dropdown';
+import {BottomSheet} from '@rneui/themed';
+import {XMath} from '@wxik/core';
+import {WebView} from 'react-native-webview';
+import DocumentPicker from 'react-native-document-picker';
+import {
+  actions,
+  getContentCSS,
+  RichEditor,
+  RichToolbar,
+} from 'react-native-pell-rich-editor';
+import {color} from 'react-native-reanimated';
 
 const baseUrl = 'http://new.sidar.id';
+
 // const dateDropdownRef = useRef();
 // const baseUrl = 'http://localhost/sidar-new';
 class Dar extends Component {
+  richbsActivity = React.createRef();
+  richbsResult = React.createRef();
+  richbsPlan = React.createRef();
+  richTextActivity = React.createRef();
+  richTextResult = React.createRef();
+  richTextPlan = React.createRef();
+
   constructor(props) {
     super(props);
+    const that = this;
+    const windowHeight = Dimensions.get('window').height;
     this.state = {
       token: '',
       datalogin: [],
       iduser: '',
 
       id: '',
-      // id_user: '',
       namakaryawan: '',
       nodar: '',
       ke: '',
@@ -63,14 +91,51 @@ class Dar extends Component {
       jam: '11:51',
       status: '',
       colorstatus: '',
-      activity: 'tanggal 27 ini dari mobile',
-      result: 'tanggal 27 ini dari mobile',
-      plan: 'tanggal 27 ini dari mobile',
+      activity: '',
+      result: '',
+      plan: '',
       tag: '',
       file: '',
       periodetanggaldar: [],
+      windowHeight: Dimensions.get('window').height,
+      editorHeight: Dimensions.get('window').height - 90,
+      disabled: false,
+      isVisibleActivity: false,
+      isVisibleResult: false,
+      isVisiblePlan: false,
+      singleFile: null,
     };
+    // that.handleChange = that.handleChange;
+    // that.handleHeightChange = this.handleHeightChange;
   }
+
+  /**
+   * editor change data
+   * @param {string} html
+   */
+  handleChange(html) {
+    this.richHTML = html;
+    this.setState({a: Math.random});
+  }
+
+  /**
+   * editor height change
+   * @param {number} height
+   */
+  handleHeightChange(height) {
+    console.log('editor height change:', height);
+    // alert(height);
+  }
+  handleFocusActivity = () => {};
+  handleFocusResult = () => {};
+  handleFocusPlan = () => {};
+  handleBlur = () => {
+    this.richTextActivity.insertHTML('asd');
+  };
+
+  handleChange = () => {
+    this.richTextActivity.insertHTML('asd');
+  };
 
   componentDidMount() {
     // this.unsubsribe = this.props.navigation.addListener('focus', () => {
@@ -141,20 +206,6 @@ class Dar extends Component {
           console.log(err);
         });
     });
-
-    // console.log('hello world');
-    // console.log(this.props.route.params.token);
-    // console.log(this.props.route.params.data);
-    // this.setState({
-    //   datalogin: this.props.route.params.data,
-    //   token: this.props.route.params.token,
-    // });
-
-    // console.log(this.state.token);
-    // let iduser = 770;
-    //ambild data di server bisa dilakukan disini
-
-    // });
   }
 
   componentWillUnmount() {
@@ -164,16 +215,9 @@ class Dar extends Component {
   submitData = () => {
     console.log('tombol simpan mengirimkan data');
     console.log('token');
-    // console.log(this.props.route.params.token);
-
-    // let username = this.state.username;
-    // let password = this.state.password;
-    // bodyFormData.append('username', 'suryoatm');
-    // bodyFormData.append('password', '085649224822');
 
     var bodyFormData = new FormData();
     bodyFormData.append('id', this.state.id);
-    // bodyFormData.append('id_user', this.state.id_user);
     bodyFormData.append('id_user', this.state.iduser);
     bodyFormData.append('namakaryawan', this.state.namakaryawan);
     bodyFormData.append('nodar', this.state.nodar);
@@ -197,7 +241,13 @@ class Dar extends Component {
     bodyFormData.append('result', this.state.result);
     bodyFormData.append('plan', this.state.plan);
     bodyFormData.append('tag', this.state.tag);
-    bodyFormData.append('file', this.state.file);
+    // bodyFormData.append('file', this.state.file);
+    bodyFormData.append('file', {
+      // name: 'file',
+      name: this.state.singleFile[0].name,
+      type: 'image/jpeg',
+      uri: this.state.singleFile[0].uri,
+    });
     axios({
       method: 'post',
       url: `${baseUrl}/api/sidar_dar/add`,
@@ -209,19 +259,30 @@ class Dar extends Component {
       },
     })
       .then(response => {
-        // console.log(response.data.status);
-        // console.log(response.data.data.username);
-        // console.log(response.data.token);
-        // console.log(this.state.username);
-        // console.log(this.state.password);
         if (response.data.status == true) {
-          this.props.navigation.dispatch(
-            StackActions.replace('LaporanDar', {
-              // data: response.data.data,
-              // token: response.data.token,
-            }),
-          );
+          console.log('response.data.status');
+          console.log(response.data.status);
+          // this.props.navigation.dispatch(
+          //   StackActions.replace('HomeScreen', {}),
+          // );
+          alert('berhasil');
+          this.props.navigation.navigate('DrawerHome');
+
+          // this.props.navigation.dispatch(
+          //   StackActions.replace('HomeScreen', {
+          //     // data: response.data.data,
+          //     // token: response.data.token,
+          //   }),
+          // );
+
+          // try {
+          // this.props.navigation.navigate('HomeScreen');
+          // } catch (error) {
+          //   console.error(error);
+          // }
         } else {
+          console.log('response.data.status');
+          console.log(response.data.status);
           alert('periksa kembali inputan  anda');
         }
       })
@@ -229,6 +290,11 @@ class Dar extends Component {
         console.log(err);
         alert('periksa kembali inputan anda');
       });
+  };
+
+  submitData2 = () => {
+    // this.props.navigation.dispatch(StackActions.replace('DrawerHome', {}));
+    this.props.navigation.navigate('DrawerHome');
   };
 
   logout = async () => {
@@ -257,46 +323,94 @@ class Dar extends Component {
     ]);
   };
 
+  uploadImage = async () => {
+    // Check if any file is selected or not
+    if (singleFile != null) {
+      // If file selected then create FormData
+      const fileToUpload = singleFile;
+      const data = new FormData();
+      data.append('name', 'Image Upload');
+      data.append('file_attachment', fileToUpload);
+      // Please change file upload URL
+      let res = await fetch('http://localhost/upload.php', {
+        method: 'post',
+        body: data,
+        headers: {
+          'Content-Type': 'multipart/form-data; ',
+        },
+      });
+      let responseJson = await res.json();
+      if (responseJson.status == 1) {
+        alert('Upload Successful');
+      }
+    } else {
+      // If no file selected the show alert
+      alert('Please Select File first');
+    }
+  };
+
+  selectFile = async () => {
+    console.log('try');
+    // Opening Document Picker to select one file
+    try {
+      console.log('try 2');
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      console.log(res);
+      console.log(res[0].name);
+      // console.log('res : ' + JSON.stringify(res));
+      this.setState({singleFile: res});
+      //   // setSingleFile(res);
+    } catch (err) {
+      console.log(err);
+      //   this.setState({singleFile: null});
+      //   // setSingleFile(null);
+      //   if (DocumentPicker.isCancel(err)) {
+      //     alert('Canceled');
+      //   } else {
+      //     alert('Unknown Error: ' + JSON.stringify(err));
+      //     throw err;
+      //   }
+    }
+  };
+
   render() {
     return (
       <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
-        <View
-          style={{
-            marginTop: 30,
-            padding: 10,
-            backgroundColor: '#898989',
-            display: 'flex',
-            flexDirection: 'row',
-            paddingVertical: 10,
-
-            // borderBottomRightRadius: 12,
-            // borderBottomLeftRadius: 12,
-          }}>
-          <TouchableOpacity
-            style={{
-              borderRadius: 5,
-              padding: 1,
-            }}
-            onPress={() => this.props.navigation.toggleDrawer()}>
-            <Icon name="bars" size={30} color="#fffff2" />
-          </TouchableOpacity>
-
-          <Text
-            style={{
-              color: '#fffff2',
-              fontSize: 12,
-              marginLeft: 20,
-              marginTop: 5,
-            }}>
-            Hi, {this.state.datalogin.username}
-            {/* - {this.state.iduser} */}
-            {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-            {/* token, {this.state.token} */}
-          </Text>
-          {/* </TouchableOpacity> */}
-        </View>
-
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+          <View
+            style={{
+              marginTop: 30,
+              padding: 10,
+              backgroundColor: '#898989',
+              display: 'flex',
+              flexDirection: 'row',
+              paddingVertical: 10,
+            }}>
+            <TouchableOpacity
+              style={{
+                borderRadius: 5,
+                padding: 1,
+              }}
+              onPress={() => this.props.navigation.toggleDrawer()}>
+              <Icon name="bars" size={30} color="#fffff2" />
+            </TouchableOpacity>
+
+            <Text
+              style={{
+                color: '#fffff2',
+                fontSize: 12,
+                marginLeft: 20,
+                marginTop: 5,
+              }}>
+              Hi, {this.state.datalogin.username}
+              {/* - {this.state.iduser} */}
+              {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
+              {/* token, {this.state.token} */}
+            </Text>
+            {/* </TouchableOpacity> */}
+          </View>
           {this.state.periodetanggaldar.length === 0 ? (
             <View
               style={{
@@ -436,60 +550,475 @@ class Dar extends Component {
             </View>
           )}
 
-          <View
+          <BottomSheet modalProps={{}} isVisible={this.state.isVisibleActivity}>
+            <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  height: this.state.editorHeight,
+                }}>
+                <Button
+                  title="Close"
+                  onPress={() =>
+                    this.setState({
+                      isVisibleActivity: false,
+                      editorHeight: this.state.windowHeight - 90,
+                    })
+                  }
+                  buttonStyle={styles.button}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: 'grey',
+                    textAlign: 'left',
+                  }}>
+                  Activity
+                </Text>
+                <RichEditor
+                  ref={this.richbsActivity}
+                  initialContentHTML={this.state.activity}
+                  initialHeight={this.state.editorHeight}
+                  placeholder={'please input content'}
+                  // useContainer={false}
+                  containerStyle={{minHeight: 100}}
+                  // onHeightChange={handleHeightChange}
+                  onHeightChange={this.handleHeightChange}
+                  onChange={text => {
+                    this.setState({activity: text});
+
+                    this.richTextActivity.current?.setContentHTML(
+                      this.state.activity,
+                    );
+                  }}
+                  onFocus={() => {
+                    var edtheight = this.state.windowHeight / 2;
+                    this.handleFocusActivity;
+                    this.setState({editorHeight: edtheight});
+                    console.log(this.state.editorHeight);
+                  }}
+                  onBlur={this.handleBlur}
+                />
+              </View>
+              <RichToolbar
+                style={[styles.richBar, styles.richBarDark]}
+                flatContainerStyle={styles.flatStyle}
+                editor={this.richbsActivity}
+                disabled={this.state.disabled}
+                actions={[
+                  actions.undo,
+                  actions.redo,
+                  actions.setBold,
+                  actions.setItalic,
+                  actions.insertBulletsList,
+                  actions.insertOrderedList,
+                  actions.insertOrderedList,
+                  actions.alignLeft,
+                  actions.alignCenter,
+                ]}
+              />
+            </ScrollView>
+          </BottomSheet>
+
+          <BottomSheet modalProps={{}} isVisible={this.state.isVisibleResult}>
+            <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  height: this.state.editorHeight,
+                }}>
+                <Button
+                  title="Close"
+                  onPress={() =>
+                    this.setState({
+                      isVisibleResult: false,
+                      editorHeight: this.state.windowHeight - 90,
+                    })
+                  }
+                  buttonStyle={styles.button}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: 'grey',
+                    textAlign: 'left',
+                  }}>
+                  Result
+                </Text>
+                <RichEditor
+                  ref={this.richbsResult}
+                  initialContentHTML={this.state.result}
+                  initialHeight={this.state.editorHeight}
+                  placeholder={'please input content'}
+                  // useContainer={false}
+                  containerStyle={{minHeight: 100}}
+                  // onHeightChange={handleHeightChange}
+                  onHeightChange={this.handleHeightChange}
+                  onChange={text => {
+                    this.setState({result: text});
+
+                    this.richTextResult.current?.setContentHTML(
+                      this.state.result,
+                    );
+                  }}
+                  onFocus={() => {
+                    var edtheight = this.state.windowHeight / 2;
+                    // this.handleFocusActivity;
+                    this.setState({editorHeight: edtheight});
+                    console.log(this.state.editorHeight);
+                  }}
+                  onBlur={this.handleBlur}
+                />
+              </View>
+              <RichToolbar
+                style={[styles.richBar, styles.richBarDark]}
+                flatContainerStyle={styles.flatStyle}
+                editor={this.richbsResult}
+                disabled={this.state.disabled}
+                actions={[
+                  actions.undo,
+                  actions.redo,
+                  actions.setBold,
+                  actions.setItalic,
+                  actions.insertBulletsList,
+                  actions.insertOrderedList,
+                  actions.insertOrderedList,
+                  actions.alignLeft,
+                  actions.alignCenter,
+                ]}
+              />
+            </ScrollView>
+          </BottomSheet>
+
+          <BottomSheet modalProps={{}} isVisible={this.state.isVisiblePlan}>
+            <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  height: this.state.editorHeight,
+                }}>
+                <Button
+                  title="Close"
+                  onPress={() =>
+                    this.setState({
+                      isVisiblePlan: false,
+                      editorHeight: this.state.windowHeight - 90,
+                    })
+                  }
+                  buttonStyle={styles.button}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: 'grey',
+                    textAlign: 'left',
+                  }}>
+                  Plan
+                </Text>
+                <RichEditor
+                  ref={this.richbsPlan}
+                  initialContentHTML={this.state.plan}
+                  initialHeight={this.state.editorHeight}
+                  placeholder={'please input content'}
+                  // useContainer={false}
+                  containerStyle={{minHeight: 100}}
+                  // onHeightChange={handleHeightChange}
+                  onHeightChange={this.handleHeightChange}
+                  onChange={text => {
+                    this.setState({plan: text});
+
+                    this.richTextPlan.current?.setContentHTML(this.state.plan);
+                  }}
+                  onFocus={() => {
+                    var edtheight = this.state.windowHeight / 2;
+                    // this.handleFocusActivity;
+                    this.setState({editorHeight: edtheight});
+                    console.log(this.state.editorHeight);
+                  }}
+                  onBlur={this.handleBlur}
+                />
+              </View>
+              <RichToolbar
+                style={[styles.richBar, styles.richBarDark]}
+                flatContainerStyle={styles.flatStyle}
+                editor={this.richbsPlan}
+                disabled={this.state.disabled}
+                actions={[
+                  actions.undo,
+                  actions.redo,
+                  actions.setBold,
+                  actions.setItalic,
+                  actions.insertBulletsList,
+                  actions.insertOrderedList,
+                  actions.insertOrderedList,
+                  actions.alignLeft,
+                  actions.alignCenter,
+                ]}
+              />
+            </ScrollView>
+          </BottomSheet>
+
+          {/* <Button
+            title="Close"
+            onPress={() => this.setState({windowHeight: 150})}
+            buttonStyle={styles.button}
+          /> */}
+          {/* <View
             style={{
-              backgroundColor: '#f7ffff',
-              padding: 25,
-              marginLeft: 5,
-              marginRight: 5,
-              marginBottom: 20,
+              width: '33%',
+              height: this.state.windowHeight,
+              backgroundColor: 'steelblue',
             }}>
-            <TextInput
-              style={styles.textArea}
-              underlineColorAndroid="transparent"
-              placeholder="Aktifitas Harian"
-              placeholderTextColor="#393939"
-              numberOfLines={10}
-              multiline={true}
-              onChangeText={text => this.setState({activity: text})}
+            <Text>aseekk</Text>
+          </View> */}
+
+          <View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'grey',
+                textAlign: 'left',
+                // padding: 5,
+              }}>
+              Activity
+            </Text>
+
+            <RichEditor
+              ref={this.richTextActivity}
+              initialHeight={300}
+              // initialContentHTML={this.state.activity}
+              placeholder={'please input content'}
+              // useContainer={false}
+              containerStyle={{minHeight: 100}}
+              // onHeightChange={handleHeightChange}
+              onHeightChange={this.handleHeightChange}
+              // onChange={text => this.setState({activity: text})}
+              onFocus={() => {
+                this.setState({isVisibleActivity: true});
+                this.richTextActivity.setHTMLCode('');
+                this.setState({editorHeight: this.state.windowHeight});
+                console.log(this.state.editorHeight);
+              }}
+              //onFocus={this.handleFocusActivity}
+              onBlur={this.handleBlur}
+            />
+            <RichToolbar
+              style={[styles.richBar, styles.richBarDark]}
+              flatContainerStyle={styles.flatStyle}
+              editor={this.richTextActivity}
+              disabled={this.state.disabled}
+              actions={[
+                actions.undo,
+                actions.redo,
+                actions.setBold,
+                actions.setItalic,
+                actions.insertBulletsList,
+                actions.insertOrderedList,
+                actions.insertOrderedList,
+                actions.alignLeft,
+                actions.alignCenter,
+              ]}
+            />
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'grey',
+                textAlign: 'left',
+                // padding: 5,
+              }}>
+              Result
+            </Text>
+
+            <RichEditor
+              ref={this.richTextResult}
+              initialHeight={300}
+              // initialContentHTML={this.state.activity}
+              placeholder={'please input content'}
+              // useContainer={false}
+              containerStyle={{minHeight: 100}}
+              // onHeightChange={handleHeightChange}
+              onHeightChange={this.handleHeightChange}
+              // onChange={text => this.setState({activity: text})}
+              onFocus={() => {
+                this.setState({isVisibleResult: true});
+                this.richTextResult.setHTMLCode('');
+                this.setState({editorHeight: this.state.windowHeight});
+                console.log(this.state.editorHeight);
+              }}
+              //onFocus={this.handleFocusActivity}
+              onBlur={this.handleBlur}
+            />
+            <RichToolbar
+              style={[styles.richBar, styles.richBarDark]}
+              flatContainerStyle={styles.flatStyle}
+              editor={this.richTextResult}
+              disabled={this.state.disabled}
+              actions={[
+                actions.undo,
+                actions.redo,
+                actions.setBold,
+                actions.setItalic,
+                actions.insertBulletsList,
+                actions.insertOrderedList,
+                actions.insertOrderedList,
+                actions.alignLeft,
+                actions.alignCenter,
+              ]}
+            />
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'grey',
+                textAlign: 'left',
+                // padding: 5,
+              }}>
+              Plan
+            </Text>
+            <RichEditor
+              ref={this.richTextPlan}
+              initialHeight={300}
+              // initialContentHTML={this.state.activity}
+              placeholder={'please input content'}
+              // useContainer={false}
+              containerStyle={{minHeight: 100}}
+              // onHeightChange={handleHeightChange}
+              onHeightChange={this.handleHeightChange}
+              // onChange={text => this.setState({activity: text})}
+              onFocus={() => {
+                this.setState({isVisiblePlan: true});
+                this.richTextPlan.setHTMLCode('');
+                this.setState({editorHeight: this.state.windowHeight});
+                console.log(this.state.editorHeight);
+              }}
+              //onFocus={this.handleFocusActivity}
+              onBlur={this.handleBlur}
+            />
+            <RichToolbar
+              style={[styles.richBar, styles.richBarDark]}
+              flatContainerStyle={styles.flatStyle}
+              editor={this.richTextPlan}
+              disabled={this.state.disabled}
+              actions={[
+                actions.undo,
+                actions.redo,
+                actions.setBold,
+                actions.setItalic,
+                actions.insertBulletsList,
+                actions.insertOrderedList,
+                actions.insertOrderedList,
+                actions.alignLeft,
+                actions.alignCenter,
+              ]}
             />
           </View>
 
-          <View
-            style={{
-              backgroundColor: '#f7ffff',
-              padding: 25,
-              marginLeft: 5,
-              marginRight: 5,
-              marginBottom: 20,
-            }}>
-            <TextInput
-              style={styles.textArea}
-              underlineColorAndroid="transparent"
-              placeholder="Result"
-              placeholderTextColor="#393939"
-              numberOfLines={10}
-              multiline={true}
-              onChangeText={text => this.setState({result: text})}
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: '#f7ffff',
-              padding: 25,
-              marginLeft: 5,
-              marginRight: 5,
-              marginBottom: 20,
-            }}>
-            <TextInput
-              style={styles.textArea}
-              underlineColorAndroid="transparent"
-              placeholder="Plan"
-              placeholderTextColor="#393939"
-              numberOfLines={10}
-              multiline={true}
-              onChangeText={text => this.setState({plan: text})}
-            />
+          {/* <View>
+            <View
+              style={{
+                backgroundColor: '#f7ffff',
+                padding: 25,
+                marginLeft: 5,
+                marginRight: 5,
+                marginBottom: 20,
+              }}>
+              <TextInput
+                style={styles.textArea}
+                underlineColorAndroid="transparent"
+                placeholder="Aktifitas Harian"
+                placeholderTextColor="#393939"
+                numberOfLines={10}
+                multiline={true}
+                value={this.state.activity}
+                onChangeText={text => this.setState({activity: text})}
+              />
+            </View>
+            <View
+              style={{
+                backgroundColor: '#f7ffff',
+                padding: 25,
+                marginLeft: 5,
+                marginRight: 5,
+                marginBottom: 20,
+              }}>
+              <TextInput
+                style={styles.textArea}
+                underlineColorAndroid="transparent"
+                placeholder="Result"
+                placeholderTextColor="#393939"
+                numberOfLines={10}
+                multiline={true}
+                onChangeText={text => this.setState({result: text})}
+              />
+            </View>
+            <View
+              style={{
+                backgroundColor: '#f7ffff',
+                padding: 25,
+                marginLeft: 5,
+                marginRight: 5,
+                marginBottom: 20,
+              }}>
+              <TextInput
+                style={styles.textArea}
+                underlineColorAndroid="transparent"
+                placeholder="Plan"
+                placeholderTextColor="#393939"
+                numberOfLines={10}
+                multiline={true}
+                onChangeText={text => this.setState({plan: text})}
+              />
+            </View>
+          </View> */}
+
+          <View>
+            {/*Showing the data of selected Single file*/}
+
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={this.selectFile}>
+              <Text style={{color: 'black'}}>Select File</Text>
+            </TouchableOpacity>
+            {this.state.singleFile != null ? (
+              <Text style={{color: 'black'}}>
+                File Name:{' '}
+                {this.state.singleFile[0].name
+                  ? this.state.singleFile[0].name
+                  : ''}
+                {'\n'}
+                Type:{' '}
+                {this.state.singleFile[0].type
+                  ? this.state.singleFile[0].type
+                  : ''}
+                {'\n'}
+                File Size:{' '}
+                {this.state.singleFile[0].size
+                  ? this.state.singleFile[0].size
+                  : ''}
+                {'\n'}
+                URI:{' '}
+                {this.state.singleFile[0].uri
+                  ? decodeURIComponent(this.state.singleFile[0].uri)
+                  : ''}
+                {'\n'}
+              </Text>
+            ) : null}
+            <TouchableOpacity
+              style={{color: 'black'}}
+              activeOpacity={0.5}
+              onPress={this.uploadImage}>
+              <Text style={{color: 'black'}}>Upload File</Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity
@@ -508,70 +1037,25 @@ class Dar extends Component {
               SIMPAN
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginBottom: 40,
+              backgroundColor: '#797979',
+              paddingVertical: 15,
+              marginHorizontal: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 9,
+              elevation: 2,
+            }}
+            onPress={this.submitData2}
+            // onPress={() => this.props.navigation.navigate('DrawerHome')}
+          >
+            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
+              SIMPAN 2
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
-
-        {/* <View style={styles.textAreaContainer}>
-          <TextInput
-            style={styles.textArea}
-            underlineColorAndroid="transparent"
-            placeholder="Result"
-            placeholderTextColor="grey"
-            numberOfLines={10}
-            multiline={true}
-          />
-        </View> */}
-
-        {/* <View style={styles.textAreaContainer}>
-          <TextInput
-            style={styles.textArea}
-            underlineColorAndroid="transparent"
-            placeholder="Plan"
-            placeholderTextColor="grey"
-            numberOfLines={10}
-            multiline={true}
-          />
-        </View> */}
-
-        {/* <TextInput
-          multiline={true}
-          numberOfLines={10}
-          keyboardType="email-address"
-          // onChangeText={text => setEmail(text)}
-          style={{
-            height: 200,
-            textAlignVertical: 'top',
-            backgroundColor: '#c5c5c5c5',
-          }}
-          placeholder="Aktivitas Harian"
-        /> */}
-
-        {/* <TextInput
-          keyboardType="email-address"
-          onChangeText={text => setEmail(text)}
-          style={{
-            marginHorizontal: 20,
-            backgroundColor: '#FFFFFF',
-            marginTop: 10,
-            borderRadius: 9,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Result"
-        /> */}
-
-        {/* <TextInput
-          keyboardType="email-address"
-          onChangeText={text => setEmail(text)}
-          style={{
-            marginHorizontal: 20,
-            backgroundColor: '#FFFFFF',
-            marginTop: 10,
-            borderRadius: 9,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Plan"
-        /> */}
 
         <View
           style={{

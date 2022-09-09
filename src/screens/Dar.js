@@ -49,6 +49,8 @@ import {
   RichEditor,
   RichToolbar,
 } from 'react-native-pell-rich-editor';
+import RNFetchBlob from 'rn-fetch-blob';
+
 import {color} from 'react-native-reanimated';
 
 const baseUrl = 'http://new.sidar.id';
@@ -244,9 +246,9 @@ class Dar extends Component {
     // bodyFormData.append('file', this.state.file);
     bodyFormData.append('file', {
       // name: 'file',
-      name: this.state.singleFile[0].name,
-      type: 'image/jpeg',
-      uri: this.state.singleFile[0].uri,
+      name: this.state.singleFile.name,
+      type: this.state.singleFile.type,
+      uri: this.state.singleFile.uri,
     });
     axios({
       method: 'post',
@@ -290,11 +292,6 @@ class Dar extends Component {
         console.log(err);
         alert('periksa kembali inputan anda');
       });
-  };
-
-  submitData2 = () => {
-    // this.props.navigation.dispatch(StackActions.replace('DrawerHome', {}));
-    this.props.navigation.navigate('DrawerHome');
   };
 
   logout = async () => {
@@ -357,10 +354,34 @@ class Dar extends Component {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
+
+      var file;
+      RNFetchBlob.fs
+        .stat(res[0].uri)
+        .then(stats => {
+          file = {
+            uri: 'file://' + stats.path,
+            type: res[0].type,
+            name: res[0].name,
+            // lastModifiedDate: moment().format('DD MMM YY, hh:mm A'),
+          };
+          console.log('responnya file fn-blob');
+          console.log(file);
+          console.log(file.uri);
+          this.setState({singleFile: file});
+          console.log('ini state');
+          console.log(this.state.singleFile.uri);
+          console.log(this.state.singleFile.type);
+          console.log(this.state.singleFile.name);
+        })
+        .catch(err => {
+          console.warn('err: ', err);
+        });
+
       console.log(res);
       console.log(res[0].name);
       // console.log('res : ' + JSON.stringify(res));
-      this.setState({singleFile: res});
+
       //   // setSingleFile(res);
     } catch (err) {
       console.log(err);
@@ -992,23 +1013,17 @@ class Dar extends Component {
             {this.state.singleFile != null ? (
               <Text style={{color: 'black'}}>
                 File Name:{' '}
-                {this.state.singleFile[0].name
-                  ? this.state.singleFile[0].name
-                  : ''}
+                {this.state.singleFile.name ? this.state.singleFile.name : ''}
                 {'\n'}
                 Type:{' '}
-                {this.state.singleFile[0].type
-                  ? this.state.singleFile[0].type
-                  : ''}
+                {this.state.singleFile.type ? this.state.singleFile.type : ''}
                 {'\n'}
                 File Size:{' '}
-                {this.state.singleFile[0].size
-                  ? this.state.singleFile[0].size
-                  : ''}
+                {this.state.singleFile.size ? this.state.singleFile.size : ''}
                 {'\n'}
                 URI:{' '}
-                {this.state.singleFile[0].uri
-                  ? decodeURIComponent(this.state.singleFile[0].uri)
+                {this.state.singleFile.uri
+                  ? decodeURIComponent(this.state.singleFile.uri)
                   : ''}
                 {'\n'}
               </Text>

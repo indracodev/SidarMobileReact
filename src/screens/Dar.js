@@ -246,9 +246,9 @@ class Dar extends Component {
     // bodyFormData.append('file', this.state.file);
     bodyFormData.append('file', {
       // name: 'file',
-      name: this.state.singleFile.name,
-      type: this.state.singleFile.type,
-      uri: this.state.singleFile.uri,
+      name: this.state.singleFile[0].name,
+      type: this.state.singleFile[0].type,
+      uri: this.state.singleFile[0].uri,
     });
     axios({
       method: 'post',
@@ -355,28 +355,29 @@ class Dar extends Component {
         type: [DocumentPicker.types.allFiles],
       });
 
-      var file;
-      RNFetchBlob.fs
-        .stat(res[0].uri)
-        .then(stats => {
-          file = {
-            uri: 'file://' + stats.path,
-            type: res[0].type,
-            name: res[0].name,
-            // lastModifiedDate: moment().format('DD MMM YY, hh:mm A'),
-          };
-          console.log('responnya file fn-blob');
-          console.log(file);
-          console.log(file.uri);
-          this.setState({singleFile: file});
-          console.log('ini state');
-          console.log(this.state.singleFile.uri);
-          console.log(this.state.singleFile.type);
-          console.log(this.state.singleFile.name);
-        })
-        .catch(err => {
-          console.warn('err: ', err);
-        });
+      // var file;
+      // RNFetchBlob.fs
+      //   .stat(res[0].uri)
+      //   .then(stats => {
+      //     file = {
+      //       uri: 'file://' + stats.path,
+      //       type: res[0].type,
+      //       name: res[0].name,
+      //       // lastModifiedDate: moment().format('DD MMM YY, hh:mm A'),
+      //     };
+      //     console.log('responnya file fn-blob');
+      //     console.log(file);
+      //     console.log(file.uri);
+      this.setState({singleFile: res});
+      //     console.log('ini state');
+      //     console.log(this.state.singleFile.uri);
+      //     console.log(this.state.singleFile.type);
+      //     console.log(this.state.singleFile.name);
+      //   })
+      //   .catch(err => {
+      //     console.log('blob');
+      //     console.warn('err: ', err);
+      //   });
 
       console.log(res);
       console.log(res[0].name);
@@ -1013,17 +1014,23 @@ class Dar extends Component {
             {this.state.singleFile != null ? (
               <Text style={{color: 'black'}}>
                 File Name:{' '}
-                {this.state.singleFile.name ? this.state.singleFile.name : ''}
+                {this.state.singleFile[0].name
+                  ? this.state.singleFile[0].name
+                  : ''}
                 {'\n'}
                 Type:{' '}
-                {this.state.singleFile.type ? this.state.singleFile.type : ''}
+                {this.state.singleFile[0].type
+                  ? this.state.singleFile[0].type
+                  : ''}
                 {'\n'}
                 File Size:{' '}
-                {this.state.singleFile.size ? this.state.singleFile.size : ''}
+                {this.state.singleFile[0].size
+                  ? this.state.singleFile[0].size
+                  : ''}
                 {'\n'}
                 URI:{' '}
-                {this.state.singleFile.uri
-                  ? decodeURIComponent(this.state.singleFile.uri)
+                {this.state.singleFile[0].uri
+                  ? decodeURIComponent(this.state.singleFile[0].uri)
                   : ''}
                 {'\n'}
               </Text>

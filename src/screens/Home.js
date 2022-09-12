@@ -36,13 +36,14 @@ import axios from 'axios';
 import MenuDrawer from 'react-native-side-drawer';
 const baseUrl = 'http://new.sidar.id';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as Font from 'expo-font';
 // const baseUrl = 'http://localhost/sidar-new';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fontsLoaded: false,
       statusdarthisday: [0, 0, 0, 0, 1],
       statusabsenmasuk: 1,
       statusabsenpulang: 1,
@@ -108,6 +109,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    this.loadFonts();
     this.unsubsribe = this.props.navigation.addListener('focus', () => {
       console.log('refresh==========>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
       console.log('duar');
@@ -219,9 +221,25 @@ class Home extends Component {
     ]);
   };
 
+  async loadFonts() {
+    await Font.loadAsync({
+      Helvetica: require('../../assets/fonts/Helvetica.ttf'),
+      Georgia: require('../../assets/fonts/georgia.ttf'),
+    });
+    this.setState({fontsLoaded: true});
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        {/* <Text style={{fontSize: 21, color: 'blue'}}>Default Font</Text>
+        <Text style={{fontFamily: 'Helvetica', color: 'blue', fontSize: 27}}>
+          HELVETICA
+        </Text>
+        <Text style={{fontFamily: 'Georgia', color: 'blue', fontSize: 27}}>
+          HELVETICA
+        </Text> */}
+
         <MenuDrawer
           open={this.state.open}
           position={'right'}
@@ -256,7 +274,7 @@ class Home extends Component {
               style={{
                 marginTop: 30,
                 padding: 10,
-                backgroundColor: '#898989',
+                backgroundColor: '#fdfffd',
                 display: 'flex',
                 flexDirection: 'row',
                 paddingVertical: 10,
@@ -270,12 +288,12 @@ class Home extends Component {
                   padding: 1,
                 }}
                 onPress={() => this.props.navigation.toggleDrawer()}>
-                <Icon name="bars" size={30} color="#fffff2" />
+                <Icon name="bars" size={30} color="#898989" />
               </TouchableOpacity>
 
               <Text
                 style={{
-                  color: '#fffff2',
+                  color: '#898989',
                   fontSize: 12,
                   marginLeft: 20,
                   marginTop: 5,
@@ -695,7 +713,7 @@ class Home extends Component {
 
             <View
               style={{
-                backgroundColor: '#898989',
+                backgroundColor: '#fdfffd',
                 flexDirection: 'row',
                 paddingVertical: 10,
                 borderTopRightRadius: 12,
@@ -714,10 +732,10 @@ class Home extends Component {
                     token: this.state.token,
                   })
                 }>
-                <Icon name="book" size={20} color="#ffffff" />
+                <Icon name="book" size={20} color="#898989" />
                 <Text
                   style={{
-                    color: '#ffffff',
+                    color: '#898989',
                     fontsize: 9,
                   }}>
                   DAR
@@ -734,12 +752,13 @@ class Home extends Component {
                   this.props.navigation.navigate('DrawerLaporanDar', {
                     data: this.state.datalogin,
                     token: this.state.token,
+                    parameter: 'FilterDate',
                   })
                 }>
-                <Icon name="chart-bar" size={20} color="#ffffff" />
+                <Icon name="chart-bar" size={20} color="#898989" />
                 <Text
                   style={{
-                    color: '#ffffff',
+                    color: '#898989',
                     fontsize: 9,
                   }}>
                   Laporan
@@ -753,10 +772,10 @@ class Home extends Component {
                   alignItems: 'center',
                 }}
                 onPress={() => this.props.navigation.navigate('DrawerHome')}>
-                <Icon name="home" size={25} color="#ffffff" />
+                <Icon name="home" size={25} color="#898989" />
                 <Text
                   style={{
-                    color: '#ffffff',
+                    color: '#898989',
                     fontsize: 9,
                   }}>
                   Home
@@ -776,10 +795,10 @@ class Home extends Component {
                     token: this.state.token,
                   })
                 }>
-                <Icon name="ban" size={20} color="#ffffff" />
+                <Icon name="ban" size={20} color="#898989" />
                 <Text
                   style={{
-                    color: '#ffffff',
+                    color: '#898989',
                     fontsize: 9,
                   }}>
                   Cuti
@@ -794,10 +813,10 @@ class Home extends Component {
                   alignItems: 'center',
                 }}
                 onPress={this.showConfirmDialog}>
-                <Icon name="sign-out-alt" size={20} color="#ffffff" />
+                <Icon name="sign-out-alt" size={20} color="#898989" />
                 <Text
                   style={{
-                    color: '#ffffff',
+                    color: '#898989',
                     fontsize: 9,
                   }}>
                   Logout

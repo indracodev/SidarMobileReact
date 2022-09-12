@@ -231,7 +231,7 @@ class Cuti extends Component {
 
         <View
           style={{
-            backgroundColor: '#898989',
+            backgroundColor: '#fdfffd',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -250,10 +250,10 @@ class Cuti extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="book" size={20} color="#ffffff" />
+            <Icon name="book" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               DAR
@@ -270,12 +270,14 @@ class Cuti extends Component {
               this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
+
+                parameter: 'FilterDate',
               })
             }>
-            <Icon name="chart-bar" size={20} color="#ffffff" />
+            <Icon name="chart-bar" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Laporan
@@ -289,10 +291,10 @@ class Cuti extends Component {
               alignItems: 'center',
             }}
             onPress={() => this.props.navigation.navigate('DrawerHome')}>
-            <Icon name="home" size={25} color="#ffffff" />
+            <Icon name="home" size={25} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Home
@@ -312,10 +314,10 @@ class Cuti extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="ban" size={20} color="#ffffff" />
+            <Icon name="ban" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Cuti
@@ -330,10 +332,10 @@ class Cuti extends Component {
               alignItems: 'center',
             }}
             onPress={this.showConfirmDialog}>
-            <Icon name="sign-out-alt" size={20} color="#ffffff" />
+            <Icon name="sign-out-alt" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Logout

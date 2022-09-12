@@ -287,14 +287,14 @@ function HomeScreen() {
                   })
                 }
               />
-              <DrawerItem
+              {/* <DrawerItem
                 label="Filter By Time"
                 onPress={() =>
                   props.navigation.navigate('DrawerLaporanDar', {
                     parameter: 'FilterTime',
                   })
                 }
-              />
+              /> */}
 
               <DrawerItem
                 label="Filter By Name"

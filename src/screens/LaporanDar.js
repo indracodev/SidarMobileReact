@@ -24,6 +24,7 @@ import {
   Alert,
   Image,
   TextInput,
+  Button,
 } from 'react-native';
 
 import {Header as HeaderRNE, HeaderProps} from '@rneui/themed';
@@ -34,7 +35,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {SearchBar} from '@rneui/themed';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import DatePicker from 'react-native-date-picker';
 const baseUrl = 'http://new.sidar.id';
 // const baseUrl = 'http://localhost/sidar-new';
 // const [search, setSearch] = [];
@@ -86,8 +87,12 @@ var cobavar = 'suryo';
 
 class LaporanDar extends Component {
   constructor(props) {
+    // const [date, setDate] = useState(new Date());
+    // const [open, setOpen] = useState(false);
     super(props);
     this.state = {
+      open: false,
+      date: '',
       dar: [],
       color: '',
       token: '',
@@ -109,6 +114,8 @@ class LaporanDar extends Component {
   }
 
   componentDidMount() {
+    this.props.route.params.parameter = 'FilterDate';
+    this.setState({date: new Date()});
     console.log('propsnya param');
 
     try {
@@ -300,7 +307,7 @@ class LaporanDar extends Component {
               style={{
                 marginTop: 30,
                 padding: 10,
-                backgroundColor: '#898989',
+                backgroundColor: '#fdfffd',
                 display: 'flex',
                 flexDirection: 'row',
                 paddingVertical: 10,
@@ -316,7 +323,7 @@ class LaporanDar extends Component {
 
               <Text
                 style={{
-                  color: '#fffff2',
+                  color: '#898989',
                   fontSize: 12,
                   // marginLeft: 5,
                   marginTop: 5,
@@ -329,13 +336,44 @@ class LaporanDar extends Component {
               </Text>
               {/* </TouchableOpacity> */}
             </View>
-
+            <View>
+              <Text>test</Text>
+              {/* <Button
+                title="Open"
+                onPress={() => this.setState({open: true})}
+              /> */}
+              <DatePicker
+                modal
+                mode="date"
+                open={this.state.open}
+                date={this.state.date}
+                onConfirm={tanggal => {
+                  console.log(tanggal);
+                  this.setState({setSearch: '2022-09-12', open: false});
+                  var realmonth = ('0' + (tanggal.getMonth() + 1)).slice(-2);
+                  var realdate = ('0' + tanggal.getDate()).slice(-2);
+                  // alert(this.props.route.params.parameter);
+                  const searchdate =
+                    tanggal.getFullYear() + '-' + realmonth + '-' + realdate;
+                  this.searchFilterFunction(searchdate);
+                  console.log('tgl');
+                  console.log(searchdate);
+                  // this.setState({open: false, date: date});
+                  // setOpen(false);
+                  // setDate(date);
+                }}
+                onCancel={() => {
+                  this.setState({open: false});
+                  // setOpen(false);
+                }}
+              />
+            </View>
             <HeaderRNE
               // style={styles.headerContainer}
               leftComponent={
                 <TouchableOpacity
                   onPress={() => this.props.navigation.toggleDrawer()}>
-                  <Icon name="cogs" size={20} color="white" />
+                  <Icon name="filter" size={20} color="#898989" />
                 </TouchableOpacity>
 
                 // {
@@ -366,26 +404,47 @@ class LaporanDar extends Component {
                     size={10}
                     color="#898989"
                   />
-                  <TextInput
-                    style={{
-                      paddingTop: 10,
-                      paddingRight: 10,
-                      paddingBottom: 10,
-                      paddingLeft: 10,
-                      height: 40,
-                      color: '#262626',
-                      flex: 1,
-                    }}
-                    placeholderTextColor="#292929"
-                    onChangeText={text => this.searchFilterFunction(text)}
-                    value={this.state.search}
-                    underlineColorAndroid="transparent"
-                    placeholder={this.props.route.params.parameter}
-                  />
+
+                  {this.props.route.params.parameter == 'FilterDate' ? (
+                    <TextInput
+                      style={{
+                        paddingTop: 10,
+                        paddingRight: 10,
+                        paddingBottom: 10,
+                        paddingLeft: 10,
+                        height: 40,
+                        color: '#262626',
+                        flex: 1,
+                      }}
+                      placeholderTextColor="#292929"
+                      onChangeText={text => this.searchFilterFunction(text)}
+                      value={this.state.search}
+                      underlineColorAndroid="transparent"
+                      placeholder={this.props.route.params.parameter}
+                      onFocus={() => this.setState({open: true})}
+                    />
+                  ) : (
+                    <TextInput
+                      style={{
+                        paddingTop: 10,
+                        paddingRight: 10,
+                        paddingBottom: 10,
+                        paddingLeft: 10,
+                        height: 40,
+                        color: '#262626',
+                        flex: 1,
+                      }}
+                      placeholderTextColor="#292929"
+                      onChangeText={text => this.searchFilterFunction(text)}
+                      value={this.state.search}
+                      underlineColorAndroid="transparent"
+                      placeholder={this.props.route.params.parameter}
+                    />
+                  )}
                 </View>
               }
               centerContainerStyle={{color: '#fffff6'}}
-              backgroundColor="#898989"
+              backgroundColor="#fdfffd"
             />
 
             <FlatList
@@ -463,7 +522,7 @@ class LaporanDar extends Component {
         )}
         <View
           style={{
-            backgroundColor: '#898989',
+            backgroundColor: '#fdfffd',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -482,10 +541,10 @@ class LaporanDar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="book" size={20} color="#ffffff" />
+            <Icon name="book" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               DAR
@@ -504,10 +563,10 @@ class LaporanDar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="chart-bar" size={20} color="#ffffff" />
+            <Icon name="chart-bar" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Laporan
@@ -521,10 +580,10 @@ class LaporanDar extends Component {
               alignItems: 'center',
             }}
             onPress={() => this.props.navigation.navigate('DrawerHome')}>
-            <Icon name="home" size={25} color="#ffffff" />
+            <Icon name="home" size={25} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Home
@@ -544,10 +603,10 @@ class LaporanDar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="ban" size={20} color="#ffffff" />
+            <Icon name="ban" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Cuti
@@ -562,10 +621,10 @@ class LaporanDar extends Component {
               alignItems: 'center',
             }}
             onPress={this.showConfirmDialog}>
-            <Icon name="sign-out-alt" size={20} color="#ffffff" />
+            <Icon name="sign-out-alt" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Logout

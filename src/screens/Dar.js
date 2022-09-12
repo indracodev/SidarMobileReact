@@ -43,6 +43,7 @@ import {BottomSheet} from '@rneui/themed';
 import {XMath} from '@wxik/core';
 import {WebView} from 'react-native-webview';
 import DocumentPicker from 'react-native-document-picker';
+import {SpeedDial} from '@rneui/themed';
 import {
   actions,
   getContentCSS,
@@ -70,6 +71,7 @@ class Dar extends Component {
     const that = this;
     const windowHeight = Dimensions.get('window').height;
     this.state = {
+      open: '',
       token: '',
       datalogin: [],
       iduser: '',
@@ -141,6 +143,24 @@ class Dar extends Component {
 
   componentDidMount() {
     // this.unsubsribe = this.props.navigation.addListener('focus', () => {
+
+    AsyncStorage.getItem('@activity').then(valueactivity => {
+      this.setState({activity: valueactivity});
+      this.richTextActivity.current?.setContentHTML(valueactivity);
+      // this.richbsActivity.current?.setContentHTML(valueactivity);
+    });
+
+    AsyncStorage.getItem('@result').then(valueresult => {
+      this.setState({result: valueresult});
+      this.richTextResult.current?.setContentHTML(valueresult);
+      // this.richbsResult.current?.setContentHTML(valueresult);
+    });
+
+    AsyncStorage.getItem('@plan').then(valueplan => {
+      this.setState({plan: valueplan});
+      this.richTextPlan.current?.setContentHTML(valueplan);
+      // this.richbsPlan.current?.setContentHTML(valueplan);
+    });
 
     AsyncStorage.getItem('@storage_Key').then(value => {
       console.log('coba get value token');
@@ -215,6 +235,12 @@ class Dar extends Component {
   }
 
   submitData = () => {
+    try {
+      AsyncStorage.removeItem('@activity');
+      AsyncStorage.removeItem('@result');
+      AsyncStorage.removeItem('@plan');
+    } catch (e) {}
+
     console.log('tombol simpan mengirimkan data');
     console.log('token');
 
@@ -243,13 +269,18 @@ class Dar extends Component {
     bodyFormData.append('result', this.state.result);
     bodyFormData.append('plan', this.state.plan);
     bodyFormData.append('tag', this.state.tag);
-    // bodyFormData.append('file', this.state.file);
-    bodyFormData.append('file', {
-      // name: 'file',
-      name: this.state.singleFile[0].name,
-      type: this.state.singleFile[0].type,
-      uri: this.state.singleFile[0].uri,
-    });
+
+    if (this.state.singleFile) {
+      bodyFormData.append('file', {
+        // name: 'file',
+        name: this.state.singleFile[0].name,
+        type: this.state.singleFile[0].type,
+        uri: this.state.singleFile[0].uri,
+      });
+    } else {
+      bodyFormData.append('file', this.state.file);
+    }
+
     axios({
       method: 'post',
       url: `${baseUrl}/api/sidar_dar/add`,
@@ -294,6 +325,15 @@ class Dar extends Component {
       });
   };
 
+  dardraft = async () => {
+    try {
+      AsyncStorage.setItem('@activity', this.state.activity);
+      AsyncStorage.setItem('@result', this.state.result);
+      AsyncStorage.setItem('@plan', this.state.plan);
+      alert('behasil Simpan DAR ke Draft');
+    } catch (err) {}
+  };
+
   logout = async () => {
     console.log('logout');
     try {
@@ -323,12 +363,11 @@ class Dar extends Component {
   uploadImage = async () => {
     // Check if any file is selected or not
     if (singleFile != null) {
-      // If file selected then create FormData
       const fileToUpload = singleFile;
       const data = new FormData();
       data.append('name', 'Image Upload');
       data.append('file_attachment', fileToUpload);
-      // Please change file upload URL
+
       let res = await fetch('http://localhost/upload.php', {
         method: 'post',
         body: data,
@@ -341,71 +380,37 @@ class Dar extends Component {
         alert('Upload Successful');
       }
     } else {
-      // If no file selected the show alert
       alert('Please Select File first');
     }
   };
 
   selectFile = async () => {
     console.log('try');
-    // Opening Document Picker to select one file
+
     try {
       console.log('try 2');
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
 
-      // var file;
-      // RNFetchBlob.fs
-      //   .stat(res[0].uri)
-      //   .then(stats => {
-      //     file = {
-      //       uri: 'file://' + stats.path,
-      //       type: res[0].type,
-      //       name: res[0].name,
-      //       // lastModifiedDate: moment().format('DD MMM YY, hh:mm A'),
-      //     };
-      //     console.log('responnya file fn-blob');
-      //     console.log(file);
-      //     console.log(file.uri);
       this.setState({singleFile: res});
-      //     console.log('ini state');
-      //     console.log(this.state.singleFile.uri);
-      //     console.log(this.state.singleFile.type);
-      //     console.log(this.state.singleFile.name);
-      //   })
-      //   .catch(err => {
-      //     console.log('blob');
-      //     console.warn('err: ', err);
-      //   });
 
       console.log(res);
       console.log(res[0].name);
-      // console.log('res : ' + JSON.stringify(res));
-
-      //   // setSingleFile(res);
     } catch (err) {
       console.log(err);
-      //   this.setState({singleFile: null});
-      //   // setSingleFile(null);
-      //   if (DocumentPicker.isCancel(err)) {
-      //     alert('Canceled');
-      //   } else {
-      //     alert('Unknown Error: ' + JSON.stringify(err));
-      //     throw err;
-      //   }
     }
   };
 
   render() {
     return (
-      <View style={{backgroundColor: '#ecf0f1', flex: 1}}>
+      <View style={{backgroundColor: '#fff', flex: 1}}>
         <ScrollView style={{flexDirection: 'column', marginBottom: 20}}>
           <View
             style={{
               marginTop: 30,
               padding: 10,
-              backgroundColor: '#898989',
+              backgroundColor: '#ecf0f1',
               display: 'flex',
               flexDirection: 'row',
               paddingVertical: 10,
@@ -416,22 +421,19 @@ class Dar extends Component {
                 padding: 1,
               }}
               onPress={() => this.props.navigation.toggleDrawer()}>
-              <Icon name="bars" size={30} color="#fffff2" />
+              <Icon name="bars" size={30} color="#000001" />
             </TouchableOpacity>
 
             <Text
               style={{
-                color: '#fffff2',
+                color: '#000001',
                 fontSize: 12,
                 marginLeft: 20,
                 marginTop: 5,
               }}>
               Hi, {this.state.datalogin.username}
-              {/* - {this.state.iduser} */}
               {'\n'}Anda terakhir login pada, {this.state.datalogin.last_login}
-              {/* token, {this.state.token} */}
             </Text>
-            {/* </TouchableOpacity> */}
           </View>
           {this.state.periodetanggaldar.length === 0 ? (
             <View
@@ -603,9 +605,7 @@ class Dar extends Component {
                   initialContentHTML={this.state.activity}
                   initialHeight={this.state.editorHeight}
                   placeholder={'please input content'}
-                  // useContainer={false}
                   containerStyle={{minHeight: 100}}
-                  // onHeightChange={handleHeightChange}
                   onHeightChange={this.handleHeightChange}
                   onChange={text => {
                     this.setState({activity: text});
@@ -674,9 +674,7 @@ class Dar extends Component {
                   initialContentHTML={this.state.result}
                   initialHeight={this.state.editorHeight}
                   placeholder={'please input content'}
-                  // useContainer={false}
                   containerStyle={{minHeight: 100}}
-                  // onHeightChange={handleHeightChange}
                   onHeightChange={this.handleHeightChange}
                   onChange={text => {
                     this.setState({result: text});
@@ -687,7 +685,6 @@ class Dar extends Component {
                   }}
                   onFocus={() => {
                     var edtheight = this.state.windowHeight / 2;
-                    // this.handleFocusActivity;
                     this.setState({editorHeight: edtheight});
                     console.log(this.state.editorHeight);
                   }}
@@ -745,9 +742,7 @@ class Dar extends Component {
                   initialContentHTML={this.state.plan}
                   initialHeight={this.state.editorHeight}
                   placeholder={'please input content'}
-                  // useContainer={false}
                   containerStyle={{minHeight: 100}}
-                  // onHeightChange={handleHeightChange}
                   onHeightChange={this.handleHeightChange}
                   onChange={text => {
                     this.setState({plan: text});
@@ -756,7 +751,6 @@ class Dar extends Component {
                   }}
                   onFocus={() => {
                     var edtheight = this.state.windowHeight / 2;
-                    // this.handleFocusActivity;
                     this.setState({editorHeight: edtheight});
                     console.log(this.state.editorHeight);
                   }}
@@ -782,21 +776,6 @@ class Dar extends Component {
               />
             </ScrollView>
           </BottomSheet>
-
-          {/* <Button
-            title="Close"
-            onPress={() => this.setState({windowHeight: 150})}
-            buttonStyle={styles.button}
-          /> */}
-          {/* <View
-            style={{
-              width: '33%',
-              height: this.state.windowHeight,
-              backgroundColor: 'steelblue',
-            }}>
-            <Text>aseekk</Text>
-          </View> */}
-
           <View>
             <Text
               style={{
@@ -1005,48 +984,72 @@ class Dar extends Component {
           <View>
             {/*Showing the data of selected Single file*/}
 
-            <TouchableOpacity
-              style={styles.buttonStyle}
+            {/* <TouchableOpacity
+              style={{
+                marginTop: 10,
+                backgroundColor: '#ecf0f1',
+                paddingVertical: 15,
+                marginHorizontal: 5,
+                borderRadius: 9,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               activeOpacity={0.5}
               onPress={this.selectFile}>
-              <Text style={{color: 'black'}}>Select File</Text>
-            </TouchableOpacity>
-            {this.state.singleFile != null ? (
-              <Text style={{color: 'black'}}>
-                File Name:{' '}
-                {this.state.singleFile[0].name
-                  ? this.state.singleFile[0].name
-                  : ''}
-                {'\n'}
-                Type:{' '}
-                {this.state.singleFile[0].type
-                  ? this.state.singleFile[0].type
-                  : ''}
-                {'\n'}
-                File Size:{' '}
-                {this.state.singleFile[0].size
-                  ? this.state.singleFile[0].size
-                  : ''}
-                {'\n'}
-                URI:{' '}
-                {this.state.singleFile[0].uri
-                  ? decodeURIComponent(this.state.singleFile[0].uri)
-                  : ''}
-                {'\n'}
+              <Icon name="paperclip" size={20} color="#000001" />
+              <Text
+                style={{color: '#000001', fontSize: 18, fontWeight: 'light'}}>
+                SELECT FILE ATTACHMENT
               </Text>
+            </TouchableOpacity> */}
+            {this.state.singleFile != null ? (
+              <View
+                style={{
+                  marginHorizontal: 5,
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}>
+                {this.state.singleFile[0].type == 'image/jpeg' ? (
+                  <View style={{marginTop: 5}}>
+                    <Icon name="file-image" size={40} color="#000001" />
+                  </View>
+                ) : (
+                  <View style={{marginTop: 5}}>
+                    <Icon name="file-pdf" size={40} color="#000001" />
+                  </View>
+                )}
+
+                <Text style={{marginLeft: 10, color: 'black'}}>
+                  File Name:{' '}
+                  {this.state.singleFile[0].name
+                    ? this.state.singleFile[0].name
+                    : ''}
+                  {'\n'}
+                  Type:{' '}
+                  {this.state.singleFile[0].type
+                    ? this.state.singleFile[0].type
+                    : ''}
+                  {'\n'}
+                  File Size:{' '}
+                  {this.state.singleFile[0].size
+                    ? this.state.singleFile[0].size
+                    : ''}
+                  {'\n'}
+                  URI:{' '}
+                  {this.state.singleFile[0].uri
+                    ? decodeURIComponent(this.state.singleFile[0].uri)
+                    : ''}
+                  {'\n'}
+                </Text>
+              </View>
             ) : null}
-            <TouchableOpacity
-              style={{color: 'black'}}
-              activeOpacity={0.5}
-              onPress={this.uploadImage}>
-              <Text style={{color: 'black'}}>Upload File</Text>
-            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
-              marginBottom: 40,
-              backgroundColor: '#797979',
+              marginTop: 10,
+              marginBottom: 10,
+              backgroundColor: '#ecf0f1',
               paddingVertical: 15,
               marginHorizontal: 5,
               justifyContent: 'center',
@@ -1055,33 +1058,43 @@ class Dar extends Component {
               elevation: 2,
             }}
             onPress={this.submitData}>
-            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
-              SIMPAN
+            <Text style={{color: '#000001', fontSize: 18, fontWeight: 'light'}}>
+              SUBMIT
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              marginBottom: 40,
-              backgroundColor: '#797979',
-              paddingVertical: 15,
-              marginHorizontal: 5,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 9,
-              elevation: 2,
-            }}
-            onPress={this.submitData2}
-            // onPress={() => this.props.navigation.navigate('DrawerHome')}
-          >
-            <Text style={{color: '#FFFFFF', fontSize: 18, fontWeight: 'light'}}>
-              SIMPAN 2
-            </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
+        <SpeedDial
+          style={{marginBottom: 75}}
+          isOpen={this.state.open}
+          icon={{name: 'add', color: '#fff'}}
+          openIcon={{name: 'close', color: '#fff'}}
+          onOpen={() => this.setState({open: true})}
+          onClose={() => this.setState({open: false})}>
+          <SpeedDial.Action
+            icon={{name: 'send', color: '#fff'}}
+            title="Kirim"
+            onPress={this.submitData}
+          />
+          <SpeedDial.Action
+            icon={{name: 'save', color: '#fff'}}
+            title="Simpan Draft"
+            onPress={this.dardraft}
+          />
+          <SpeedDial.Action
+            icon={{name: 'folder', color: '#fff'}}
+            title="Lampiran"
+            onPress={this.selectFile}
+          />
+          <SpeedDial.Action
+            icon={{name: 'remove', color: '#fff'}}
+            title="Tidak Masuk"
+            onPress={() => console.log('Add Something')}
+          />
+        </SpeedDial>
 
         <View
           style={{
-            backgroundColor: '#898989',
+            backgroundColor: '#fdfffd',
             flexDirection: 'row',
             paddingVertical: 10,
             borderTopRightRadius: 12,
@@ -1100,10 +1113,10 @@ class Dar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="book" size={20} color="#ffffff" />
+            <Icon name="book" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               DAR
@@ -1120,12 +1133,14 @@ class Dar extends Component {
               this.props.navigation.navigate('DrawerLaporanDar', {
                 data: this.state.datalogin,
                 token: this.state.token,
+
+                parameter: 'FilterName',
               })
             }>
-            <Icon name="chart-bar" size={20} color="#ffffff" />
+            <Icon name="chart-bar" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Laporan
@@ -1139,10 +1154,10 @@ class Dar extends Component {
               alignItems: 'center',
             }}
             onPress={() => this.props.navigation.navigate('DrawerHome')}>
-            <Icon name="home" size={25} color="#ffffff" />
+            <Icon name="home" size={25} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Home
@@ -1162,10 +1177,10 @@ class Dar extends Component {
                 token: this.state.token,
               })
             }>
-            <Icon name="ban" size={20} color="#ffffff" />
+            <Icon name="ban" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Cuti
@@ -1180,10 +1195,10 @@ class Dar extends Component {
               alignItems: 'center',
             }}
             onPress={this.showConfirmDialog}>
-            <Icon name="sign-out-alt" size={20} color="#ffffff" />
+            <Icon name="sign-out-alt" size={20} color="#898989" />
             <Text
               style={{
-                color: '#ffffff',
+                color: '#898989',
                 fontsize: 9,
               }}>
               Logout

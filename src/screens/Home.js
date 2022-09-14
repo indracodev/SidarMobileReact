@@ -109,7 +109,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    this.loadFonts();
+    // this.loadFonts();
     this.unsubsribe = this.props.navigation.addListener('focus', () => {
       console.log('refresh==========>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
       console.log('duar');
@@ -221,13 +221,13 @@ class Home extends Component {
     ]);
   };
 
-  async loadFonts() {
-    await Font.loadAsync({
-      Helvetica: require('../../assets/fonts/Helvetica.ttf'),
-      Georgia: require('../../assets/fonts/georgia.ttf'),
-    });
-    this.setState({fontsLoaded: true});
-  }
+  // async loadFonts() {
+  //   await Font.loadAsync({
+  //     Helvetica: require('../../assets/fonts/Helvetica.ttf'),
+  //     Georgia: require('../../assets/fonts/georgia.ttf'),
+  //   });
+  //   this.setState({fontsLoaded: true});
+  // }
 
   render() {
     return (

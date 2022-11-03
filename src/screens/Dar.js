@@ -53,6 +53,7 @@ import {
 import RNFetchBlob from 'rn-fetch-blob';
 
 import {color} from 'react-native-reanimated';
+import { exists } from 'react-native-fs';
 
 const baseUrl = 'http://new.sidar.id';
 
@@ -235,7 +236,23 @@ class Dar extends Component {
   }
 
   submitData = () => {
-    try {
+
+//     Alert.alert(
+//   'Alert Title',
+//   'My Alert Msg', // <- this part is optional, you can pass an empty string
+//   [
+//     {text: 'OK', onPress: () => console.log('OK Pressed')},
+//   ],
+//   {cancelable: false},
+// );
+if ((this.state.activity.indexOf(' ')==-1)||(this.state.result.indexOf(' ')==-1)||(this.state.plan.indexOf(' ')==-1))
+{
+alert("inputan DAR tidak memenuhi kriteria jumlah kata yang harus di masukkan,  perbaiki inputan anda (jumalh kata harus lebih dari 3 kata)");
+}
+else
+{
+  // alert("berhasil");
+   try {
       AsyncStorage.removeItem('@activity');
       AsyncStorage.removeItem('@result');
       AsyncStorage.removeItem('@plan');
@@ -272,7 +289,6 @@ class Dar extends Component {
 
     if (this.state.singleFile) {
       bodyFormData.append('file', {
-        // name: 'file',
         name: this.state.singleFile[0].name,
         type: this.state.singleFile[0].type,
         uri: this.state.singleFile[0].uri,
@@ -295,24 +311,8 @@ class Dar extends Component {
         if (response.data.status == true) {
           console.log('response.data.status');
           console.log(response.data.status);
-          // this.props.navigation.dispatch(
-          //   StackActions.replace('HomeScreen', {}),
-          // );
           alert('berhasil');
           this.props.navigation.navigate('DrawerHome');
-
-          // this.props.navigation.dispatch(
-          //   StackActions.replace('HomeScreen', {
-          //     // data: response.data.data,
-          //     // token: response.data.token,
-          //   }),
-          // );
-
-          // try {
-          // this.props.navigation.navigate('HomeScreen');
-          // } catch (error) {
-          //   console.error(error);
-          // }
         } else {
           console.log('response.data.status');
           console.log(response.data.status);
@@ -323,6 +323,13 @@ class Dar extends Component {
         console.log(err);
         alert('periksa kembali inputan anda');
       });
+}
+
+
+
+
+
+   
   };
 
   dardraft = async () => {
